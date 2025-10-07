@@ -1,0 +1,24 @@
+{
+  "name": "booking-yoga",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CaroSerrano/booking-yoga.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/CaroSerrano/booking-yoga/issues"
+  },
+  "homepage": "https://github.com/CaroSerrano/booking-yoga#readme",
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  }
+}

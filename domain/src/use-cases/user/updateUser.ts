@@ -1,8 +1,4 @@
-import { UserService } from '../../services'
-
-interface UpdateDeps {
-  userService: UserService
-}
+import { UserDeps } from './register'
 
 interface UpdatePayload {
   id: string
@@ -13,7 +9,7 @@ interface UpdatePayload {
 }
 
 export async function updateUserData(
-  { userService }: UpdateDeps,
+  { userService }: UserDeps,
   { id, ...data }: UpdatePayload
 ) {
   const foundUser = await userService.findById(id)

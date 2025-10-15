@@ -2,7 +2,7 @@ import { UserService } from '../../services';
 import generateTimestamps from '../../utils/generateTimestamps';
 import { UserStatus, Role } from '../../entities';
 
-interface RegisterDeps {
+export interface UserDeps {
   userService: UserService;
 }
 
@@ -15,7 +15,7 @@ interface RegisterPayload {
 }
 
 export async function register(
-  { userService }: RegisterDeps,
+  { userService }: UserDeps,
   { name, email, phoneNumber, password, role }: RegisterPayload
 ) {
   const foundUser = await userService.findByEmail(email);

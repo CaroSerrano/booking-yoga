@@ -38,6 +38,6 @@ export class MockedUserService implements UserService {
     return this.users.find((user) => user.email == email);
   };
   delete = async (id: string) => {
-    throw new Error();
+    this.users = this.users.filter((user) => user.id !== id);
   };
 }

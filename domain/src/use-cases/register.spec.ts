@@ -43,6 +43,33 @@ describe('Register', () => {
     });
   });
 
-  test('if no role is provided, a User type user is created by default');
+  test('if no role is provided, a User type user is created by default', async () => {
+    const userService = new MockedUserService([
+    ]);
+
+    const result = await register(
+      { userService },
+      {
+        email: 'pablo@example.com',
+        name: 'pablo perez',
+        password: 'secret',
+        phoneNumber: '151651651',
+      }
+    );
+
+    expect(result).toBeUndefined();
+    expect(userService.users).toHaveLength(1);
+    expect(userService.users[0]).toStrictEqual({
+      id: expect.any(String),
+      name: 'pablo perez',
+      email: 'pablo@example.com',
+      password: 'secret',
+      phoneNumber: '151651651',
+      status: 'ACTIVE',
+      role: Role.USER,
+      createdAt: expect.any(Date),
+      updatedAt: expect.any(Date),
+    });
+  });
   test('if the email is already registered, an error with an appropriate message is expected');
 });

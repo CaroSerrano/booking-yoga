@@ -8,7 +8,7 @@ export function userMock(opts?: Partial<User>): User {
     name: faker.person.fullName(),
     email: faker.internet.email(),
     password: faker.lorem.paragraph({ min: 8, max: 50 }),
-    status: faker.helpers.arrayElement(Object.values(UserStatus)),
+    status: UserStatus.ACTIVE,
     role: Role.USER,
     ...generateTimestamps(),
     ...opts,

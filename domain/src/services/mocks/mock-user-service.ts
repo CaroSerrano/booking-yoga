@@ -16,7 +16,13 @@ export class MockedUserService implements UserService {
     return this.users[index];
   };
   findAll = async () => {
-    throw new Error();
+    return this.users;
+  };
+  findActive = async () => {
+    return this.users.filter((u) => u.status === 'ACTIVE');
+  };
+  findStudents = async () => {
+    return this.users.filter((u) => u.role === 'USER' && u.status === 'ACTIVE');
   };
   findById = async (id: string) => {
     return this.users.find((user) => user.id == id);

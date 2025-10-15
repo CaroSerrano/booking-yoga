@@ -20,7 +20,7 @@ export async function register(
 ) {
   const foundUser = await userService.findByEmail(email);
   if (foundUser) {
-    return new Error();
+    throw new Error('User already registered');
   }
 
   await userService.save({

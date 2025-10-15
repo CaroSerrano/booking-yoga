@@ -81,18 +81,17 @@ describe('Register', () => {
         role: Role.ADMIN,
       }),
     ]);
-
-    const result = await register(
-      { userService },
-      {
-        email: 'caroserrano@example.com',
-        name: 'pablo perez',
-        password: 'secret',
-        phoneNumber: '151651651',
-      }
-    );
-
-    expect(result).toBeInstanceOf(Error);
+    await expect(() =>
+      register(
+        { userService },
+        {
+          email: 'caroserrano@example.com',
+          name: 'pablo perez',
+          password: 'secret',
+          phoneNumber: '151651651',
+        }
+      )
+    ).rejects.toThrow('User already registered');
     expect(userService.users).toHaveLength(1);
   });
 });

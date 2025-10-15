@@ -2,7 +2,7 @@ import { describe, expect, test } from 'vitest';
 import { MockedUserService } from '../../services/mocks/mock-user-service';
 import { userMock } from '../../entities/mocks/user-mock';
 import { Role, UserStatus } from '../../entities';
-import { listActive, listAll, listStudents } from './getUsers';
+import { getUserByEmail, listActive, listAll, listStudents } from './getUsers';
 
 describe('Get users', () => {
   test('listAll function, should return all users', async () => {
@@ -109,5 +109,14 @@ describe('Get users', () => {
       createdAt: expect.any(Date),
       updatedAt: expect.any(Date),
     });
+  });
+
+  test('getByEmail should return undefined if the email does not exist', async () => {
+    const userService = new MockedUserService([]);
+    const result = await getUserByEmail(
+      { userService },
+      { email: 'silsoto@example.com' }
+    );
+    expect(result).toBeUndefined();
   });
 });

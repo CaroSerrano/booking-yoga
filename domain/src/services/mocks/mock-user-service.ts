@@ -9,24 +9,26 @@ export class MockedUserService implements UserService {
   }
 
   updateOne = async (id: string, data: Partial<User>) => {
-    throw new Error()
+    throw new Error();
   };
   findAll = async () => {
-    throw new Error()
+    throw new Error();
   };
   findById = async (id: string) => {
-    throw new Error()
+    throw new Error();
   };
   findByName = async (name: string) => {
-    throw new Error()
+    throw new Error();
   };
+
   save = async (data: User) => {
-    throw new Error()
+    this.users.push(data);
+    return this.users[this.users.length - 1];
   };
   findByEmail = async (email: string) => {
-    throw new Error()
+    return this.users.find((user) => user.email == email);
   };
   delete = async (id: string) => {
-    throw new Error()
+    throw new Error();
   };
 }

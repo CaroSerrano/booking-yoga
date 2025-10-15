@@ -1,18 +1,18 @@
 import type { Entity } from '../utils/types/entity.js';
 
-export const userStatus = {
+export const UserStatus = {
   ACTIVE: 'ACTIVE',
   INACTIVE: 'INACTIVE',
 } as const;
 
-export type UserStatus = (typeof userStatus)[keyof typeof userStatus];
+export type UserStatus = (typeof UserStatus)[keyof typeof UserStatus];
 
-export const role = {
+export const Role = {
   ADMIN: 'ADMIN',
   USER: 'USER',
 } as const;
 
-export type Role = (typeof role)[keyof typeof role];
+export type Role = (typeof Role)[keyof typeof Role];
 
 export interface User extends Entity {
   name: string;

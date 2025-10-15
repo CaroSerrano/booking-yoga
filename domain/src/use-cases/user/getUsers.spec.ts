@@ -85,4 +85,29 @@ describe('Get users', () => {
       updatedAt: expect.any(Date),
     });
   });
+
+  test('getByEmail should return the user with that email', async () => {
+    const userService = new MockedUserService([
+      userMock({
+        name: 'Silvia Soto',
+        email: 'silsoto@example.com',
+        phoneNumber: '123456789',
+        password: 'secret',
+      }),
+    ]);
+    const result = await getUserByEmail(
+      { userService },
+      { email: 'silsoto@example.com' }
+    );
+    expect(result).toStrictEqual({
+      id: expect.any(String),
+      name: 'Silvia Soto',
+      email: 'silsoto@example.com',
+      phoneNumber: '123456789',
+      status: 'ACTIVE',
+      role: Role.USER,
+      createdAt: expect.any(Date),
+      updatedAt: expect.any(Date),
+    });
+  });
 });

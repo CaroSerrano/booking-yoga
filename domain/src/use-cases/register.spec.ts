@@ -44,8 +44,7 @@ describe('Register', () => {
   });
 
   test('if no role is provided, a User type user is created by default', async () => {
-    const userService = new MockedUserService([
-    ]);
+    const userService = new MockedUserService([]);
 
     const result = await register(
       { userService },
@@ -71,5 +70,29 @@ describe('Register', () => {
       updatedAt: expect.any(Date),
     });
   });
-  test('if the email is already registered, an error with an appropriate message is expected');
+  test('if the email is already registered, an error is expected', async () => {
+    const userService = new MockedUserService([
+      userMock({
+        name: 'Carolina Serrano',
+        email: 'caroserrano@example.com',
+        phoneNumber: '123456789',
+        password: 'secret',
+        status: UserStatus.ACTIVE,
+        role: Role.ADMIN,
+      }),
+    ]);
+
+    const result = await register(
+      { userService },
+      {
+        email: 'caroserrano@example.com',
+        name: 'pablo perez',
+        password: 'secret',
+        phoneNumber: '151651651',
+      }
+    );
+
+    expect(result).toBeInstanceOf(Error);
+    expect(userService.users).toHaveLength(1);
+  });
 });

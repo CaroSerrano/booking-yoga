@@ -1,6 +1,6 @@
-import { UserService } from '../services';
-import generateTimestamps from '../utils/generateTimestamps';
-import { UserStatus, Role } from '../entities';
+import { UserService } from '../../services';
+import generateTimestamps from '../../utils/generateTimestamps';
+import { UserStatus, Role } from '../../entities';
 
 interface RegisterDeps {
   userService: UserService;

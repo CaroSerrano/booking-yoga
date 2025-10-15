@@ -23,7 +23,6 @@ export class MockedUserService implements UserService {
 
   save = async (data: User) => {
     this.users.push(data);
-    return this.users[this.users.length - 1];
   };
   findByEmail = async (email: string) => {
     return this.users.find((user) => user.email == email);

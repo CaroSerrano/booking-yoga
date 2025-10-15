@@ -11,6 +11,6 @@ interface ServiceQuery<TEntity extends Entity> {
 
 interface ServiceStorage<TEntity extends Entity> {
   updateOne: (id: string, data: Partial<TEntity>) => Promise<TEntity | undefined>;
-  save: (data: TEntity) => Promise<TEntity | undefined>;
+  save: (data: TEntity) => Promise<void>;
   delete: (id: string) => Promise<void>;
 }

@@ -1,7 +1,7 @@
 import { describe, test, expect } from 'vitest';
-import { UserStatus, Role } from '../entities';
-import { MockedUserService } from '../services/mocks/mock-user-service';
-import { userMock } from '../entities/mocks/user-mock';
+import { UserStatus, Role } from '../../entities';
+import { MockedUserService } from '../../services/mocks/mock-user-service';
+import { userMock } from '../../entities/mocks/user-mock';
 import { register } from './register';
 
 describe('Register', () => {

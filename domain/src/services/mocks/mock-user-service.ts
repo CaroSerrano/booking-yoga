@@ -9,13 +9,17 @@ export class MockedUserService implements UserService {
   }
 
   updateOne = async (id: string, data: Partial<User>) => {
-    throw new Error();
+    const index = this.users.findIndex((user) => user.id === id);
+    if (index === -1) return undefined;
+
+    this.users[index] = { ...this.users[index], ...data };
+    return this.users[index];
   };
   findAll = async () => {
     throw new Error();
   };
   findById = async (id: string) => {
-    throw new Error();
+    return this.users.find((user) => user.id == id);
   };
   findByName = async (name: string) => {
     throw new Error();

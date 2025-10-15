@@ -1,0 +1,45 @@
+import { describe, test, expect } from 'vitest';
+import { MockedUserService } from '../../services/mocks/mock-user-service';
+import { userMock } from '../../entities/mocks/user-mock';
+import { login } from './login';
+
+describe('Login', () => {
+  test('returns user when credentials are valid', async () => {
+    const userService = new MockedUserService([
+      userMock({
+        email: 'pablo@example.com',
+        password: 'secret',
+        name: 'Pablo Perez',
+      }),
+    ]);
+
+    const result = await login(
+      { userService },
+      { email: 'pablo@example.com', pass: 'secret' }
+    );
+
+    expect(result).toBeDefined();
+    expect(result.email).toBe('pablo@example.com');
+    expect(result.name).toBe('Pablo Perez')
+  });
+
+  test('returns error when password is invalid', async () => {
+    const userService = new MockedUserService([
+      userMock({
+        email: 'pablo@example.com',
+        password: 'secret',
+        name: 'Pablo Perez',
+      }),
+    ]);
+    await expect(() =>
+      login({ userService }, { email: 'pablo@example.com', pass: 'wrong' })
+    ).rejects.toThrow('Wrong credentials');
+  });
+
+  test('returns error when user not found', async () => {
+    const userService = new MockedUserService([]);
+    await expect(() =>
+      login({ userService }, { email: 'none@example.com', pass: 'secret' })
+    ).rejects.toThrow('User not found');
+  });
+});

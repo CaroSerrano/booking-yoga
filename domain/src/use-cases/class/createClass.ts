@@ -1,6 +1,6 @@
 import { ClassService } from '../../services';
-import { ValidationError } from '../../utils/customErrors';
 import generateTimestamps from '../../utils/generateTimestamps';
+import { validateRequiredFields } from '../../utils/validateRequiredFields';
 
 export interface ClassDeps {
   classService: ClassService;
@@ -19,7 +19,17 @@ interface CreateClassPayload {
 
 export async function createClass(
   { classService }: ClassDeps,
-  {
+  payload: CreateClassPayload
+) {
+  validateRequiredFields(payload, [
+    'title',
+    'teacher',
+    'start',
+    'end',
+    'totalSlots',
+  ]);
+
+  const {
     title,
     teacher,
     start,
@@ -28,11 +38,7 @@ export async function createClass(
     description,
     location,
     address,
-  }: CreateClassPayload
-) {
-    if (!title) {
-        throw new ValidationError('title is required')
-    }
+  } = payload;
   const startDate = new Date(start);
   const endDate = new Date(end);
   await classService.save({

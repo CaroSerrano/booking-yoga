@@ -1,3 +1,4 @@
+import { ClassStatus } from '../../entities';
 import { ClassService } from '../../services';
 import generateTimestamps from '../../utils/generateTimestamps';
 import { validateRequiredFields } from '../../utils/validateRequiredFields';
@@ -11,6 +12,7 @@ interface CreateClassPayload {
   teacher: string;
   start: string;
   end: string;
+  status?: ClassStatus;
   description?: string;
   location?: string;
   address?: string;
@@ -35,12 +37,14 @@ export async function createClass(
     start,
     end,
     totalSlots,
+    status,
     description,
     location,
     address,
   } = payload;
   const startDate = new Date(start);
   const endDate = new Date(end);
+  const classStatus = status ? status : ClassStatus.SCHEDULE;
   await classService.save({
     id: crypto.randomUUID(),
     title,
@@ -48,6 +52,7 @@ export async function createClass(
     start: startDate,
     end: endDate,
     totalSlots,
+    status: classStatus,
     ...generateTimestamps(),
     ...(description !== undefined && { description }),
     ...(location !== undefined && { location }),

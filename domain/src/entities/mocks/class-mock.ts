@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { Class } from '../class';
+import { Class, ClassStatus } from '../class';
 import generateTimestamps from '../../utils/generateTimestamps';
 
 export function classMock(opts?: Partial<Class>): Class {
@@ -23,6 +23,7 @@ export function classMock(opts?: Partial<Class>): Class {
     description: faker.lorem.sentence(),
     start,
     end,
+    status: ClassStatus.SCHEDULE,
     location: faker.location.city(),
     address: faker.location.streetAddress(),
     totalSlots: faker.number.int({ min: 5, max: 20 }),

@@ -1,6 +1,7 @@
 import { describe, test, expect } from 'vitest';
 import { MockedClassService } from '../../services/mocks/mock-class-service';
 import { createClass } from './createClass';
+import { ClassStatus } from '../../entities';
 
 describe('Create class', () => {
   test('should create a class with all required fields', async () => {
@@ -28,6 +29,7 @@ describe('Create class', () => {
       location: 'Draguignan',
       address: '135-1 Rue des Pins',
       totalSlots: 12,
+      status: ClassStatus.SCHEDULE,
       createdAt: expect.any(Date),
       updatedAt: expect.any(Date),
     });

@@ -1,4 +1,5 @@
 import { SecureUser } from '../../entities';
+import { NotFoundError } from '../../utils/customErrors';
 import { UserDeps } from './register';
 
 export async function listAll({ userService }: UserDeps): Promise<SecureUser[]> {
@@ -21,9 +22,11 @@ interface GetByEmailPayload {
 export async function getUserByEmail(
   { userService }: UserDeps,
   { email }: GetByEmailPayload
-): Promise<SecureUser | undefined> {
+): Promise<SecureUser> {
   const user = await userService.findByEmail(email);
-  if (!user) return undefined;
+  if (!user) {
+    throw new NotFoundError('user not found')
+  };
   const { password, ...safeUser } = user;
   return safeUser;
 }

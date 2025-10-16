@@ -111,12 +111,11 @@ describe('Get users', () => {
     });
   });
 
-  test('getByEmail should return undefined if the email does not exist', async () => {
+  test('getByEmail should return error if the email does not exist', async () => {
     const userService = new MockedUserService([]);
-    const result = await getUserByEmail(
+    await expect(() => getUserByEmail(
       { userService },
       { email: 'silsoto@example.com' }
-    );
-    expect(result).toBeUndefined();
+    )).rejects.toThrow('user not found')
   });
 });

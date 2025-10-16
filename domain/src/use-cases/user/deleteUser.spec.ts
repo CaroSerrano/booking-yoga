@@ -18,13 +18,11 @@ describe('Delete user', () => {
       { userService },
       { email: 'caroserrano@example.com' }
     );
-    if (!userToDelete) throw new Error();
     await deleteUser({ userService }, { id: userToDelete.id });
     expect(userService.users).toHaveLength(0);
-    const deleted = await getUserByEmail(
+    await expect(() => getUserByEmail(
       { userService },
       { email: 'caroserrano@example.com' }
-    );
-    expect(deleted).toBeUndefined();
+    )).rejects.toThrow('user not found');
   });
 });

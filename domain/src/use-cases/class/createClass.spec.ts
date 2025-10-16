@@ -37,6 +37,7 @@ describe('Create class', () => {
     await expect(() =>
       createClass(
         { classService },
+        // @ts-expect-error - Testing validation with missing required field
         {
           teacher: '1',
           start: '2025-11-02T18:00:00Z',

@@ -1,4 +1,5 @@
 import { ClassService } from '../../services';
+import { ValidationError } from '../../utils/customErrors';
 import generateTimestamps from '../../utils/generateTimestamps';
 
 export interface ClassDeps {
@@ -29,6 +30,9 @@ export async function createClass(
     address,
   }: CreateClassPayload
 ) {
+    if (!title) {
+        throw new ValidationError('title is required')
+    }
   const startDate = new Date(start);
   const endDate = new Date(end);
   await classService.save({

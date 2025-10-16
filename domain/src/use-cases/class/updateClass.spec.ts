@@ -2,6 +2,7 @@ import { describe, test, expect } from 'vitest';
 import { MockedClassService } from '../../services/mocks/mock-class-service';
 import { classMock } from '../../entities/mocks/class-mock';
 import { updateClass } from './updateClass';
+import { ClassStatus } from '../../entities';
 
 describe('Update class', () => {
   test('when class data is updated, should return the updated class', async () => {
@@ -28,5 +29,21 @@ describe('Update class', () => {
     await expect(() =>
       updateClass({ classService }, { id: '1', totalSlots: 11 })
     ).rejects.toThrow('class not found');
+  });
+  test('test if it is possible to cancel a class', async () => {
+    const classService = new MockedClassService([
+      classMock({
+        id: '1',
+      }),
+    ]);
+    const classFound = await classService.findById('1');
+    if (!classFound) throw new Error('class not found in test setup');
+    expect(classFound.status).toBe(ClassStatus.SCHEDULE);
+    const result = await updateClass(
+      { classService },
+      { id: '1', status: 'CANCELLED' }
+    );
+    expect(result).toBeDefined();
+    expect(result?.status).toBe(ClassStatus.CANCELLED);
   });
 });

@@ -1,3 +1,4 @@
+import { ClassStatus } from '../../entities';
 import { NotFoundError } from '../../utils/customErrors';
 import { ClassDeps } from './createClass';
 
@@ -8,6 +9,7 @@ interface UpdatePayload {
   teacher?: string;
   totalSlots?: number;
   start?: string;
+  status?: ClassStatus;
   end?: string;
   location?: string;
   address?: string;

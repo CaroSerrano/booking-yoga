@@ -18,6 +18,9 @@ export class MockedClassService implements ClassService {
   findAll = async () => {
     return this.classes;
   };
+  findAvailable = async () => {
+    return this.classes.filter((c) => c.end > new Date())
+  }
   findById = async (id: string) => {
     return this.classes.find((c) => c.id == id);
   };

@@ -1,3 +1,4 @@
+import { NotFoundError } from '../../utils/customErrors';
 import { ClassDeps } from './createClass';
 
 interface UpdatePayload {
@@ -17,6 +18,10 @@ export async function updateClass(
   payload: UpdatePayload
 ) {
   const { id, end, start, ...data } = payload;
+  const classFound = await classService.findById(id);
+  if (!classFound) {
+    throw new NotFoundError('class not found');
+  }
 
   const updatedClass = await classService.updateOne(id, {
     ...data,

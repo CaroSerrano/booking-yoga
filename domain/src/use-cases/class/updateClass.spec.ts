@@ -23,5 +23,10 @@ describe('Update class', () => {
       totalSlots: 11,
     });
   });
-  test('if class does not exist, an error is expected');
+  test('if class does not exist, an error is expected', async () => {
+    const classService = new MockedClassService([]);
+    await expect(() =>
+      updateClass({ classService }, { id: '1', totalSlots: 11 })
+    ).rejects.toThrow('class not found');
+  });
 });

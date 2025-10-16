@@ -1,9 +1,12 @@
-import type { Entity } from "../utils/types/entity";
+import type { Entity } from '../utils/types/entity';
 
 export interface Class extends Entity {
-    title: string;
-    description?: string;
-    date: Date;
-    location?: string;
-    totalSlots: number;
+  title: string;
+  teacher: string;
+  description?: string;
+  start: Date;
+  end: Date;
+  location?: string;
+  address?: string;
+  totalSlots: number;
 }

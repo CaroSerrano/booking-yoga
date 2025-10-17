@@ -9,7 +9,6 @@ export function bookingMock(opts?: Partial<Booking>): Booking {
     id: faker.string.uuid(),
     userId: faker.string.uuid(),
     classId: faker.string.uuid(),
-    price: Number(faker.commerce.price()),
     expiresAt,
     status: BookingStatus.PENDING,
     createdAt,

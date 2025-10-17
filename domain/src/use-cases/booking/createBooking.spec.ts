@@ -33,4 +33,20 @@ describe('Create booking', () => {
       updatedAt: expect.any(Date),
     });
   });
+
+  test('if a required field is missing, an error with an appropiate message is expected', async () => {
+    const bookingService = new MockedBookingService([]);
+    const classService = new MockedClassService([]);
+    const userService = new MockedUserService([]);
+    await expect(() =>
+      createBooking(
+        { bookingService, classService, userService },
+        // @ts-expect-error - Testing validation with missing required field
+        {
+          classId: '1',
+        }
+      )
+    ).rejects.toThrow('userId is required');
+  });
+
 });

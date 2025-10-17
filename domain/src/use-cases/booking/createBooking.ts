@@ -1,5 +1,6 @@
 import { BookingStatus } from '../../entities';
 import { BookingService, ClassService, UserService } from '../../services';
+import { NotFoundError } from '../../utils/customErrors';
 import generateTimestamps from '../../utils/generateTimestamps';
 import { validateRequiredFields } from '../../utils/validateRequiredFields';
 
@@ -22,6 +23,16 @@ export async function createBooking(
   const { createdAt, updatedAt } = generateTimestamps();
   const expiresAt = new Date(createdAt.getTime() + 15 * 60 * 1000);
   const { userId, classId } = payload;
+  const userFound = await userService.findById(userId);
+  if (!userFound) {
+    throw new NotFoundError('User not found');
+  }
+
+  const classFound = await classService.findById(classId);
+  if (!classFound) {
+    throw new NotFoundError('Class not found');
+  }
+  
   await bookingService.save({
     id: crypto.randomUUID(),
     classId,

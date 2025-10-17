@@ -6,7 +6,7 @@ import { faker } from '@faker-js/faker';
 import { listAvailableClasses } from './listClasses';
 
 describe('List classes', () => {
-  test('should return all available (future) classes', async () => {
+  test('listAvailableClasses should return all available (future) classes', async () => {
     const classService = new MockedClassService([
       classMock({ status: ClassStatus.COMPLETED }),
       classMock({ status: ClassStatus.CANCELLED }),
@@ -18,4 +18,3 @@ describe('List classes', () => {
     expect(result).toHaveLength(3);
   });
 });
-

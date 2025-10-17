@@ -19,8 +19,8 @@ export class MockedClassService implements ClassService {
     return this.classes;
   };
   findAvailable = async () => {
-    return this.classes.filter((c) => c.end > new Date())
-  }
+    return this.classes.filter((c) => c.end > new Date());
+  };
   findById = async (id: string) => {
     return this.classes.find((c) => c.id == id);
   };
@@ -28,7 +28,10 @@ export class MockedClassService implements ClassService {
     this.classes.push(data);
   };
   findByStartDate = async (date: Date) => {
-    return this.classes.filter((c) => c.start == date);
+    return this.classes.filter(
+      (c) =>
+        c.start.toISOString().split('T')[0] == date.toISOString().split('T')[0]
+    );
   };
   findByLocation = async (location: string) => {
     return this.classes.filter((c) => c.location === location);

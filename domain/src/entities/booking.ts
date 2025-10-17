@@ -1,12 +1,13 @@
 import type { Entity } from '../utils/types/entity';
 
-export const bookingStatus = {
+export const BookingStatus = {
   PENDING: 'PENDING',
   CONFIRMED: 'CONFIRMED',
   CANCELED: 'CANCELED',
+  EXPIRED: 'EXPIRED'
 } as const;
 
-export type BookingStatus = (typeof bookingStatus)[keyof typeof bookingStatus];
+export type BookingStatus = (typeof BookingStatus)[keyof typeof BookingStatus];
 
 export interface Booking extends Entity {
   userId: string;

@@ -1,6 +1,7 @@
 import { PaymentStatus } from '../../entities';
 import { PaymentService } from '../../services';
 import generateTimestamps from '../../utils/generateTimestamps';
+import { validateRequiredFields } from '../../utils/validateRequiredFields';
 
 interface CreatePaymentDeps {
   paymentService: PaymentService;
@@ -15,8 +16,15 @@ interface CreatePaymentPayload {
 
 export async function createPayment(
   { paymentService }: CreatePaymentDeps,
-  { bookingId, userId, amount, currency }: CreatePaymentPayload
+  payload: CreatePaymentPayload
 ) {
+  validateRequiredFields(payload, [
+    'userId',
+    'bookingId',
+    'amount',
+    'currency',
+  ]);
+  const { userId, bookingId, amount, currency } = payload;
   await paymentService.save({
     id: crypto.randomUUID(),
     bookingId,

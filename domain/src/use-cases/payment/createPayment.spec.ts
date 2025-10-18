@@ -13,7 +13,7 @@ describe('Create payment', () => {
         userId: '1',
         bookingId: '1',
         amount: 80,
-        currency: 'USD'
+        currency: 'USD',
       }
     );
 
@@ -29,5 +29,20 @@ describe('Create payment', () => {
       createdAt: expect.any(Date),
       updatedAt: expect.any(Date),
     });
+  });
+
+  test('if a required field is missing, an error with an appropiate message is expected', async () => {
+    const paymentService = new MockedPaymentService([]);
+    await expect(() =>
+      createPayment(
+        { paymentService },
+        // @ts-expect-error - Testing validation with missing required field
+        {
+          userId: '1',
+          amount: 80,
+          currency: 'USD',
+        }
+      )
+    ).rejects.toThrow('bookingId is required');
   });
 });

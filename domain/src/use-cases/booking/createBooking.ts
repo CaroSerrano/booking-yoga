@@ -32,7 +32,7 @@ export async function createBooking(
   if (!classFound) {
     throw new NotFoundError('Class not found');
   }
-  
+
   await bookingService.save({
     id: crypto.randomUUID(),
     classId,

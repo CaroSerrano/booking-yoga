@@ -6,6 +6,7 @@ import { userMock } from '../../entities/mocks/user-mock';
 import { classMock } from '../../entities/mocks/class-mock';
 import { BookingStatus } from '../../entities';
 import { createBooking } from './createBooking';
+import { bookingMock } from '../../entities/mocks/booking-mock';
 
 describe('Create booking', () => {
   test('should create a booking with all required fields', async () => {
@@ -79,5 +80,23 @@ describe('Create booking', () => {
         }
       )
     ).rejects.toThrow('Class not found');
+  });
+
+  test('If a user has already book the class, an error should be returned.', async () => {
+    const bookingService = new MockedBookingService([
+      bookingMock({ userId: '1', classId: '1' }),
+    ]);
+    const classService = new MockedClassService([classMock({ id: '1' })]);
+    const userService = new MockedUserService([userMock({ id: '1' })]);
+
+    await expect(() =>
+      createBooking(
+        { bookingService, classService, userService },
+        {
+          userId: '1',
+          classId: '1',
+        }
+      )
+    ).rejects.toThrow('User already book the class');
   });
 });

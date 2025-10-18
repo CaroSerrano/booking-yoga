@@ -27,6 +27,11 @@ export class MockedBookingService implements BookingService {
   findByUserId = async (userId: string) => {
     return this.bookings.filter((b) => b.userId == userId);
   };
+  findByUserAndClass = async (classId: string, userId: string) => {
+    return this.bookings.find(
+      (b) => b.classId === classId && b.userId === userId
+    );
+  };
   save = async (data: Booking) => {
     this.bookings.push(data);
   };

@@ -1,11 +1,11 @@
-import { UpdateDeps } from './updatePayment';
+import { UpdatePaymentDeps } from './updatePayment';
 
 interface ListUserPaymentsPayload {
   userId: string;
 }
 
 export async function listUserPayments(
-  { paymentService }: UpdateDeps,
+  { paymentService }: UpdatePaymentDeps,
   { userId }: ListUserPaymentsPayload
 ) {
   const payments = await paymentService.findByUserId(userId);

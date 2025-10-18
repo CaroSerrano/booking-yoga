@@ -2,12 +2,12 @@ import { SecureUser } from '../../entities';
 import { NotFoundError } from '../../utils/customErrors';
 import { UserDeps } from './register';
 
-export async function listAll({ userService }: UserDeps): Promise<SecureUser[]> {
+export async function listAllUsers({ userService }: UserDeps): Promise<SecureUser[]> {
   const users = await userService.findAll();
   return users.map(({ password, ...rest }) => rest);
 }
 
-export async function listActive({ userService }: UserDeps): Promise<SecureUser[]> {
+export async function listActiveUsers({ userService }: UserDeps): Promise<SecureUser[]> {
   const users = await userService.findActive();
   return users.map(({ password, ...rest }) => rest);
 }

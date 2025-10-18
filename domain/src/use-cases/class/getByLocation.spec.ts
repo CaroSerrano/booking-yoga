@@ -1,7 +1,7 @@
 import { describe, test, expect } from 'vitest';
 import { MockedClassService } from '../../services/mocks/mock-class-service';
 import { classMock } from '../../entities/mocks/class-mock';
-import { getByLocation } from './getByLocation';
+import { getClassByLocation } from './getByLocation';
 
 describe('Get by location', () => {
   test('getByLocation should return all classes taught at the specified location', async () => {
@@ -11,7 +11,7 @@ describe('Get by location', () => {
       classMock({ location: 'Lorgues' }),
     ]);
 
-    const result = await getByLocation(
+    const result = await getClassByLocation(
       { classService },
       { location: 'Draguignan' }
     );

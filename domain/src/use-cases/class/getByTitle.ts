@@ -4,7 +4,7 @@ interface GetByTitlePayload {
   title: string;
 }
 
-export async function getByTitle(
+export async function getClassByTitle(
   { classService }: ClassDeps,
   { title }: GetByTitlePayload
 ) {

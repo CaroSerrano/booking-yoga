@@ -2,7 +2,7 @@ import { describe, expect, test } from 'vitest';
 import { MockedUserService } from '../../services/mocks/mock-user-service';
 import { userMock } from '../../entities/mocks/user-mock';
 import { Role, UserStatus } from '../../entities';
-import { getUserByEmail, listActive, listAll, listStudents } from './getUsers';
+import { getUserByEmail, listActiveUsers, listAllUsers, listStudents } from './getUsers';
 
 describe('Get users', () => {
   test('listAll function, should return all users', async () => {
@@ -23,7 +23,7 @@ describe('Get users', () => {
       }),
     ]);
 
-    const result = await listAll({ userService });
+    const result = await listAllUsers({ userService });
     expect(result).toHaveLength(2);
   });
   test('listActive function should return all active users', async () => {
@@ -44,7 +44,7 @@ describe('Get users', () => {
       }),
     ]);
 
-    const result = await listActive({ userService });
+    const result = await listActiveUsers({ userService });
     expect(result).toHaveLength(1);
   });
 

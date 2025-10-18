@@ -5,7 +5,7 @@ interface GetByStartDatePayload {
   start: string;
 }
 
-export async function getByStartDate(
+export async function getClassByStartDate(
   { classService }: ClassDeps,
   { start }: GetByStartDatePayload
 ) {

@@ -1,11 +1,11 @@
-import { UpdateDeps } from './updatePayment';
+import { UpdatePaymentDeps } from './updatePayment';
 
 interface ListBookingPaymentsPayload {
   bookingId: string;
 }
 
 export async function listBookingPayments(
-  { paymentService }: UpdateDeps,
+  { paymentService }: UpdatePaymentDeps,
   { bookingId }: ListBookingPaymentsPayload
 ) {
   const payments = await paymentService.findByBookingId(bookingId);

@@ -4,7 +4,7 @@ interface GetByLocationPayload {
     location: string;
 }
 
-export async function getByLocation({classService}: ClassDeps, {location}: GetByLocationPayload) {
+export async function getClassByLocation({classService}: ClassDeps, {location}: GetByLocationPayload) {
     const classes = await classService.findByLocation(location);
     return classes;
 }

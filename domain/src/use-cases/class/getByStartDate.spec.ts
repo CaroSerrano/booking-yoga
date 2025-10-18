@@ -2,7 +2,7 @@ import { describe, test, expect } from 'vitest';
 import { MockedClassService } from '../../services/mocks/mock-class-service';
 import { classMock } from '../../entities/mocks/class-mock';
 import { faker } from '@faker-js/faker';
-import { getByStartDate } from './getByStartDate';
+import { getClassByStartDate } from './getByStartDate';
 import { ValidationError } from '../../utils/customErrors';
 
 describe('Get by start date', () => {
@@ -28,7 +28,7 @@ describe('Get by start date', () => {
       }),
     ]);
 
-    const result = await getByStartDate(
+    const result = await getClassByStartDate(
       { classService },
       { start: '2025-01-01' }
     );
@@ -44,10 +44,10 @@ describe('Get by start date', () => {
       }),
     ]);
     await expect(() =>
-      getByStartDate({ classService }, { start: '05/01/25' })
+      getClassByStartDate({ classService }, { start: '05/01/25' })
     ).rejects.toThrow('Invalid date format (expected YYYY-MM-DD)');
     await expect(() =>
-      getByStartDate({ classService }, { start: '2025-13-25' })
+      getClassByStartDate({ classService }, { start: '2025-13-25' })
     ).rejects.toThrow('Invalid date value');
   });
 });

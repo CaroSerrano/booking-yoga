@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import { getByTeacher } from './getByTeacher';
+import { getClassByTeacher } from './getByTeacher';
 import { classMock } from '../../entities/mocks/class-mock';
 import { MockedClassService } from '../../services/mocks/mock-class-service';
 
@@ -16,7 +16,7 @@ describe('Get by teacher', () => {
         teacher: '2',
       }),
     ]);
-    const result = await getByTeacher({ classService }, { teacher: '1' });
+    const result = await getClassByTeacher({ classService }, { teacher: '1' });
     expect(result).toHaveLength(2);
   });
 });

@@ -4,7 +4,7 @@ interface GetByTeacherPayload {
   teacher: string;
 }
 
-export async function getByTeacher(
+export async function getClassByTeacher(
   { classService }: ClassDeps,
   { teacher }: GetByTeacherPayload
 ) {

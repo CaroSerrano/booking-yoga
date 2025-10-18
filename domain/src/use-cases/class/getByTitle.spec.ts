@@ -1,7 +1,7 @@
 import { describe, test, expect } from 'vitest';
 import { MockedClassService } from '../../services/mocks/mock-class-service';
 import { classMock } from '../../entities/mocks/class-mock';
-import { getByTitle } from './getByTitle';
+import { getClassByTitle } from './getByTitle';
 
 describe('Get by title', () => {
   test('getByTitle should return all classes with the specified title', async () => {
@@ -11,7 +11,7 @@ describe('Get by title', () => {
       classMock({ title: 'Gentle Yoga' }),
     ]);
 
-    const result = await getByTitle({ classService }, { title: 'Hatha Yoga' });
+    const result = await getClassByTitle({ classService }, { title: 'Hatha Yoga' });
     expect(result).toHaveLength(2);
   });
 });

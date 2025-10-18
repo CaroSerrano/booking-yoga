@@ -7,12 +7,12 @@ interface UpdatePayload {
   status: PaymentStatus;
 }
 
-export interface UpdateDeps {
+export interface UpdatePaymentDeps {
   paymentService: PaymentService;
 }
 
 export async function updatePayment(
-  { paymentService }: UpdateDeps,
+  { paymentService }: UpdatePaymentDeps,
   { id, status }: UpdatePayload
 ) {
   const paymentFound = await paymentService.findById(id);

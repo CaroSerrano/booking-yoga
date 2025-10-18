@@ -15,4 +15,12 @@ describe('Update booking', () => {
     expect(result?.paymentId).toBe('2');
     expect(result?.status).toBe(BookingStatus.CONFIRMED);
   });
+
+  test('if the booking does not exist, an error is expected', async () => {
+    const bookingService = new MockedBookingService([]);
+    await expect(() => updateBooking(
+      { bookingService },
+      { id: '1', paymentId: '2' }
+    )).rejects.toThrow('Booking not found')
+  })
 });

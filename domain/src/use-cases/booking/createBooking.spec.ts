@@ -99,4 +99,21 @@ describe('Create booking', () => {
       )
     ).rejects.toThrow('User already book the class');
   });
+
+  test('if the class has no available slots, an error with an appropiate message is expected', async () => {
+    const bookingService = new MockedBookingService([]);
+    const classService = new MockedClassService([
+      classMock({ id: '1', availableSlots: 0 }),
+    ]);
+    const userService = new MockedUserService([userMock({ id: '1' })]);
+    await expect(() =>
+      createBooking(
+        { bookingService, classService, userService },
+        {
+          userId: '1',
+          classId: '1',
+        }
+      )
+    ).rejects.toThrow('The class has no available slots');
+  });
 });

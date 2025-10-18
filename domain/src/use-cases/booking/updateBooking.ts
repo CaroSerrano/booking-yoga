@@ -4,7 +4,8 @@ import { NotFoundError } from '../../utils/customErrors';
 
 interface UpdatePayload {
   id: string;
-  paymentId: string;
+  paymentId?: string;
+  status?: BookingStatus;
 }
 
 export interface UpdateDeps {
@@ -14,25 +15,45 @@ export interface UpdateDeps {
 
 export async function updateBooking(
   { bookingService, classService }: UpdateDeps,
-  { id, paymentId }: UpdatePayload
+  { id, paymentId, status }: UpdatePayload
 ) {
   const bookingFound = await bookingService.findById(id);
   if (!bookingFound) {
     throw new NotFoundError('Booking not found');
   }
-  const updatedBooking = await bookingService.updateOne(id, {
-    paymentId,
-    status: BookingStatus.CONFIRMED,
-    updatedAt: new Date(),
-  });
+  let updatedBooking;
+  if (paymentId) {
+    updatedBooking = await bookingService.updateOne(id, {
+      paymentId,
+      status: BookingStatus.CONFIRMED,
+      updatedAt: new Date(),
+    });
+  }
 
-  if (updatedBooking?.status === 'CONFIRMED') {
+  if (status) {
+    updatedBooking = await bookingService.updateOne(id, {
+      status: BookingStatus.CANCELED,
+      updatedAt: new Date(),
+    });
+  }
+
+  if (updatedBooking?.status === BookingStatus.CONFIRMED) {
     const classFound = await classService.findById(updatedBooking.classId);
     if (!classFound) {
       throw new NotFoundError('Class not found');
     }
     await classService.updateOne(classFound.id, {
       availableSlots: Math.max(classFound.availableSlots - 1, 0),
+    });
+  }
+
+  if (updatedBooking?.status === BookingStatus.CANCELED) {
+    const classFound = await classService.findById(updatedBooking.classId);
+    if (!classFound) {
+      throw new NotFoundError('Class not found');
+    }
+    await classService.updateOne(classFound.id, {
+      availableSlots: classFound.availableSlots + 1,
     });
   }
 

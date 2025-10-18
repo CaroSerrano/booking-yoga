@@ -3,6 +3,7 @@ import {
   listClassBookings,
   listUserBookings,
   updateBooking,
+  getBookingById,
 } from './booking';
 import {
   createClass,
@@ -136,6 +137,10 @@ export const domainUseCases = {
   },
   createBooking: {
     useCase: createBooking,
+    enable: true,
+  },
+  getBookingById: {
+    useCase: getBookingById,
     enable: true,
   },
 } as const satisfies Record<string, UseCaseDeclaration>;

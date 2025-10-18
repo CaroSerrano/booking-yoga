@@ -17,4 +17,6 @@ export interface Class extends Entity {
   location?: string;
   address?: string;
   totalSlots: number;
+  availableSlots: number;
+  bookingPrice?: number;
 }

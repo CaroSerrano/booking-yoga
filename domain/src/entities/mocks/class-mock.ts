@@ -5,7 +5,7 @@ import generateTimestamps from '../../utils/generateTimestamps';
 export function classMock(opts?: Partial<Class>): Class {
   const start = faker.date.soon({ days: 30 });
   const end = new Date(start.getTime() + 60 * 60 * 1000);
-
+  const slots = faker.number.int({ min: 5, max: 20 })
   return {
     id: faker.string.uuid(),
     title: faker.helpers.arrayElement([
@@ -26,7 +26,8 @@ export function classMock(opts?: Partial<Class>): Class {
     status: ClassStatus.SCHEDULE,
     location: faker.location.city(),
     address: faker.location.streetAddress(),
-    totalSlots: faker.number.int({ min: 5, max: 20 }),
+    totalSlots: slots,
+    availableSlots: slots,
     ...generateTimestamps(),
     ...opts
   };

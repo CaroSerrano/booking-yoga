@@ -25,6 +25,7 @@ describe('Get class details', () => {
       location: expect.any(String),
       address: expect.any(String),
       totalSlots: expect.any(Number),
+      availableSlots: expect.any(Number),
       createdAt: expect.any(Date),
       updatedAt: expect.any(Date),
     });

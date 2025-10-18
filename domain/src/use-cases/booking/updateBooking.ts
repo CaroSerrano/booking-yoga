@@ -1,5 +1,5 @@
 import { BookingStatus } from '../../entities';
-import { BookingService } from '../../services';
+import { BookingService, ClassService } from '../../services';
 import { NotFoundError } from '../../utils/customErrors';
 
 interface UpdatePayload {
@@ -9,10 +9,11 @@ interface UpdatePayload {
 
 export interface UpdateDeps {
   bookingService: BookingService;
+  classService: ClassService;
 }
 
 export async function updateBooking(
-  { bookingService }: UpdateDeps,
+  { bookingService, classService }: UpdateDeps,
   { id, paymentId }: UpdatePayload
 ) {
   const bookingFound = await bookingService.findById(id);
@@ -24,6 +25,16 @@ export async function updateBooking(
     status: BookingStatus.CONFIRMED,
     updatedAt: new Date(),
   });
+
+  if (updatedBooking?.status === 'CONFIRMED') {
+    const classFound = await classService.findById(updatedBooking.classId);
+    if (!classFound) {
+      throw new NotFoundError('Class not found');
+    }
+    await classService.updateOne(classFound.id, {
+      availableSlots: Math.max(classFound.availableSlots - 1, 0),
+    });
+  }
 
   return updatedBooking;
 }

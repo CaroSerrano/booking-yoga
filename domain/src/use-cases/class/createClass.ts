@@ -52,6 +52,7 @@ export async function createClass(
     start: startDate,
     end: endDate,
     totalSlots,
+    availableSlots: totalSlots,
     status: classStatus,
     ...generateTimestamps(),
     ...(description !== undefined && { description }),

@@ -8,7 +8,7 @@ export function paymentMock(opts?: Partial<Payment>): Payment {
     bookingId: faker.string.uuid(),
     userId: faker.string.uuid(),
     amount: Number(faker.commerce.price()),
-    currency: faker.finance.currency().code,
+    currency: faker.finance.currencyCode(),
     status: PaymentStatus.PENDING,
     ...generateTimestamps(),
     ...opts,

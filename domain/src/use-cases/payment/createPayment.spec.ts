@@ -4,14 +4,17 @@ import { PaymentStatus } from '../../entities';
 import { createPayment } from './createPayment';
 import { MockedUserService } from '../../services/mocks/mock-user-service';
 import { userMock } from '../../entities/mocks/user-mock';
+import { MockedBookingService } from '../../services/mocks/mock-booking-service';
+import { bookingMock } from '../../entities/mocks/booking-mock';
 
 describe('Create payment', () => {
   test('should create a payment with all required fields', async () => {
     const paymentService = new MockedPaymentService([]);
     const userService = new MockedUserService([userMock({ id: '1' })]);
+    const bookingService = new MockedBookingService([bookingMock({ id: '1' })]);
 
     const result = await createPayment(
-      { paymentService, userService },
+      { paymentService, userService, bookingService },
       {
         userId: '1',
         bookingId: '1',
@@ -36,10 +39,12 @@ describe('Create payment', () => {
 
   test('if a required field is missing, an error with an appropiate message is expected', async () => {
     const paymentService = new MockedPaymentService([]);
-    const userService = new MockedUserService([]);
+    const userService = new MockedUserService([userMock({ id: '1' })]);
+    const bookingService = new MockedBookingService([bookingMock({ id: '1' })]);
+
     await expect(() =>
       createPayment(
-        { paymentService, userService },
+        { paymentService, userService, bookingService },
         // @ts-expect-error - Testing validation with missing required field
         {
           userId: '1',
@@ -52,18 +57,37 @@ describe('Create payment', () => {
 
   test('if userId does not exist, an error with an appropiate message is expected', async () => {
     const paymentService = new MockedPaymentService([]);
-    const userService = new MockedUserService([]);
+    const userService = new MockedUserService([userMock({ id: '1' })]);
+    const bookingService = new MockedBookingService([bookingMock({ id: '1' })]);
 
     await expect(() =>
       createPayment(
-        { paymentService, userService },
+        { paymentService, userService, bookingService },
         {
-          userId: '1',
+          userId: '2',
           bookingId: '1',
           amount: 80,
           currency: 'USD',
         }
       )
     ).rejects.toThrow('User not found');
+  });
+
+  test('if bookingId does not exist, an error with an appropiate message is expected', async () => {
+    const paymentService = new MockedPaymentService([]);
+    const userService = new MockedUserService([userMock({ id: '1' })]);
+    const bookingService = new MockedBookingService([bookingMock({ id: '1' })]);
+
+    await expect(() =>
+      createPayment(
+        { paymentService, userService, bookingService },
+        {
+          userId: '1',
+          bookingId: '2',
+          amount: 80,
+          currency: 'USD',
+        }
+      )
+    ).rejects.toThrow('Booking not found');
   });
 });

@@ -1,5 +1,5 @@
 import { PaymentStatus } from '../../entities';
-import { PaymentService, UserService } from '../../services';
+import { BookingService, PaymentService, UserService } from '../../services';
 import { NotFoundError } from '../../utils/customErrors';
 import generateTimestamps from '../../utils/generateTimestamps';
 import { validateRequiredFields } from '../../utils/validateRequiredFields';
@@ -7,6 +7,7 @@ import { validateRequiredFields } from '../../utils/validateRequiredFields';
 interface CreatePaymentDeps {
   paymentService: PaymentService;
   userService: UserService;
+  bookingService: BookingService;
 }
 
 interface CreatePaymentPayload {
@@ -17,7 +18,7 @@ interface CreatePaymentPayload {
 }
 
 export async function createPayment(
-  { paymentService, userService }: CreatePaymentDeps,
+  { paymentService, userService, bookingService }: CreatePaymentDeps,
   payload: CreatePaymentPayload
 ) {
   validateRequiredFields(payload, [
@@ -31,6 +32,11 @@ export async function createPayment(
   const userFound = await userService.findById(userId);
   if (!userFound) {
     throw new NotFoundError('User not found');
+  }
+
+  const bookingFound = await bookingService.findById(bookingId);
+  if (!bookingFound) {
+    throw new NotFoundError('Booking not found');
   }
   await paymentService.save({
     id: crypto.randomUUID(),

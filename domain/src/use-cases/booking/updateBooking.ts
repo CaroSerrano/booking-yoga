@@ -7,7 +7,7 @@ interface UpdatePayload {
   paymentId: string;
 }
 
-interface UpdateDeps {
+export interface UpdateDeps {
   bookingService: BookingService;
 }
 

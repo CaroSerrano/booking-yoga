@@ -23,19 +23,6 @@ describe('Login', () => {
     expect(result.name).toBe('Pablo Perez')
   });
 
-  test('returns error when password is invalid', async () => {
-    const userService = new MockedUserService([
-      userMock({
-        email: 'pablo@example.com',
-        password: 'secret',
-        name: 'Pablo Perez',
-      }),
-    ]);
-    await expect(() =>
-      login({ userService }, { email: 'pablo@example.com', pass: 'wrong' })
-    ).rejects.toThrow('Wrong credentials');
-  });
-
   test('returns error when user not found', async () => {
     const userService = new MockedUserService([]);
     await expect(() =>

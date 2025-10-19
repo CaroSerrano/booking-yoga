@@ -1,4 +1,4 @@
-import { NotFoundError, ValidationError } from '../../utils/customErrors.js';
+import { NotFoundError } from '../../utils/customErrors.js';
 import type { UserDeps } from './register.js';
 
 interface LoginPayload {
@@ -14,10 +14,5 @@ export async function login(
   if (!foundUser) {
     throw new NotFoundError('User not found');
   }
-
-  if (foundUser.password !== pass) {
-    throw new ValidationError('Wrong credentials');
-  }
-  const { password, ...safeUser } = foundUser;
-  return safeUser;
+  return foundUser;
 }

@@ -29,7 +29,7 @@ export async function register(
     email,
     phoneNumber,
     password,
-    role: role? role : Role.USER,
+    role: role ?? Role.USER,
     status: UserStatus.ACTIVE,
     ...generateTimestamps(),
   });

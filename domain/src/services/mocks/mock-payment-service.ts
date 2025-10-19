@@ -22,7 +22,7 @@ export class MockedPaymentService implements PaymentService {
     return this.payments.find((p) => p.id == id);
   };
   findByBookingId = async (bookingId: string) => {
-    return this.payments.filter((p) => p.bookingId == bookingId);
+    return this.payments.find((p) => p.bookingId == bookingId);
   };
   findByUserId = async (userId: string) => {
     return this.payments.filter((b) => b.userId == userId);

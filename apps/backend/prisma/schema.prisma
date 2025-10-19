@@ -65,6 +65,7 @@ enum BookingStatus {
   PENDING
   CONFIRMED
   CANCELLED
+  EXPIRED
 }
 
 model Booking {

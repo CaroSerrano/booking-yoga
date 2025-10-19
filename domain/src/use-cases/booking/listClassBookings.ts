@@ -1,11 +1,15 @@
-import { UpdateDeps } from './updateBooking';
+import { BookingService } from '../../services';
+
+interface ListClassBookingDeps {
+  bookingService: BookingService;
+}
 
 interface ListClassBookingPayload {
   classId: string;
 }
 
 export async function listClassBookings(
-  { bookingService }: UpdateDeps,
+  { bookingService }: ListClassBookingDeps,
   { classId }: ListClassBookingPayload
 ) {
   const bookings = await bookingService.findByClassId(classId);

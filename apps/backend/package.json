@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "@prisma/client": "^6.17.1",
-    "express": "^5.1.0",
-    "booking-domain" : "*"
+    "booking-domain": "*",
+    "express": "^5.1.0"
   }
 }

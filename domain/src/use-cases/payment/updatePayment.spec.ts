@@ -39,7 +39,7 @@ describe('Update payment', () => {
     ).rejects.toThrow('Payment not found');
   });
 
-  test('if a payments is completed, paymentId and status Booking properties should be updated properly', async () => {
+  test('if a payments is completed, status Booking properties should be updated properly', async () => {
     const paymentService = new MockedPaymentService([
       paymentMock({ id: '1', bookingId: '1' }),
     ]);
@@ -57,7 +57,6 @@ describe('Update payment', () => {
     expect(paymentResult?.status).toBe(PaymentStatus.COMPLETED);
 
     const bookingResult = await getBookingById({ bookingService }, { id: '1' });
-    expect(bookingResult?.paymentId).toBe('1');
     expect(bookingResult?.status).toBe(BookingStatus.CONFIRMED);
   });
 

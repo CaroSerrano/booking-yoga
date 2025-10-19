@@ -5,6 +5,7 @@ import { classMock } from '../../entities/mocks/class-mock';
 import { bookingMock } from '../../entities/mocks/booking-mock';
 import { updateBooking } from './updateBooking';
 import { getClassDetails } from '../class';
+import { BookingStatus } from '../../entities';
 
 describe('Confirm Booking', () => {
   test('When a booking is confirmed, available slots of the class should be updated properly ', async () => {
@@ -16,10 +17,10 @@ describe('Confirm Booking', () => {
     ]);
     const bookingResult = await updateBooking(
       { bookingService, classService },
-      { id: '1', paymentId: '1' }
+      { id: '1', status: BookingStatus.CONFIRMED }
     );
     expect(bookingResult).toBeDefined();
-    expect(bookingResult?.paymentId).toBe('1');
+    expect(bookingResult?.status).toBe(BookingStatus.CONFIRMED);
 
     const classResult = await getClassDetails({ classService }, { id: '1' });
     expect(classResult).toBeDefined();

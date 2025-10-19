@@ -22,9 +22,16 @@ export async function updateBooking(
   }
   let updatedBooking;
 
-  if (status) {
+  if (status === BookingStatus.CANCELLED) {
     updatedBooking = await bookingService.updateOne(id, {
       status: BookingStatus.CANCELLED,
+      updatedAt: new Date(),
+    });
+  }
+
+  if (status === BookingStatus.CONFIRMED) {
+    updatedBooking = await bookingService.updateOne(id, {
+      status: BookingStatus.CONFIRMED,
       updatedAt: new Date(),
     });
   }

@@ -30,7 +30,6 @@ export async function updatePayment(
     const updatedBooking = await bookingService.updateOne(
       paymentFound.bookingId,
       {
-        paymentId: updatedPayment.id,
         status: BookingStatus.CONFIRMED,
       }
     );

@@ -9,7 +9,7 @@ export interface UserDeps {
 interface RegisterPayload {
   name: string;
   email: string;
-  phoneNumber?: string;
+  phoneNumber: string;
   role?: Role;
   password: string;
 }
@@ -27,7 +27,7 @@ export async function register(
     id: crypto.randomUUID(),
     name,
     email,
-    ...(phoneNumber !== undefined && { phoneNumber }),
+    phoneNumber,
     password,
     role: role? role : Role.USER,
     status: UserStatus.ACTIVE,

@@ -27,9 +27,6 @@ export class MockedUserService implements UserService {
   findById = async (id: string) => {
     return this.users.find((user) => user.id == id);
   };
-  findByName = async (name: string) => {
-    throw new Error();
-  };
 
   save = async (data: User) => {
     this.users.push(data);

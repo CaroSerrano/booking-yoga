@@ -17,7 +17,7 @@ export type Role = (typeof Role)[keyof typeof Role];
 export interface User extends Entity {
   name: string;
   email: string;
-  phoneNumber?: string;
+  phoneNumber: string | null;
   password: string;
   status: UserStatus;
   role: Role;

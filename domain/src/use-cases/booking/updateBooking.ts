@@ -4,7 +4,6 @@ import { NotFoundError } from '../../utils/customErrors';
 
 interface UpdatePayload {
   id: string;
-  paymentId?: string;
   status?: BookingStatus;
 }
 
@@ -15,24 +14,17 @@ export interface UpdateDeps {
 
 export async function updateBooking(
   { bookingService, classService }: UpdateDeps,
-  { id, paymentId, status }: UpdatePayload
+  { id, status }: UpdatePayload
 ) {
   const bookingFound = await bookingService.findById(id);
   if (!bookingFound) {
     throw new NotFoundError('Booking not found');
   }
   let updatedBooking;
-  if (paymentId) {
-    updatedBooking = await bookingService.updateOne(id, {
-      paymentId,
-      status: BookingStatus.CONFIRMED,
-      updatedAt: new Date(),
-    });
-  }
 
   if (status) {
     updatedBooking = await bookingService.updateOne(id, {
-      status: BookingStatus.CANCELED,
+      status: BookingStatus.CANCELLED,
       updatedAt: new Date(),
     });
   }
@@ -47,7 +39,7 @@ export async function updateBooking(
     });
   }
 
-  if (updatedBooking?.status === BookingStatus.CANCELED) {
+  if (updatedBooking?.status === BookingStatus.CANCELLED) {
     const classFound = await classService.findById(updatedBooking.classId);
     if (!classFound) {
       throw new NotFoundError('Class not found');

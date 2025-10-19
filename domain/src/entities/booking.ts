@@ -3,7 +3,7 @@ import type { Entity } from '../utils/types/entity';
 export const BookingStatus = {
   PENDING: 'PENDING',
   CONFIRMED: 'CONFIRMED',
-  CANCELED: 'CANCELED',
+  CANCELLED: 'CANCELLED',
   EXPIRED: 'EXPIRED'
 } as const;
 
@@ -14,5 +14,4 @@ export interface Booking extends Entity {
   classId: string;
   expiresAt: Date;
   status: BookingStatus;
-  paymentId?: string;
 }

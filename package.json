@@ -4,8 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npm run build --workspaces"
   },
+  "workspaces": [
+    "domain",
+    "apps/*"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/CaroSerrano/booking-yoga.git"
@@ -19,6 +24,7 @@
   },
   "homepage": "https://github.com/CaroSerrano/booking-yoga#readme",
   "devDependencies": {
+    "@types/node": "^24.8.1",
     "typescript": "^5.9.3"
   }
 }

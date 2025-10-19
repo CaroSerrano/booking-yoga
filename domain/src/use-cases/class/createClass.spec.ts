@@ -32,6 +32,8 @@ describe('Create class', () => {
       location: 'Draguignan',
       address: '135-1 Rue des Pins',
       totalSlots: 12,
+      bookingPrice: 80,
+      description: 'bla',
       availableSlots:12,
       status: ClassStatus.SCHEDULE,
       createdAt: expect.any(Date),

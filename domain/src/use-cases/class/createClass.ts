@@ -9,13 +9,14 @@ export interface ClassDeps {
 
 interface CreateClassPayload {
   title: string;
-  teacher: string;
+  teacherId: string;
   start: string;
   end: string;
-  status?: ClassStatus;
-  description?: string;
-  location?: string;
-  address?: string;
+  status: ClassStatus;
+  description: string;
+  location: string;
+  bookingPrice: number;
+  address: string;
   totalSlots: number;
 }
 
@@ -25,7 +26,7 @@ export async function createClass(
 ) {
   validateRequiredFields(payload, [
     'title',
-    'teacher',
+    'teacherId',
     'start',
     'end',
     'totalSlots',
@@ -33,13 +34,14 @@ export async function createClass(
 
   const {
     title,
-    teacher,
+    teacherId,
     start,
     end,
     totalSlots,
     status,
     description,
     location,
+    bookingPrice,
     address,
   } = payload;
   const startDate = new Date(start);
@@ -48,15 +50,16 @@ export async function createClass(
   await classService.save({
     id: crypto.randomUUID(),
     title,
-    teacher,
+    teacherId,
     start: startDate,
     end: endDate,
     totalSlots,
+    bookingPrice,
     availableSlots: totalSlots,
     status: classStatus,
     ...generateTimestamps(),
-    ...(description !== undefined && { description }),
-    ...(location !== undefined && { location }),
-    ...(address !== undefined && { address }),
+    description,
+    location,
+    address,
   });
 }

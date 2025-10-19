@@ -10,12 +10,15 @@ describe('Create class', () => {
       { classService },
       {
         title: 'Hatha Yoga',
-        teacher: '1',
+        teacherId: '1',
         start: '2025-11-02T18:00:00Z',
         end: '2025-11-02T19:00:00Z',
         location: 'Draguignan',
         address: '135-1 Rue des Pins',
         totalSlots: 12,
+        bookingPrice: 80,
+        description: 'bla',
+        status: ClassStatus.SCHEDULE
       }
     );
     expect(result).toBeUndefined();
@@ -23,7 +26,7 @@ describe('Create class', () => {
     expect(classService.classes[0]).toStrictEqual({
       id: expect.any(String),
       title: 'Hatha Yoga',
-      teacher: '1',
+      teacherId: '1',
       start: new Date('2025-11-02T18:00:00Z'),
       end: new Date('2025-11-02T19:00:00Z'),
       location: 'Draguignan',
@@ -42,7 +45,7 @@ describe('Create class', () => {
         { classService },
         // @ts-expect-error - Testing validation with missing required field
         {
-          teacher: '1',
+          teacherId: '1',
           start: '2025-11-02T18:00:00Z',
           end: '2025-11-02T19:00:00Z',
           location: 'Draguignan',

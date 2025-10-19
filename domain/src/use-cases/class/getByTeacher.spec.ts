@@ -7,16 +7,16 @@ describe('Get by teacher', () => {
   test('getByTeacher should return all classes taught by the specified teacherId', async () => {
     const classService = new MockedClassService([
       classMock({
-        teacher: '1',
+        teacherId: '1',
       }),
       classMock({
-        teacher: '1',
+        teacherId: '1',
       }),
       classMock({
-        teacher: '2',
+        teacherId: '2',
       }),
     ]);
-    const result = await getClassByTeacher({ classService }, { teacher: '1' });
+    const result = await getClassByTeacher({ classService }, { teacherId: '1' });
     expect(result).toHaveLength(2);
   });
 });

@@ -40,7 +40,7 @@ export class MockedClassService implements ClassService {
     return this.classes.filter((c) => c.title === title);
   };
   findByTeacher = async (teacherId: string) => {
-    return this.classes.filter((c) => c.teacher === teacherId);
+    return this.classes.filter((c) => c.teacherId === teacherId);
   };
   delete = async (id: string) => {
     this.classes = this.classes.filter((c) => c.id !== id);

@@ -6,7 +6,7 @@ interface UpdatePayload {
   id: string;
   title?: string;
   description?: string;
-  teacher?: string;
+  teacherId?: string;
   totalSlots?: number;
   start?: string;
   status?: ClassStatus;

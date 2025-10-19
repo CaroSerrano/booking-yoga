@@ -1,4 +1,4 @@
-import { Entity } from '../utils/types/entity';
+import type { Entity } from '../utils/types/entity.js';
 
 export const PaymentStatus = {
   PENDING: 'PENDING',

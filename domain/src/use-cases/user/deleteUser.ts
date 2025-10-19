@@ -1,4 +1,4 @@
-import { UserDeps } from './register';
+import type { UserDeps } from './register.js';
 
 interface DeleteUserPayload {
   id: string;

@@ -12,7 +12,7 @@ export class MockedUserService implements UserService {
     const index = this.users.findIndex((user) => user.id === id);
     if (index === -1) return undefined;
 
-    this.users[index] = { ...this.users[index], ...data };
+    this.users[index] = { ...this.users[index], ...data } as User;
     return this.users[index];
   };
   findAll = async () => {

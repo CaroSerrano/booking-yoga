@@ -1,4 +1,4 @@
-import { UpdatePaymentDeps } from './updatePayment';
+import type { UpdatePaymentDeps } from './updatePayment.js';
 
 interface ListBookingPaymentsPayload {
   bookingId: string;

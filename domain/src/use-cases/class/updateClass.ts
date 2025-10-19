@@ -1,6 +1,6 @@
-import { ClassStatus } from '../../entities';
-import { NotFoundError } from '../../utils/customErrors';
-import { ClassDeps } from './createClass';
+import { ClassStatus } from '../../entities/class.js';
+import { NotFoundError } from '../../utils/customErrors.js';
+import type { ClassDeps } from './createClass.js';
 
 interface UpdatePayload {
   id: string;

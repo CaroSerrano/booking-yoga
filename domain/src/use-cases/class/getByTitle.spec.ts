@@ -1,7 +1,7 @@
 import { describe, test, expect } from 'vitest';
-import { MockedClassService } from '../../services/mocks/mock-class-service';
-import { classMock } from '../../entities/mocks/class-mock';
-import { getClassByTitle } from './getByTitle';
+import { MockedClassService } from '../../services/mocks/mock-class-service.js';
+import { classMock } from '../../entities/mocks/class-mock.js';
+import { getClassByTitle } from './getByTitle.js';
 
 describe('Get by title', () => {
   test('getByTitle should return all classes with the specified title', async () => {

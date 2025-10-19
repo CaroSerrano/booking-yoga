@@ -1,11 +1,11 @@
 import { describe, test, expect } from 'vitest';
-import { MockedBookingService } from '../../services/mocks/mock-booking-service';
-import { MockedClassService } from '../../services/mocks/mock-class-service';
-import { classMock } from '../../entities/mocks/class-mock';
-import { bookingMock } from '../../entities/mocks/booking-mock';
-import { updateBooking } from './updateBooking';
-import { getClassDetails } from '../class';
-import { BookingStatus } from '../../entities';
+import { MockedBookingService } from '../../services/mocks/mock-booking-service.js';
+import { MockedClassService } from '../../services/mocks/mock-class-service.js';
+import { classMock } from '../../entities/mocks/class-mock.js';
+import { bookingMock } from '../../entities/mocks/booking-mock.js';
+import { updateBooking } from './updateBooking.js';
+import { getClassDetails } from '../class/getClassDetails.js';
+import { BookingStatus } from '../../entities/booking.js';
 
 describe('Confirm Booking', () => {
   test('When a booking is confirmed, available slots of the class should be updated properly ', async () => {

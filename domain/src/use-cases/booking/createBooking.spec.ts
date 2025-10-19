@@ -1,12 +1,12 @@
 import { describe, test, expect } from 'vitest';
-import { MockedBookingService } from '../../services/mocks/mock-booking-service';
-import { MockedClassService } from '../../services/mocks/mock-class-service';
-import { MockedUserService } from '../../services/mocks/mock-user-service';
-import { userMock } from '../../entities/mocks/user-mock';
-import { classMock } from '../../entities/mocks/class-mock';
-import { BookingStatus } from '../../entities';
-import { createBooking } from './createBooking';
-import { bookingMock } from '../../entities/mocks/booking-mock';
+import { MockedBookingService } from '../../services/mocks/mock-booking-service.js';
+import { MockedClassService } from '../../services/mocks/mock-class-service.js';
+import { MockedUserService } from '../../services/mocks/mock-user-service.js';
+import { userMock } from '../../entities/mocks/user-mock.js';
+import { classMock } from '../../entities/mocks/class-mock.js';
+import { BookingStatus } from '../../entities/booking.js';
+import { createBooking } from './createBooking.js';
+import { bookingMock } from '../../entities/mocks/booking-mock.js';
 
 describe('Create booking', () => {
   test('should create a booking with all required fields', async () => {

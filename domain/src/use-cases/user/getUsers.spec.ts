@@ -1,8 +1,8 @@
 import { describe, expect, test } from 'vitest';
-import { MockedUserService } from '../../services/mocks/mock-user-service';
-import { userMock } from '../../entities/mocks/user-mock';
-import { Role, UserStatus } from '../../entities';
-import { getUserByEmail, listActiveUsers, listAllUsers, listStudents } from './getUsers';
+import { MockedUserService } from '../../services/mocks/mock-user-service.js';
+import { userMock } from '../../entities/mocks/user-mock.js';
+import { Role, UserStatus } from '../../entities/index.js';
+import { getUserByEmail, listActiveUsers, listAllUsers, listStudents } from './getUsers.js';
 
 describe('Get users', () => {
   test('listAll function, should return all users', async () => {

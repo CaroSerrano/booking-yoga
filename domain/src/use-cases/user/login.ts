@@ -1,5 +1,5 @@
-import { NotFoundError, ValidationError } from '../../utils/customErrors';
-import { UserDeps } from './register';
+import { NotFoundError, ValidationError } from '../../utils/customErrors.js';
+import type { UserDeps } from './register.js';
 
 interface LoginPayload {
   email: string;

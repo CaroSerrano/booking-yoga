@@ -12,7 +12,7 @@ export class MockedBookingService implements BookingService {
     const index = this.bookings.findIndex((b) => b.id === id);
     if (index === -1) return undefined;
 
-    this.bookings[index] = { ...this.bookings[index], ...data };
+    this.bookings[index] = { ...this.bookings[index], ...data } as Booking;
     return this.bookings[index];
   };
   findAll = async () => {

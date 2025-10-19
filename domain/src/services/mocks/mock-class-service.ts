@@ -12,7 +12,7 @@ export class MockedClassService implements ClassService {
     const index = this.classes.findIndex((c) => c.id === id);
     if (index === -1) return undefined;
 
-    this.classes[index] = { ...this.classes[index], ...data };
+    this.classes[index] = { ...this.classes[index], ...data } as Class;
     return this.classes[index];
   };
   findAll = async () => {

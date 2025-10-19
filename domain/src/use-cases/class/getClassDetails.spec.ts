@@ -1,8 +1,8 @@
 import { describe, test, expect } from 'vitest';
-import { MockedClassService } from '../../services/mocks/mock-class-service';
-import { classMock } from '../../entities/mocks/class-mock';
-import { ClassStatus } from '../../entities';
-import { getClassDetails } from './getClassDetails';
+import { MockedClassService } from '../../services/mocks/mock-class-service.js';
+import { classMock } from '../../entities/mocks/class-mock.js';
+import { ClassStatus } from '../../entities/class.js';
+import { getClassDetails } from './getClassDetails.js';
 
 describe('Get class details', () => {
   test('should return the class with the provided id', async () => {

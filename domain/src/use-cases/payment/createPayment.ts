@@ -1,8 +1,8 @@
-import { PaymentStatus } from '../../entities';
-import { BookingService, PaymentService, UserService } from '../../services';
-import { NotFoundError } from '../../utils/customErrors';
-import generateTimestamps from '../../utils/generateTimestamps';
-import { validateRequiredFields } from '../../utils/validateRequiredFields';
+import { PaymentStatus } from '../../entities/payment.js';
+import type { BookingService, PaymentService, UserService } from '../../services/index.js';
+import { NotFoundError } from '../../utils/customErrors.js';
+import generateTimestamps from '../../utils/generateTimestamps.js';
+import { validateRequiredFields } from '../../utils/validateRequiredFields.js';
 
 interface CreatePaymentDeps {
   paymentService: PaymentService;

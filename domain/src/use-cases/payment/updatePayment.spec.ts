@@ -1,14 +1,14 @@
 import { describe, test, expect } from 'vitest';
-import { BookingStatus, PaymentStatus } from '../../entities';
-import { MockedPaymentService } from '../../services/mocks/mock-payment-service';
-import { paymentMock } from '../../entities/mocks/payment-mock';
-import { updatePayment } from './updatePayment';
-import { MockedBookingService } from '../../services/mocks/mock-booking-service';
-import { bookingMock } from '../../entities/mocks/booking-mock';
-import { MockedClassService } from '../../services/mocks/mock-class-service';
-import { classMock } from '../../entities/mocks/class-mock';
-import { getBookingById } from '../booking/getBookingById';
-import { getClassDetails } from '../class';
+import { BookingStatus, PaymentStatus } from '../../entities/index.js';
+import { MockedPaymentService } from '../../services/mocks/mock-payment-service.js';
+import { paymentMock } from '../../entities/mocks/payment-mock.js';
+import { updatePayment } from './updatePayment.js';
+import { MockedBookingService } from '../../services/mocks/mock-booking-service.js';
+import { bookingMock } from '../../entities/mocks/booking-mock.js';
+import { MockedClassService } from '../../services/mocks/mock-class-service.js';
+import { classMock } from '../../entities/mocks/class-mock.js';
+import { getBookingById } from '../booking/getBookingById.js';
+import { getClassDetails } from '../class/index.js';
 
 describe('Update payment', () => {
   test('When updating a payment, should return the updated payment', async () => {

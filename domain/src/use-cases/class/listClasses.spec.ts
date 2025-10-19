@@ -1,9 +1,9 @@
 import { describe, test, expect } from 'vitest';
-import { MockedClassService } from '../../services/mocks/mock-class-service';
-import { classMock } from '../../entities/mocks/class-mock';
-import { ClassStatus } from '../../entities';
+import { MockedClassService } from '../../services/mocks/mock-class-service.js';
+import { classMock } from '../../entities/mocks/class-mock.js';
+import { ClassStatus } from '../../entities/class.js';
 import { faker } from '@faker-js/faker';
-import { listAvailableClasses } from './listClasses';
+import { listAvailableClasses } from './listClasses.js';
 
 describe('List classes', () => {
   test('listAvailableClasses should return all available (future) classes', async () => {

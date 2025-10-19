@@ -1,4 +1,4 @@
-import { ClassDeps } from './createClass';
+import type { ClassDeps } from './createClass.js';
 
 interface GetByTitlePayload {
   title: string;

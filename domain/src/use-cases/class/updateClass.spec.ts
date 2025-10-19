@@ -1,8 +1,8 @@
 import { describe, test, expect } from 'vitest';
-import { MockedClassService } from '../../services/mocks/mock-class-service';
-import { classMock } from '../../entities/mocks/class-mock';
-import { updateClass } from './updateClass';
-import { ClassStatus } from '../../entities';
+import { MockedClassService } from '../../services/mocks/mock-class-service.js';
+import { classMock } from '../../entities/mocks/class-mock.js';
+import { updateClass } from './updateClass.js';
+import { ClassStatus } from '../../entities/class.js';
 
 describe('Update class', () => {
   test('when class data is updated, should return the updated class', async () => {

@@ -1,7 +1,7 @@
 import { describe, test, expect } from 'vitest';
-import { MockedUserService } from '../../services/mocks/mock-user-service';
-import { userMock } from '../../entities/mocks/user-mock';
-import { login } from './login';
+import { MockedUserService } from '../../services/mocks/mock-user-service.js';
+import { userMock } from '../../entities/mocks/user-mock.js';
+import { login } from './login.js';
 
 describe('Login', () => {
   test('returns user when credentials are valid', async () => {

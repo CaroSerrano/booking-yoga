@@ -1,5 +1,5 @@
-import { NotFoundError } from '../../utils/customErrors';
-import { ClassDeps } from './createClass';
+import { NotFoundError } from '../../utils/customErrors.js';
+import type { ClassDeps } from './createClass.js';
 
 interface GetClassDetailsPayload {
   id: string;

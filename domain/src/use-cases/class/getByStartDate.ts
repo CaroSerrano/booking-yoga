@@ -1,5 +1,5 @@
-import { ValidationError } from '../../utils/customErrors';
-import { ClassDeps } from './createClass';
+import { ValidationError } from '../../utils/customErrors.js';
+import type { ClassDeps } from './createClass.js';
 
 interface GetByStartDatePayload {
   start: string;

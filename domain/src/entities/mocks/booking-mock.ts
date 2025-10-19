@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
-import generateTimestamps from '../../utils/generateTimestamps';
-import { Booking, BookingStatus } from '../booking';
+import generateTimestamps from '../../utils/generateTimestamps.js';
+import { type Booking, BookingStatus } from '../booking.js';
 
 export function bookingMock(opts?: Partial<Booking>): Booking {
   const { createdAt, updatedAt } = generateTimestamps();

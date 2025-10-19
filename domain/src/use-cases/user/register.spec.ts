@@ -1,8 +1,8 @@
 import { describe, test, expect } from 'vitest';
-import { UserStatus, Role } from '../../entities';
-import { MockedUserService } from '../../services/mocks/mock-user-service';
-import { userMock } from '../../entities/mocks/user-mock';
-import { register } from './register';
+import { UserStatus, Role } from '../../entities/index.js';
+import { MockedUserService } from '../../services/mocks/mock-user-service.js';
+import { userMock } from '../../entities/mocks/user-mock.js';
+import { register } from './register.js';
 
 describe('Register', () => {
   test('when registering, should create a user with all required fields', async () => {

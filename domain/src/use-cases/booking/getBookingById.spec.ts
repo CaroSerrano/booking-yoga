@@ -1,7 +1,7 @@
 import { describe, test, expect } from 'vitest';
-import { MockedBookingService } from '../../services/mocks/mock-booking-service';
-import { bookingMock } from '../../entities/mocks/booking-mock';
-import { getBookingById } from './getBookingById';
+import { MockedBookingService } from '../../services/mocks/mock-booking-service.js';
+import { bookingMock } from '../../entities/mocks/booking-mock.js';
+import { getBookingById } from './getBookingById.js';
 
 describe('Get Booking by ID', () => {
   test('should return the booking with the specified ID', async () => {

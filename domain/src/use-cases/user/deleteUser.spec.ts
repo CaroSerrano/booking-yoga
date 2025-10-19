@@ -1,8 +1,8 @@
 import { describe, expect, test } from 'vitest';
-import { MockedUserService } from '../../services/mocks/mock-user-service';
-import { userMock } from '../../entities/mocks/user-mock';
-import { getUserByEmail } from './getUsers';
-import { deleteUser } from './deleteUser';
+import { MockedUserService } from '../../services/mocks/mock-user-service.js';
+import { userMock } from '../../entities/mocks/user-mock.js';
+import { getUserByEmail } from './getUsers.js';
+import { deleteUser } from './deleteUser.js';
 
 describe('Delete user', () => {
   test('A user is successfully deleted and no longer retrievable by ID.', async () => {

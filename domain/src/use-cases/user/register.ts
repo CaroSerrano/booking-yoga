@@ -1,6 +1,6 @@
-import { UserService } from '../../services';
-import generateTimestamps from '../../utils/generateTimestamps';
-import { UserStatus, Role } from '../../entities';
+import type { UserService } from '../../services/index.js';
+import generateTimestamps from '../../utils/generateTimestamps.js';
+import { UserStatus, Role } from '../../entities/index.js';
 
 export interface UserDeps {
   userService: UserService;
@@ -27,7 +27,7 @@ export async function register(
     id: crypto.randomUUID(),
     name,
     email,
-    phoneNumber,
+    ...(phoneNumber !== undefined && { phoneNumber }),
     password,
     role: role? role : Role.USER,
     status: UserStatus.ACTIVE,

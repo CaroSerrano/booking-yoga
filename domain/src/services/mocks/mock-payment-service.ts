@@ -12,7 +12,7 @@ export class MockedPaymentService implements PaymentService {
     const index = this.payments.findIndex((p) => p.id === id);
     if (index === -1) return undefined;
 
-    this.payments[index] = { ...this.payments[index], ...data };
+    this.payments[index] = { ...this.payments[index], ...data } as Payment;
     return this.payments[index];
   };
   findAll = async () => {

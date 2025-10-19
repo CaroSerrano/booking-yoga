@@ -1,5 +1,5 @@
-import { BookingService } from '../../services';
-import { NotFoundError } from '../../utils/customErrors';
+import type { BookingService } from '../../services/index.js';
+import { NotFoundError } from '../../utils/customErrors.js';
 
 interface GetBookingByIdDeps {
   bookingService: BookingService;

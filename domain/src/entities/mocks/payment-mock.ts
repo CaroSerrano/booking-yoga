@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
-import generateTimestamps from '../../utils/generateTimestamps';
-import { Payment, PaymentStatus } from '../payment';
+import generateTimestamps from '../../utils/generateTimestamps.js';
+import { type Payment, PaymentStatus } from '../payment.js';
 
 export function paymentMock(opts?: Partial<Payment>): Payment {
   return {

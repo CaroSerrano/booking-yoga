@@ -1,4 +1,4 @@
-import { BookingService } from '../../services';
+import type { BookingService } from '../../services/index.js';
 
 interface ListClassBookingDeps {
   bookingService: BookingService;

@@ -1,7 +1,7 @@
 import { describe, test, expect } from 'vitest';
-import { MockedClassService } from '../../services/mocks/mock-class-service';
-import { createClass } from './createClass';
-import { ClassStatus } from '../../entities';
+import { MockedClassService } from '../../services/mocks/mock-class-service.js';
+import { createClass } from './createClass.js';
+import { ClassStatus } from '../../entities/class.js';
 
 describe('Create class', () => {
   test('should create a class with all required fields', async () => {

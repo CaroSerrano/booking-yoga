@@ -1,9 +1,9 @@
 import { describe, test, expect } from 'vitest';
-import { MockedClassService } from '../../services/mocks/mock-class-service';
-import { classMock } from '../../entities/mocks/class-mock';
+import { MockedClassService } from '../../services/mocks/mock-class-service.js';
+import { classMock } from '../../entities/mocks/class-mock.js';
 import { faker } from '@faker-js/faker';
-import { getClassByStartDate } from './getByStartDate';
-import { ValidationError } from '../../utils/customErrors';
+import { getClassByStartDate } from './getByStartDate.js';
+import { ValidationError } from '../../utils/customErrors.js';
 
 describe('Get by start date', () => {
   test('getByStartDate should return all classes that start on a specific date', async () => {

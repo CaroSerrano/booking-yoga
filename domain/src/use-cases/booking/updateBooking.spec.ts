@@ -1,11 +1,11 @@
 import { describe, test, expect } from 'vitest';
-import { MockedBookingService } from '../../services/mocks/mock-booking-service';
-import { bookingMock } from '../../entities/mocks/booking-mock';
-import { BookingStatus } from '../../entities';
-import { updateBooking } from './updateBooking';
-import { MockedClassService } from '../../services/mocks/mock-class-service';
-import { classMock } from '../../entities/mocks/class-mock';
-import { getClassDetails } from '../class';
+import { MockedBookingService } from '../../services/mocks/mock-booking-service.js';
+import { bookingMock } from '../../entities/mocks/booking-mock.js';
+import { BookingStatus } from '../../entities/booking.js';
+import { updateBooking } from './updateBooking.js';
+import { MockedClassService } from '../../services/mocks/mock-class-service.js';
+import { classMock } from '../../entities/mocks/class-mock.js';
+import { getClassDetails } from '../class/getClassDetails.js';
 
 describe('Update booking', () => {
   test('if the booking does not exist, an error is expected', async () => {

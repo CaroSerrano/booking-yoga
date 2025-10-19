@@ -1,6 +1,6 @@
-import { BookingStatus } from '../../entities';
-import { BookingService, ClassService } from '../../services';
-import { NotFoundError } from '../../utils/customErrors';
+import { BookingStatus } from '../../entities/booking.js';
+import type { BookingService, ClassService } from '../../services/index.js';
+import { NotFoundError } from '../../utils/customErrors.js';
 
 interface UpdatePayload {
   id: string;

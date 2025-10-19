@@ -1,7 +1,7 @@
-import { ClassStatus } from '../../entities';
-import { ClassService } from '../../services';
-import generateTimestamps from '../../utils/generateTimestamps';
-import { validateRequiredFields } from '../../utils/validateRequiredFields';
+import { ClassStatus } from '../../entities/class.js';
+import type { ClassService } from '../../services/index.js';
+import generateTimestamps from '../../utils/generateTimestamps.js';
+import { validateRequiredFields } from '../../utils/validateRequiredFields.js';
 
 export interface ClassDeps {
   classService: ClassService;

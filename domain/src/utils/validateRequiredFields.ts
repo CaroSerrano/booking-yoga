@@ -1,4 +1,4 @@
-import { ValidationError } from "./customErrors";
+import { ValidationError } from "./customErrors.js";
 
 export function validateRequiredFields<T extends Record<string, any>>(
   data: T,

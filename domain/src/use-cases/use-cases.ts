@@ -4,7 +4,7 @@ import {
   listUserBookings,
   updateBooking,
   getBookingById,
-} from './booking';
+} from './booking/index.js';
 import {
   createClass,
   getClassByLocation,
@@ -14,13 +14,13 @@ import {
   getClassDetails,
   listAvailableClasses,
   updateClass,
-} from './class';
+} from './class/index.js';
 import {
   createPayment,
   listBookingPayments,
   listUserPayments,
   updatePayment,
-} from './payment';
+} from './payment/index.js';
 import {
   deleteUser,
   getUserByEmail,
@@ -30,7 +30,7 @@ import {
   login,
   register,
   updateUserData,
-} from './user';
+} from './user/index.js';
 
 export type UseCase<P = any, D = any, R = unknown> = (
   deps: D,

@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
-import { Class, ClassStatus } from '../class';
-import generateTimestamps from '../../utils/generateTimestamps';
+import { type Class, ClassStatus } from '../class.js';
+import generateTimestamps from '../../utils/generateTimestamps.js';
 
 export function classMock(opts?: Partial<Class>): Class {
   const start = faker.date.soon({ days: 30 });

@@ -1,8 +1,8 @@
-import { BookingStatus } from '../../entities';
-import { BookingService, ClassService, UserService } from '../../services';
-import { NotFoundError, ValidationError } from '../../utils/customErrors';
-import generateTimestamps from '../../utils/generateTimestamps';
-import { validateRequiredFields } from '../../utils/validateRequiredFields';
+import { BookingStatus } from '../../entities/booking.js';
+import type { BookingService, ClassService, UserService } from '../../services/index.js';
+import { NotFoundError, ValidationError } from '../../utils/customErrors.js';
+import generateTimestamps from '../../utils/generateTimestamps.js';
+import { validateRequiredFields } from '../../utils/validateRequiredFields.js';
 interface CreateBookingDeps {
   bookingService: BookingService;
   classService: ClassService;

@@ -1,8 +1,8 @@
 import { describe, test, expect } from 'vitest'
-import { userMock } from '../../entities/mocks/user-mock'
-import { Role, UserStatus } from '../../entities'
-import { MockedUserService } from '../../services/mocks/mock-user-service'
-import { updateUserData } from './updateUser'
+import { userMock } from '../../entities/mocks/user-mock.js'
+import { Role, UserStatus } from '../../entities/index.js'
+import { MockedUserService } from '../../services/mocks/mock-user-service.js'
+import { updateUserData } from './updateUser.js'
 
 describe('Update user', () => {
   test('when user data is updated, should return the updated user', async () => {

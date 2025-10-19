@@ -1,11 +1,11 @@
 import { describe, test, expect } from 'vitest';
-import { MockedPaymentService } from '../../services/mocks/mock-payment-service';
-import { PaymentStatus } from '../../entities';
-import { createPayment } from './createPayment';
-import { MockedUserService } from '../../services/mocks/mock-user-service';
-import { userMock } from '../../entities/mocks/user-mock';
-import { MockedBookingService } from '../../services/mocks/mock-booking-service';
-import { bookingMock } from '../../entities/mocks/booking-mock';
+import { MockedPaymentService } from '../../services/mocks/mock-payment-service.js';
+import { PaymentStatus } from '../../entities/payment.js';
+import { createPayment } from './createPayment.js';
+import { MockedUserService } from '../../services/mocks/mock-user-service.js';
+import { userMock } from '../../entities/mocks/user-mock.js';
+import { MockedBookingService } from '../../services/mocks/mock-booking-service.js';
+import { bookingMock } from '../../entities/mocks/booking-mock.js';
 
 describe('Create payment', () => {
   test('should create a payment with all required fields', async () => {

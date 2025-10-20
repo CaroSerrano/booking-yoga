@@ -1,5 +1,6 @@
 import { describe, test, expect, vi, beforeEach } from 'vitest';
 import { ClassServiceImplementation } from './class-service.js';
+import prisma from 'src/client.js';
 
 const prismaMock = {
   class: {
@@ -46,37 +47,16 @@ describe('ClassServiceImplementation', () => {
     expect(res).toEqual(fakeClass);
   });
 
-  test('findByStartDate busca por rango de fecha', async () => {
-    prismaMock.class.findMany.mockResolvedValue([]);
-    const date = new Date('2025-10-19');
-    await service.findByStartDate(date);
-    expect(prismaMock.class.findMany).toHaveBeenCalledWith({
-      where: { start: { gte: expect.any(Date), lte: expect.any(Date) } },
-      orderBy: { start: 'asc' },
+  test('findByFilters llama a prisma.class.findMany con los filtros', async () => {
+    await service.findByFilters({
+      teacherId: '1',
+      title: 'Hatha Yoga',
     });
-  });
-
-  test('findByLocation llama con location', async () => {
-    prismaMock.class.findMany.mockResolvedValue([]);
-    await service.findByLocation('Studio A');
     expect(prismaMock.class.findMany).toHaveBeenCalledWith({
-      where: { location: 'Studio A' },
-    });
-  });
-
-  test('findByTitle llama con title', async () => {
-    prismaMock.class.findMany.mockResolvedValue([]);
-    await service.findByTitle('Yoga');
-    expect(prismaMock.class.findMany).toHaveBeenCalledWith({
-      where: { title: 'Yoga' },
-    });
-  });
-
-  test('findByTeacher llama con teacherId', async () => {
-    prismaMock.class.findMany.mockResolvedValue([]);
-    await service.findByTeacher('t1');
-    expect(prismaMock.class.findMany).toHaveBeenCalledWith({
-      where: { teacherId: 't1' },
+      where: {
+        teacherId: '1',
+        title: { contains: 'Hatha Yoga', mode: 'insensitive' },
+      },
     });
   });
 

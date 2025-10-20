@@ -1,4 +1,4 @@
-import type { Class, ClassService } from 'booking-domain';
+import type { Class, ClassService, Filters } from 'booking-domain';
 import { PrismaClient } from 'src/generated/prisma/index.js';
 
 export class ClassServiceImplementation implements ClassService {
@@ -21,34 +21,17 @@ export class ClassServiceImplementation implements ClassService {
     return classFound ?? undefined;
   }
 
-  async findByStartDate(date: Date) {
-    const startOfDay = new Date(date);
-    startOfDay.setHours(0, 0, 0, 0);
-
-    const endOfDay = new Date(date);
-    endOfDay.setHours(23, 59, 59, 999);
-    const classFound = this.prisma.class.findMany({
+  async findByFilters(filters: Filters) {
+    return this.prisma.class.findMany({
       where: {
-        start: {
-          gte: startOfDay,
-          lte: endOfDay,
-        },
+        ...(filters.location && { location: filters.location }),
+        ...(filters.title && {
+          title: { contains: filters.title, mode: 'insensitive' },
+        }),
+        ...(filters.teacherId && { teacherId: filters.teacherId }),
+        ...(filters.startDate && { start: filters.startDate }),
       },
-      orderBy: { start: 'asc' },
     });
-    return classFound ?? undefined;
-  }
-
-  async findByLocation(location: string) {
-    return this.prisma.class.findMany({ where: { location } });
-  }
-
-  async findByTitle(title: string) {
-    return this.prisma.class.findMany({ where: { title } });
-  }
-
-  async findByTeacher(teacherId: string) {
-    return this.prisma.class.findMany({ where: { teacherId } });
   }
 
   async save(data: Class) {

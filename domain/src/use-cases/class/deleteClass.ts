@@ -1,4 +1,4 @@
-import type { ClassDeps } from '../../../dist/index.js';
+import type { ClassDeps } from './createClass.js';
 import { NotFoundError } from '../../utils/customErrors.js';
 
 interface DeleteClassPayload {

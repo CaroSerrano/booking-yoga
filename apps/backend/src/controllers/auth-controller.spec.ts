@@ -5,7 +5,6 @@ import { Role, UserStatus } from 'booking-domain';
 import jwt from 'jsonwebtoken';
 import type { Request, Response, NextFunction } from 'express';
 
-// Mock de dependencias
 vi.mock('src/services/index.js', () => ({
   authService: {
     register: vi.fn(),

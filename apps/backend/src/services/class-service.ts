@@ -52,7 +52,7 @@ export class ClassServiceImplementation implements ClassService {
   }
 
   async save(data: Class) {
-    this.prisma.class.create({ data });
+    await this.prisma.class.create({ data });
   }
 
   async updateOne(id: string, data: Partial<Class>) {

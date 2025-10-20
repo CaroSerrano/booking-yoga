@@ -18,7 +18,7 @@ export class BookingServiceImplementation implements BookingService {
   }
 
   async save(data: Booking) {
-    this.prisma.booking.create({ data });
+    await this.prisma.booking.create({ data });
   }
 
   async updateOne(id: string, data: Partial<Booking>) {

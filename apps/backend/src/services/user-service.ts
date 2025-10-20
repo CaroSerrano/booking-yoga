@@ -33,7 +33,7 @@ export class UserServiceImplementation implements UserService {
   }
 
   async save(data: User) {
-    this.prisma.user.create({ data });
+    await this.prisma.user.create({ data });
   }
 
   async updateOne(id: string, data: Partial<User>) {

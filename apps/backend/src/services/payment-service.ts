@@ -18,7 +18,7 @@ export class PaymentServiceImplementation implements PaymentService {
   }
 
   async save(data: Payment) {
-    this.prisma.payment.create({ data });
+    await this.prisma.payment.create({ data });
   }
 
   async updateOne(id: string, data: Partial<Payment>) {

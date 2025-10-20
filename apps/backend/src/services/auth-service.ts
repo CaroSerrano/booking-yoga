@@ -18,7 +18,7 @@ export class AuthServiceImplementation implements AuthService {
     const existingUser = await this.prisma.user.findUnique({
       where: { email: data.email },
     });
-    if (existingUser) throw new Error('User already exists');
+    if (existingUser) throw new ValidationError('User already exists');
 
     const hashedPassword = await createHash(data.password);
     await this.prisma.user.create({

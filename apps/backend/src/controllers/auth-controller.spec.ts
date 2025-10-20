@@ -1,35 +1,16 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { registerController, loginController } from './auth-controller.js';
-import { userService } from 'src/services/index.js';
-import {
-  login,
-  register,
-  Role,
-  UserStatus,
-} from 'booking-domain';
-import { createHash, isValidPassword } from 'src/utils/auth.js';
+import { authService } from 'src/services/index.js';
+import { Role, UserStatus } from 'booking-domain';
 import jwt from 'jsonwebtoken';
 import type { Request, Response, NextFunction } from 'express';
 
+// Mock de dependencias
 vi.mock('src/services/index.js', () => ({
-  userService: {
-    findByEmail: vi.fn(),
-    save: vi.fn(),
-  },
-}));
-
-vi.mock('booking-domain', async () => {
-  const actual = await vi.importActual('booking-domain');
-  return {
-    ...actual,
-    login: vi.fn(),
+  authService: {
     register: vi.fn(),
-  };
-});
-
-vi.mock('src/utils/auth.js', () => ({
-  createHash: vi.fn(),
-  isValidPassword: vi.fn(),
+    login: vi.fn(),
+  },
 }));
 
 vi.mock('jsonwebtoken', () => ({
@@ -77,16 +58,13 @@ describe('Auth Controllers', () => {
         role: Role.USER,
       };
 
-      const hashedPassword = 'hashedPassword123';
-
       mockRequest.body = registerData;
 
       const { registerSchema } = await import(
         'src/validations/auth-validations.js'
       );
       vi.mocked(registerSchema.parse).mockReturnValue(registerData);
-      vi.mocked(createHash).mockResolvedValue(hashedPassword);
-      vi.mocked(register).mockResolvedValue(undefined);
+      vi.mocked(authService.register).mockResolvedValue(undefined);
 
       await registerController(
         mockRequest as Request,
@@ -95,14 +73,7 @@ describe('Auth Controllers', () => {
       );
 
       expect(registerSchema.parse).toHaveBeenCalledWith(registerData);
-      expect(createHash).toHaveBeenCalledWith(registerData.password);
-      expect(register).toHaveBeenCalledWith(
-        { userService },
-        {
-          ...registerData,
-          password: hashedPassword,
-        }
-      );
+      expect(authService.register).toHaveBeenCalledWith(registerData);
       expect(mockResponse.status).toHaveBeenCalledWith(201);
       expect(mockResponse.json).toHaveBeenCalledWith({
         message: 'User registered',
@@ -110,42 +81,7 @@ describe('Auth Controllers', () => {
       expect(mockNext).not.toHaveBeenCalled();
     });
 
-    it('debe usar Role.USER por defecto si no se proporciona role', async () => {
-      const registerData = {
-        name: 'John Doe',
-        email: 'john@example.com',
-        phoneNumber: '+1234567890',
-        password: 'password123',
-      };
-
-      const hashedPassword = 'hashedPassword123';
-
-      mockRequest.body = registerData;
-
-      const { registerSchema } = await import(
-        'src/validations/auth-validations.js'
-      );
-      vi.mocked(registerSchema.parse).mockReturnValue(registerData);
-      vi.mocked(createHash).mockResolvedValue(hashedPassword);
-      vi.mocked(register).mockResolvedValue(undefined);
-
-      await registerController(
-        mockRequest as Request,
-        mockResponse as Response,
-        mockNext
-      );
-
-      expect(register).toHaveBeenCalledWith(
-        { userService },
-        {
-          ...registerData,
-          role: Role.USER,
-          password: hashedPassword,
-        }
-      );
-    });
-
-    it('debe llamar a next con el error si la validación falla', async () => {
+    it('debe llamar a next con el error si la validación del schema falla', async () => {
       const validationError = new Error('Validation failed');
       mockRequest.body = { invalid: 'data' };
 
@@ -166,12 +102,13 @@ describe('Auth Controllers', () => {
       expect(mockResponse.status).not.toHaveBeenCalled();
     });
 
-    it('debe llamar a next con el error si register falla', async () => {
+    it('debe llamar a next con el error si authService.register falla', async () => {
       const registerData = {
         name: 'John Doe',
         email: 'john@example.com',
         phoneNumber: '+1234567890',
         password: 'password123',
+        role: Role.USER,
       };
 
       const registerError = new Error('User already registered');
@@ -181,8 +118,7 @@ describe('Auth Controllers', () => {
         'src/validations/auth-validations.js'
       );
       vi.mocked(registerSchema.parse).mockReturnValue(registerData);
-      vi.mocked(createHash).mockResolvedValue('hashedPassword');
-      vi.mocked(register).mockRejectedValue(registerError);
+      vi.mocked(authService.register).mockRejectedValue(registerError);
 
       await registerController(
         mockRequest as Request,
@@ -196,7 +132,7 @@ describe('Auth Controllers', () => {
   });
 
   describe('loginController', () => {
-    it('debe hacer login exitosamente y retornar token', async () => {
+    it('debe hacer login exitosamente y retornar token y usuario', async () => {
       const loginData = {
         email: 'john@example.com',
         pass: 'password123',
@@ -206,12 +142,11 @@ describe('Auth Controllers', () => {
         id: '123',
         name: 'John Doe',
         email: 'john@example.com',
-        password: 'hashedPassword',
-        role: Role.USER,
+        role: 'USER' as const,
         phoneNumber: '+1234567890',
         status: UserStatus.ACTIVE,
-        createdAt: expect.any(Date),
-        updatedAt: expect.any(Date),
+        createdAt: new Date(),
+        updatedAt: new Date(),
       };
 
       const mockToken = 'jwt-token-123';
@@ -222,8 +157,7 @@ describe('Auth Controllers', () => {
         'src/validations/auth-validations.js'
       );
       vi.mocked(loginSchema.parse).mockReturnValue(loginData);
-      vi.mocked(login).mockResolvedValue(mockUser);
-      vi.mocked(isValidPassword).mockResolvedValue(true);
+      vi.mocked(authService.login).mockResolvedValue(mockUser);
       vi.mocked(jwt.sign).mockReturnValue(mockToken as any);
 
       await loginController(
@@ -233,8 +167,7 @@ describe('Auth Controllers', () => {
       );
 
       expect(loginSchema.parse).toHaveBeenCalledWith(loginData);
-      expect(login).toHaveBeenCalledWith({ userService }, loginData);
-      expect(isValidPassword).toHaveBeenCalledWith(mockUser, loginData.pass);
+      expect(authService.login).toHaveBeenCalledWith(loginData);
       expect(jwt.sign).toHaveBeenCalledWith(
         { email: mockUser.email, role: mockUser.role },
         expect.any(String)
@@ -242,62 +175,12 @@ describe('Auth Controllers', () => {
       expect(mockResponse.status).toHaveBeenCalledWith(201);
       expect(mockResponse.json).toHaveBeenCalledWith({
         token: mockToken,
-        safeUser: {
-          id: mockUser.id,
-          name: mockUser.name,
-          email: mockUser.email,
-          role: mockUser.role,
-          phoneNumber: mockUser.phoneNumber,
-          status: mockUser.status,
-          createdAt: mockUser.createdAt,
-          updatedAt: mockUser.updatedAt,
-        },
+        user: mockUser,
       });
       expect(mockNext).not.toHaveBeenCalled();
     });
 
-    it('debe lanzar ValidationError si la contraseña es inválida', async () => {
-      const loginData = {
-        email: 'john@example.com',
-        pass: 'wrongpassword',
-      };
-
-      const mockUser = {
-        id: '123',
-        name: 'John Doe',
-        email: 'john@example.com',
-        password: 'hashedPassword',
-        role: Role.USER,
-        phoneNumber: '+1234567890',
-        status: UserStatus.ACTIVE,
-        createdAt: expect.any(Date),
-        updatedAt: expect.any(Date),
-      };
-
-      mockRequest.body = loginData;
-
-      const { loginSchema } = await import(
-        'src/validations/auth-validations.js'
-      );
-      vi.mocked(loginSchema.parse).mockReturnValue(loginData);
-      vi.mocked(login).mockResolvedValue(mockUser);
-      vi.mocked(isValidPassword).mockResolvedValue(false);
-
-      await loginController(
-        mockRequest as Request,
-        mockResponse as Response,
-        mockNext
-      );
-
-      expect(mockNext).toHaveBeenCalledWith(
-        expect.objectContaining({
-          message: 'Invalid credentials',
-        })
-      );
-      expect(mockResponse.status).not.toHaveBeenCalled();
-    });
-
-    it('debe llamar a next con el error si la validación falla', async () => {
+    it('debe llamar a next con el error si la validación del schema falla', async () => {
       const validationError = new Error('Validation failed');
       mockRequest.body = { invalid: 'data' };
 
@@ -318,20 +201,20 @@ describe('Auth Controllers', () => {
       expect(mockResponse.status).not.toHaveBeenCalled();
     });
 
-    it('debe llamar a next con el error si login falla', async () => {
+    it('debe llamar a next con el error si authService.login falla', async () => {
       const loginData = {
         email: 'john@example.com',
         pass: 'password123',
       };
 
-      const loginError = new Error('User not found');
+      const loginError = new Error('Invalid credentials');
       mockRequest.body = loginData;
 
       const { loginSchema } = await import(
         'src/validations/auth-validations.js'
       );
       vi.mocked(loginSchema.parse).mockReturnValue(loginData);
-      vi.mocked(login).mockRejectedValue(loginError);
+      vi.mocked(authService.login).mockRejectedValue(loginError);
 
       await loginController(
         mockRequest as Request,
@@ -341,6 +224,50 @@ describe('Auth Controllers', () => {
 
       expect(mockNext).toHaveBeenCalledWith(loginError);
       expect(mockResponse.status).not.toHaveBeenCalled();
+    });
+
+    it('debe generar un token JWT con email y role del usuario', async () => {
+      const loginData = {
+        email: 'admin@example.com',
+        pass: 'password123',
+      };
+
+      const mockUser = {
+        id: '456',
+        name: 'Admin User',
+        email: 'admin@example.com',
+        role: 'ADMIN' as const,
+        phoneNumber: '+9876543210',
+        status: UserStatus.ACTIVE,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+
+      const mockToken = 'admin-jwt-token';
+
+      mockRequest.body = loginData;
+
+      const { loginSchema } = await import(
+        'src/validations/auth-validations.js'
+      );
+      vi.mocked(loginSchema.parse).mockReturnValue(loginData);
+      vi.mocked(authService.login).mockResolvedValue(mockUser);
+      vi.mocked(jwt.sign).mockReturnValue(mockToken as any);
+
+      await loginController(
+        mockRequest as Request,
+        mockResponse as Response,
+        mockNext
+      );
+
+      expect(jwt.sign).toHaveBeenCalledWith(
+        { email: 'admin@example.com', role: 'ADMIN' },
+        expect.any(String)
+      );
+      expect(mockResponse.json).toHaveBeenCalledWith({
+        token: mockToken,
+        user: mockUser,
+      });
     });
   });
 });

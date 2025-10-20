@@ -1,11 +1,10 @@
-import { login, register, Role, ValidationError } from 'booking-domain';
-import { userService } from 'src/services/index.js';
+import { ValidationError } from 'booking-domain';
+import { authService } from 'src/services/index.js';
 import type { Request, Response, NextFunction } from 'express';
 import {
   loginSchema,
   registerSchema,
 } from 'src/validations/auth-validations.js';
-import { createHash, isValidPassword } from 'src/utils/auth.js';
 import jwt from 'jsonwebtoken';
 
 const secret = process.env.JWT_SECRET || 'test';
@@ -16,16 +15,11 @@ export async function registerController(
   next: NextFunction
 ) {
   try {
+    if (!req.body) {
+      throw new ValidationError('Missing data');
+    }
     const data = registerSchema.parse(req.body);
-    const hashedPassword = await createHash(data.password);
-    await register(
-      { userService },
-      {
-        ...data,
-        role: data.role ?? Role.USER,
-        password: hashedPassword,
-      }
-    );
+    await authService.register(data);
     res.status(201).json({ message: 'User registered' });
   } catch (error: unknown) {
     next(error);
@@ -39,13 +33,9 @@ export async function loginController(
 ) {
   try {
     const data = loginSchema.parse(req.body);
-    const user = await login({ userService }, data);
-    if (!(await isValidPassword(user, data.pass))) {
-      throw new ValidationError('Invalid credentials');
-    }
-    const { password, ...safeUser } = user;
+    const user = await authService.login(data);
     const token = jwt.sign({ email: user.email, role: user.role }, secret);
-    res.status(201).json({ token, safeUser });
+    res.status(201).json({ token, user });
   } catch (error: unknown) {
     next(error);
   }

@@ -1,4 +1,5 @@
 import type { Class } from '../../entities/class.js';
+import type { Filters } from '../../use-cases/index.js';
 import type { ClassService } from '../class-service.js';
 
 export class MockedClassService implements ClassService {
@@ -27,20 +28,24 @@ export class MockedClassService implements ClassService {
   save = async (data: Class) => {
     this.classes.push(data);
   };
-  findByStartDate = async (date: Date) => {
-    return this.classes.filter(
-      (c) =>
-        c.start.toISOString().split('T')[0] == date.toISOString().split('T')[0]
-    );
-  };
-  findByLocation = async (location: string) => {
-    return this.classes.filter((c) => c.location === location);
-  };
-  findByTitle = async (title: string) => {
-    return this.classes.filter((c) => c.title === title);
-  };
-  findByTeacher = async (teacherId: string) => {
-    return this.classes.filter((c) => c.teacherId === teacherId);
+  findByFilters = async (filters: Filters) => {
+    return this.classes.filter((c) => {
+      let match = true;
+
+      if (filters.location) match &&= c.location === filters.location;
+
+      if (filters.title)
+        match &&= c.title.toLowerCase().includes(filters.title.toLowerCase());
+
+      if (filters.teacherId) match &&= c.teacherId === filters.teacherId;
+
+      if (filters.startDate)
+        match &&=
+          c.start.toISOString().split('T')[0] ===
+          filters.startDate.toISOString().split('T')[0];
+
+      return match;
+    });
   };
   delete = async (id: string) => {
     this.classes = this.classes.filter((c) => c.id !== id);

@@ -7,10 +7,7 @@ import {
 } from './booking/index.js';
 import {
   createClass,
-  getClassByLocation,
-  getClassByStartDate,
-  getClassByTeacher,
-  getClassByTitle,
+  getClasses,
   getClassDetails,
   listAvailableClasses,
   updateClass,
@@ -103,20 +100,8 @@ export const domainUseCases = {
     useCase: getClassDetails,
     enable: true,
   },
-  getClassByTitle: {
-    useCase: getClassByTitle,
-    enable: true,
-  },
-  getClassByTeacher: {
-    useCase: getClassByTeacher,
-    enable: true,
-  },
-  getClassByStartDate: {
-    useCase: getClassByStartDate,
-    enable: true,
-  },
-  getClassByLocation: {
-    useCase: getClassByLocation,
+  getClasses: {
+    useCase: getClasses,
     enable: true,
   },
   createClass: {

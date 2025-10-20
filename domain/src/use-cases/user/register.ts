@@ -6,7 +6,7 @@ export interface UserDeps {
   userService: UserService;
 }
 
-interface RegisterPayload {
+export interface RegisterPayload {
   name: string;
   email: string;
   phoneNumber: string;

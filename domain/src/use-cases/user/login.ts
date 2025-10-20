@@ -1,7 +1,7 @@
 import { NotFoundError } from '../../utils/customErrors.js';
 import type { UserDeps } from './register.js';
 
-interface LoginPayload {
+export interface LoginPayload {
   email: string;
   pass: string;
 }

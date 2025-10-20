@@ -11,6 +11,7 @@ import {
   getClassDetails,
   listAvailableClasses,
   updateClass,
+  deleteClass,
 } from './class/index.js';
 import {
   createPayment,
@@ -90,6 +91,10 @@ export const domainUseCases = {
   },
   updateClass: {
     useCase: updateClass,
+    enable: true,
+  },
+  deleteClass: {
+    useCase: deleteClass,
     enable: true,
   },
   listAvailableClasses: {

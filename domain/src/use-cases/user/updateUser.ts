@@ -1,3 +1,4 @@
+import { NotFoundError } from '../../utils/customErrors.js'
 import type { UserDeps } from './register.js'
 
 interface UpdatePayload {
@@ -13,7 +14,7 @@ export async function updateUserData(
   { id, ...data }: UpdatePayload
 ) {
   const foundUser = await userService.findById(id)
-  if (!foundUser) throw new Error('User not found')
+  if (!foundUser) throw new NotFoundError('User not found')
 
   const updatedUser = await userService.updateOne(id, data)
   return updatedUser

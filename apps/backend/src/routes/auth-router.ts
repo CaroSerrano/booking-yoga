@@ -1,11 +1,13 @@
 import express from 'express';
-import {
-  registerController,
-  loginController,
-} from 'src/controllers/auth-controller.js';
+import { authController } from 'src/controllers/auth-controller.js';
+import { userService } from 'src/services/index.js';
+import { BcryptPasswordHasher } from 'src/utils/auth.js';
+
+const hasher = new BcryptPasswordHasher();
+const controller = authController({ userService, hasher });
 
 const router = express.Router();
-router.post('/register', registerController);
-router.post('/login', loginController);
+router.post('/register', controller.register);
+router.post('/login', controller.login);
 
 export default router;

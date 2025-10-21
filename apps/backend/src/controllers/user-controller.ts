@@ -1,6 +1,5 @@
 import { domainUseCases, ValidationError, type UserDeps } from 'booking-domain';
 import type { NextFunction, Request, Response } from 'express';
-import { createHash } from 'src/utils/auth.js';
 import { updateUserSchema } from 'src/validations/user-validations.js';
 
 export const userController = (deps: UserDeps) => ({
@@ -43,9 +42,6 @@ export const userController = (deps: UserDeps) => ({
       const parsedData = updateUserSchema.parse(req.body);
 
       const dataToUpdate = { ...parsedData };
-      if (dataToUpdate.password) {
-        dataToUpdate.password = await createHash(dataToUpdate.password);
-      }
 
       const cleanedData = Object.fromEntries(
         Object.entries(dataToUpdate).filter(([_, v]) => v !== undefined)

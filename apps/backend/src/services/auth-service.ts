@@ -5,7 +5,6 @@ import {
   type LoginPayload,
   type RegisterPayload,
 } from 'booking-domain';
-import { createHash, isValidPassword } from 'src/utils/auth.js';
 import type { PrismaClient } from 'src/generated/prisma/index.js';
 
 export class AuthServiceImplementation implements AuthService {
@@ -20,9 +19,9 @@ export class AuthServiceImplementation implements AuthService {
     });
     if (existingUser) throw new ValidationError('User already exists');
 
-    const hashedPassword = await createHash(data.password);
+
     await this.prisma.user.create({
-      data: { ...data, password: hashedPassword },
+      data
     });
   }
 
@@ -33,10 +32,7 @@ export class AuthServiceImplementation implements AuthService {
     if (!foundUser) {
       throw new NotFoundError('User not found');
     }
-    if (!(await isValidPassword(foundUser, data.pass))) {
-      throw new ValidationError('Invalid credentials');
-    }
-    const { password: _, ...safeUser } = foundUser;
+    const { password, ...safeUser } = foundUser;
     return safeUser;
   }
 }

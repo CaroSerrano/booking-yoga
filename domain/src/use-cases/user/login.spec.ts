@@ -1,10 +1,10 @@
-import { describe, test, expect } from 'vitest';
+import { describe, test, expect, vi } from 'vitest';
 import { MockedUserService } from '../../services/mocks/mock-user-service.js';
 import { userMock } from '../../entities/mocks/user-mock.js';
 import { login } from './login.js';
 
 describe('Login', () => {
-  test('returns user when credentials are valid', async () => {
+  test('returns user if exists', async () => {
     const userService = new MockedUserService([
       userMock({
         email: 'pablo@example.com',
@@ -12,21 +12,31 @@ describe('Login', () => {
         name: 'Pablo Perez',
       }),
     ]);
-
+    const hasher = {
+      hash: vi.fn().mockResolvedValue('hashed-pass'),
+      compare: vi.fn().mockResolvedValue('secret'),
+    };
     const result = await login(
-      { userService },
-      { email: 'pablo@example.com', pass: 'secret' }
+      { userService, hasher },
+      { email: 'pablo@example.com', pass: 'hashed-pass' }
     );
 
     expect(result).toBeDefined();
     expect(result.email).toBe('pablo@example.com');
-    expect(result.name).toBe('Pablo Perez')
+    expect(result.name).toBe('Pablo Perez');
   });
 
   test('returns error when user not found', async () => {
     const userService = new MockedUserService([]);
+    const hasher = {
+      hash: vi.fn().mockResolvedValue('hashed-pass'),
+      compare: vi.fn().mockResolvedValue('secret'),
+    };
     await expect(() =>
-      login({ userService }, { email: 'none@example.com', pass: 'secret' })
+      login(
+        { userService, hasher },
+        { email: 'none@example.com', pass: 'hashed-pass' }
+      )
     ).rejects.toThrow('User not found');
   });
 });

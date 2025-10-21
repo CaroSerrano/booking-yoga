@@ -1,5 +1,5 @@
 import { NotFoundError } from '../../utils/customErrors.js'
-import type { UserDeps } from './register.js'
+import type { UserDeps } from './deleteUser.js'
 
 interface UpdatePayload {
   id: string

@@ -1,5 +1,5 @@
 import { NotFoundError } from '../../utils/customErrors.js';
-import type { UserDeps } from './register.js';
+import type { UserDeps } from './deleteUser.js';
 
 export async function listAllUsers({ userService }: UserDeps) {
   const users = await userService.findAll();

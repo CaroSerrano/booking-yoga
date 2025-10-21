@@ -1,4 +1,4 @@
-import { describe, test, expect } from 'vitest';
+import { describe, test, expect, vi } from 'vitest';
 import { UserStatus, Role } from '../../entities/index.js';
 import { MockedUserService } from '../../services/mocks/mock-user-service.js';
 import { userMock } from '../../entities/mocks/user-mock.js';
@@ -16,9 +16,13 @@ describe('Register', () => {
         role: Role.ADMIN,
       }),
     ]);
+    const hasher = {
+      hash: vi.fn().mockResolvedValue('hashed-pass'),
+      compare: vi.fn(),
+    };
 
     const result = await register(
-      { userService },
+      { userService, hasher },
       {
         email: 'pablo@example.com',
         name: 'pablo perez',
@@ -34,7 +38,7 @@ describe('Register', () => {
       id: expect.any(String),
       name: 'pablo perez',
       email: 'pablo@example.com',
-      password: 'secret',
+      password: 'hashed-pass',
       phoneNumber: '151651651',
       status: 'ACTIVE',
       role: Role.ADMIN,
@@ -45,9 +49,12 @@ describe('Register', () => {
 
   test('if no role is provided, a User type user is created by default', async () => {
     const userService = new MockedUserService([]);
-
+    const hasher = {
+      hash: vi.fn().mockResolvedValue('hashed-pass'),
+      compare: vi.fn(),
+    };
     const result = await register(
-      { userService },
+      { userService, hasher },
       {
         email: 'pablo@example.com',
         name: 'pablo perez',
@@ -62,7 +69,7 @@ describe('Register', () => {
       id: expect.any(String),
       name: 'pablo perez',
       email: 'pablo@example.com',
-      password: 'secret',
+      password: 'hashed-pass',
       phoneNumber: '151651651',
       status: 'ACTIVE',
       role: Role.USER,
@@ -81,9 +88,13 @@ describe('Register', () => {
         role: Role.ADMIN,
       }),
     ]);
+    const hasher = {
+      hash: vi.fn().mockResolvedValue('hashed-pass'),
+      compare: vi.fn(),
+    };
     await expect(() =>
       register(
-        { userService },
+        { userService, hasher },
         {
           email: 'caroserrano@example.com',
           name: 'pablo perez',

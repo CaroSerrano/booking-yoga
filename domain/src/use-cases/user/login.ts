@@ -1,5 +1,5 @@
-import { NotFoundError } from '../../utils/customErrors.js';
-import type { UserDeps } from './register.js';
+import { NotFoundError, ValidationError } from '../../utils/customErrors.js';
+import type { AuthDeps } from './register.js';
 
 export interface LoginPayload {
   email: string;
@@ -7,12 +7,16 @@ export interface LoginPayload {
 }
 
 export async function login(
-  { userService }: UserDeps,
+  { userService, hasher }: AuthDeps,
   { email, pass }: LoginPayload
 ) {
   const foundUser = await userService.findByEmail(email);
   if (!foundUser) {
     throw new NotFoundError('User not found');
   }
-  return foundUser;
+  if (!(await hasher.compare(pass, foundUser.password))) {
+    throw new ValidationError('Invalid credentials');
+  }
+  const {password, ...safeUser} = foundUser
+  return safeUser;
 }

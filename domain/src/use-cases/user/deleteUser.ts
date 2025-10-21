@@ -1,5 +1,9 @@
-import type { UserDeps } from './register.js';
+import type { UserService } from "../../services/index.js";
 
+
+export interface UserDeps {
+  userService: UserService;
+}
 interface DeleteUserPayload {
   id: string;
 }

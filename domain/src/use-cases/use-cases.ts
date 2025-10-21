@@ -21,6 +21,7 @@ import {
 import {
   deleteUser,
   getUserByEmail,
+  getUserById,
   listActiveUsers,
   listAllUsers,
   listStudents,
@@ -54,6 +55,10 @@ export const domainUseCases = {
   },
   getUserByEmail: {
     useCase: getUserByEmail,
+    enable: true,
+  },
+  getUserById: {
+    useCase: getUserById,
     enable: true,
   },
   listAllUsers: {

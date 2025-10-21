@@ -2,7 +2,13 @@ import { describe, expect, test } from 'vitest';
 import { MockedUserService } from '../../services/mocks/mock-user-service.js';
 import { userMock } from '../../entities/mocks/user-mock.js';
 import { Role, UserStatus } from '../../entities/index.js';
-import { getUserByEmail, listActiveUsers, listAllUsers, listStudents } from './getUsers.js';
+import {
+  getUserByEmail,
+  getUserById,
+  listActiveUsers,
+  listAllUsers,
+  listStudents,
+} from './getUsers.js';
 
 describe('Get users', () => {
   test('listAll function, should return all users', async () => {
@@ -113,9 +119,18 @@ describe('Get users', () => {
 
   test('getByEmail should return error if the email does not exist', async () => {
     const userService = new MockedUserService([]);
-    await expect(() => getUserByEmail(
-      { userService },
-      { email: 'silsoto@example.com' }
-    )).rejects.toThrow('user not found')
+    await expect(() =>
+      getUserByEmail({ userService }, { email: 'silsoto@example.com' })
+    ).rejects.toThrow('user not found');
+  });
+
+  test('getById should return the user with that id', async () => {
+    const userService = new MockedUserService([
+      userMock({
+        id: '1',
+      }),
+    ]);
+    const result = await getUserById({ userService }, { id: '1' });
+    expect(result).toHaveProperty('id', '1');
   });
 });

@@ -1,7 +1,9 @@
 import {
   domainUseCases,
+  NotFoundError,
   ValidationError,
   type ClassDeps,
+  type UserService,
 } from 'booking-domain';
 import type { NextFunction, Request, Response } from 'express';
 import {
@@ -9,10 +11,21 @@ import {
   updateClassSchema,
 } from 'src/validations/class-validations.js';
 
-export const classController = (deps: ClassDeps) => ({
+export interface ClassControllerDeps extends ClassDeps {
+  userService: UserService;
+}
+
+export const classController = (deps: ClassControllerDeps) => ({
   createClass: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const data = createClassSchema.parse(req.body);
+      const teacherFound = await domainUseCases.getUserById.useCase(
+        { userService: deps.userService },
+        { id: data.teacherId }
+      );
+      if (!teacherFound) {
+        throw new NotFoundError('Teacher not found');
+      }
       await domainUseCases.createClass.useCase(deps, data);
       res.status(201).json('Class created');
     } catch (error) {

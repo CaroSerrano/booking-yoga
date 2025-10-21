@@ -1,8 +1,8 @@
 import { classController } from 'src/controllers/class-controller.js';
-import { classService } from 'src/services/index.js';
+import { classService, userService } from 'src/services/index.js';
 import express from 'express';
 
-const controller = classController({ classService });
+const controller = classController({ classService, userService });
 const router = express.Router();
 router.get('/', controller.getClasses);
 router.get('/available', controller.listAvailableClasses);

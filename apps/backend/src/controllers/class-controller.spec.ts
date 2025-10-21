@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import type { Request, Response, NextFunction } from 'express';
-import { ClassStatus, ValidationError, type ClassDeps } from 'booking-domain';
+import { ClassStatus, getUserById, NotFoundError, ValidationError, type ClassDeps } from 'booking-domain';
+import type { ClassControllerDeps } from './class-controller.js';
 
 vi.mock('booking-domain', async () => {
   const mockCreateClass = vi.fn();
@@ -9,6 +10,7 @@ vi.mock('booking-domain', async () => {
   const mockDeleteClass = vi.fn();
   const mockGetClasses = vi.fn();
   const mockListAvailableClasses = vi.fn();
+  const mockGetUserById = vi.fn();
   const actual = await vi.importActual<typeof import('booking-domain')>(
     'booking-domain'
   );
@@ -21,6 +23,7 @@ vi.mock('booking-domain', async () => {
       deleteClass: { useCase: mockDeleteClass },
       getClasses: { useCase: mockGetClasses },
       listAvailableClasses: { useCase: mockListAvailableClasses },
+      getUserById: {useCase: mockGetUserById}
     },
     ValidationError: class ValidationError extends Error {},
     __mocks__: {
@@ -59,7 +62,7 @@ describe('classController', () => {
     const domainModule: any = await import('booking-domain');
     mocks = domainModule.__mocks__;
 
-    const deps: ClassDeps = { classService: {} as any };
+    const deps: ClassControllerDeps = { classService: {} as any, userService: {} as any };
     controller = classController(deps);
 
     mockRequest = { body: {}, params: {}, query: {} };
@@ -159,7 +162,7 @@ describe('classController', () => {
       expect(mockNext).not.toHaveBeenCalled();
     });
     it('llama a next en caso de error', async () => {
-      const error = new ValidationError('Invalid data');
+      const error = new NotFoundError('Teacher not found');
       mocks.mockCreateClass.mockRejectedValue(error);
       await controller.createClass(
         mockRequest as Request,

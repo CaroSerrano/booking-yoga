@@ -1,4 +1,5 @@
 import type { Booking } from '../../entities/booking.js';
+import type { BookingFilters } from '../../use-cases/booking/listBookingByFilter.js';
 import type { BookingService } from '../booking-service.js';
 
 export class MockedBookingService implements BookingService {
@@ -18,14 +19,19 @@ export class MockedBookingService implements BookingService {
   findAll = async () => {
     return this.bookings;
   };
+  findByFilters = async (filters: BookingFilters) => {
+    return this.bookings.filter((b) => {
+      let match = true;
+
+      if (filters.userId) match &&= b.userId === filters.userId;
+
+      if (filters.classId) match &&= b.classId === filters.classId;
+
+      return match;
+    });
+  };
   findById = async (id: string) => {
     return this.bookings.find((b) => b.id == id);
-  };
-  findByClassId = async (classId: string) => {
-    return this.bookings.filter((b) => b.classId == classId);
-  };
-  findByUserId = async (userId: string) => {
-    return this.bookings.filter((b) => b.userId == userId);
   };
   findByUserAndClass = async (classId: string, userId: string) => {
     return this.bookings.find(

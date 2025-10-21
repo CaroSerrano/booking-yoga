@@ -3,7 +3,7 @@ import type { BookingService, ClassService, UserService } from '../../services/i
 import { NotFoundError, ValidationError } from '../../utils/customErrors.js';
 import generateTimestamps from '../../utils/generateTimestamps.js';
 import { validateRequiredFields } from '../../utils/validateRequiredFields.js';
-interface CreateBookingDeps {
+export interface BookingDeps {
   bookingService: BookingService;
   classService: ClassService;
   userService: UserService;
@@ -15,7 +15,7 @@ interface CreateBookingPayload {
 }
 
 export async function createBooking(
-  { bookingService, classService, userService }: CreateBookingDeps,
+  { bookingService, classService, userService }: BookingDeps,
   payload: CreateBookingPayload
 ) {
   validateRequiredFields(payload, ['userId', 'classId']);

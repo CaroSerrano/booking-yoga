@@ -1,5 +1,4 @@
 export * from './createBooking.js'
-export * from './listClassBookings.js'
-export * from './listUserBookings.js'
+export * from './listBookingByFilter.js'
 export * from './updateBooking.js'
 export * from './getBookingById.js'

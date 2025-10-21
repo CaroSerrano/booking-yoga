@@ -1,7 +1,6 @@
 import {
   createBooking,
-  listClassBookings,
-  listUserBookings,
+  listBookings,
   updateBooking,
   getBookingById,
 } from './booking/index.js';
@@ -117,12 +116,8 @@ export const domainUseCases = {
     useCase: updateBooking,
     enable: true,
   },
-  listUserBookings: {
-    useCase: listUserBookings,
-    enable: true,
-  },
-  listClassBookings: {
-    useCase: listClassBookings,
+  listBookings: {
+    useCase: listBookings,
     enable: true,
   },
   createBooking: {

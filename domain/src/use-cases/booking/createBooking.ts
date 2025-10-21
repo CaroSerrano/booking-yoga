@@ -33,7 +33,7 @@ export async function createBooking(
     throw new ValidationError('User already book the class');
   }
   if(classFound.availableSlots <= 0) {
-    throw new Error('The class has no available slots')
+    throw new ValidationError('The class has no available slots')
   }
   const { createdAt, updatedAt } = generateTimestamps();
   const expiresAt = new Date(createdAt.getTime() + 15 * 60 * 1000);

@@ -132,7 +132,7 @@ describe('classController', () => {
   });
 
   describe('createClase', () => {
-    it('responde con 200 y crea una nueva clase', async () => {
+    it('responde con 201 y crea una nueva clase', async () => {
       const createClassData = {
         title: 'Hatha Yoga',
         teacherId: '1',

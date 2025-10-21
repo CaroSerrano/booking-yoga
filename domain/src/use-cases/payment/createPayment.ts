@@ -4,7 +4,7 @@ import { NotFoundError } from '../../utils/customErrors.js';
 import generateTimestamps from '../../utils/generateTimestamps.js';
 import { validateRequiredFields } from '../../utils/validateRequiredFields.js';
 
-interface CreatePaymentDeps {
+export interface CreatePaymentDeps {
   paymentService: PaymentService;
   userService: UserService;
   bookingService: BookingService;

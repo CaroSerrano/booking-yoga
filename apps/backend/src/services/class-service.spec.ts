@@ -1,6 +1,5 @@
 import { describe, test, expect, vi, beforeEach } from 'vitest';
 import { ClassServiceImplementation } from './class-service.js';
-import prisma from 'src/client.js';
 
 const prismaMock = {
   class: {

@@ -1,5 +1,5 @@
 import { PrismaClient } from 'src/generated/prisma/index.js';
-import type { Booking, BookingService } from 'booking-domain';
+import type { Booking, BookingFilters, BookingService } from 'booking-domain';
 
 export class BookingServiceImplementation implements BookingService {
   prisma: PrismaClient;
@@ -33,12 +33,13 @@ export class BookingServiceImplementation implements BookingService {
     this.prisma.booking.delete({ where: { id } });
   }
 
-  async findByClassId(classId: string) {
-    return this.prisma.booking.findMany({ where: { classId } });
-  }
-
-  async findByUserId(userId: string) {
-    return this.prisma.booking.findMany({ where: { userId } });
+  async findByFilters(filters: BookingFilters) {
+    return this.prisma.booking.findMany({
+      where: {
+        ...(filters.userId && { userId: filters.userId }),
+        ...(filters.classId && { classId: filters.classId }),
+      },
+    });
   }
 
   async findByUserAndClass(classId: string, userId: string) {

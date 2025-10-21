@@ -50,26 +50,29 @@ describe('BookingServiceImplementation', () => {
     const updated = { id: '1', classId: 'c1', userId: 'u1' };
     prismaMock.booking.update.mockResolvedValue(updated);
     const res = await service.updateOne('1', { classId: 'c1' });
-    expect(prismaMock.booking.update).toHaveBeenCalledWith({ where: { id: '1' }, data: { classId: 'c1' } });
+    expect(prismaMock.booking.update).toHaveBeenCalledWith({
+      where: { id: '1' },
+      data: { classId: 'c1' },
+    });
     expect(res).toEqual(updated);
   });
 
   test('delete llama a prisma.booking.delete con id', async () => {
     prismaMock.booking.delete.mockResolvedValue({});
     await service.delete('1');
-    expect(prismaMock.booking.delete).toHaveBeenCalledWith({ where: { id: '1' } });
+    expect(prismaMock.booking.delete).toHaveBeenCalledWith({
+      where: { id: '1' },
+    });
   });
 
-  test('findByClassId llama a prisma.booking.findMany con classId', async () => {
-    prismaMock.booking.findMany.mockResolvedValue([]);
-    await service.findByClassId('c1');
-    expect(prismaMock.booking.findMany).toHaveBeenCalledWith({ where: { classId: 'c1' } });
-  });
-
-  test('findByUserId llama a prisma.booking.findMany con userId', async () => {
-    prismaMock.booking.findMany.mockResolvedValue([]);
-    await service.findByUserId('u1');
-    expect(prismaMock.booking.findMany).toHaveBeenCalledWith({ where: { userId: 'u1' } });
+  test('findByFilters llama a prisma.booking.findMany con los filtros', async () => {
+    const fakeBookings = [{ userId: '1' }];
+    prismaMock.booking.findMany.mockResolvedValue(fakeBookings);
+    const res = await service.findByFilters({ userId: '1' });
+    expect(prismaMock.booking.findMany).toHaveBeenCalledWith({
+      where: { userId: '1' },
+    });
+    expect(res).toEqual(fakeBookings);
   });
 
   test('findByUserAndClass devuelve undefined si no encuentra', async () => {

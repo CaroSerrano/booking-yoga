@@ -1,7 +1,6 @@
 import { BookingStatus } from '../../entities/booking.js';
 import type { BookingService, ClassService, UserService } from '../../services/index.js';
 import { NotFoundError, ValidationError } from '../../utils/customErrors.js';
-import generateTimestamps from '../../utils/generateTimestamps.js';
 import { validateRequiredFields } from '../../utils/validateRequiredFields.js';
 export interface BookingDeps {
   bookingService: BookingService;
@@ -35,16 +34,11 @@ export async function createBooking(
   if(classFound.availableSlots <= 0) {
     throw new ValidationError('The class has no available slots')
   }
-  const { createdAt, updatedAt } = generateTimestamps();
-  const expiresAt = new Date(createdAt.getTime() + 15 * 60 * 1000);
 
   await bookingService.save({
     id: crypto.randomUUID(),
     classId,
     userId,
     status: BookingStatus.PENDING,
-    expiresAt,
-    createdAt,
-    updatedAt,
   });
 }

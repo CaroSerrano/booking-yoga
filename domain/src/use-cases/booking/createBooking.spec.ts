@@ -28,10 +28,7 @@ describe('Create booking', () => {
       id: expect.any(String),
       userId: '1',
       classId: '1',
-      expiresAt: expect.any(Date),
       status: BookingStatus.PENDING,
-      createdAt: expect.any(Date),
-      updatedAt: expect.any(Date),
     });
   });
 

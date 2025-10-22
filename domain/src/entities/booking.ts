@@ -12,6 +12,6 @@ export type BookingStatus = (typeof BookingStatus)[keyof typeof BookingStatus];
 export interface Booking extends Entity {
   userId: string;
   classId: string;
-  expiresAt: Date;
+  expiresAt?: Date;
   status: BookingStatus;
 }

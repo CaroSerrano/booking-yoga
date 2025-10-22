@@ -1,21 +1,25 @@
-import { NotFoundError } from '../../utils/customErrors.js'
-import type { UserDeps } from './deleteUser.js'
+import { NotFoundError } from '../../utils/customErrors.js';
+import type { UserDeps } from './deleteUser.js';
 
 interface UpdatePayload {
-  id: string
-  name?: string
-  email?: string
-  phoneNumber?: string
-  password?: string
+  id: string;
+  name?: string;
+  email?: string;
+  phoneNumber?: string;
+  password?: string;
 }
 
 export async function updateUserData(
   { userService }: UserDeps,
   { id, ...data }: UpdatePayload
 ) {
-  const foundUser = await userService.findById(id)
-  if (!foundUser) throw new NotFoundError('User not found')
+  const foundUser = await userService.findById(id);
+  if (!foundUser) throw new NotFoundError('User not found');
 
-  const updatedUser = await userService.updateOne(id, data)
-  return updatedUser
+  const updatedUser = await userService.updateOne(id, data);
+  if (!updatedUser) {
+    throw new Error('Error updating user');
+  }
+  const { password, ...safeUser } = updatedUser;
+  return safeUser;
 }

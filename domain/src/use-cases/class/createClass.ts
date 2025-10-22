@@ -1,10 +1,12 @@
 import { ClassStatus } from '../../entities/class.js';
-import type { ClassService } from '../../services/index.js';
+import type { ClassService, UserService } from '../../services/index.js';
+import { NotFoundError, ValidationError } from '../../utils/customErrors.js';
 import generateTimestamps from '../../utils/generateTimestamps.js';
 import { validateRequiredFields } from '../../utils/validateRequiredFields.js';
 
 export interface ClassDeps {
   classService: ClassService;
+  userService: UserService;
 }
 
 interface CreateClassPayload {
@@ -12,16 +14,16 @@ interface CreateClassPayload {
   teacherId: string;
   start: string;
   end: string;
-  status: ClassStatus;
-  description: string;
-  location: string;
-  bookingPrice: number;
-  address: string;
   totalSlots: number;
+  status?: ClassStatus;
+  description?: string;
+  location?: string;
+  bookingPrice?: number;
+  address?: string;
 }
 
 export async function createClass(
-  { classService }: ClassDeps,
+  { classService, userService }: ClassDeps,
   payload: CreateClassPayload
 ) {
   validateRequiredFields(payload, [
@@ -32,34 +34,26 @@ export async function createClass(
     'totalSlots',
   ]);
 
-  const {
-    title,
-    teacherId,
-    start,
-    end,
-    totalSlots,
-    status,
-    description,
-    location,
-    bookingPrice,
-    address,
-  } = payload;
+  const { teacherId, start, end, totalSlots, status, ...data } = payload;
   const startDate = new Date(start);
   const endDate = new Date(end);
-  const classStatus = status ? status : ClassStatus.SCHEDULE;
+  if (endDate <= startDate) {
+    throw new ValidationError('End date must be after start date');
+  }
+  const classStatus = status ?? ClassStatus.SCHEDULE;
+  const teacherFound = await userService.findById(teacherId);
+  if (!teacherFound) {
+    throw new NotFoundError('Teacher not found');
+  }
   await classService.save({
     id: crypto.randomUUID(),
-    title,
     teacherId,
     start: startDate,
     end: endDate,
     totalSlots,
-    bookingPrice,
     availableSlots: totalSlots,
     status: classStatus,
     ...generateTimestamps(),
-    description,
-    location,
-    address,
+    ...data,
   });
 }

@@ -14,7 +14,7 @@ import {
 } from './class/index.js';
 import {
   createPayment,
-  listBookingPayments,
+  getBookingPayment,
   listUserPayments,
   updatePayment,
 } from './payment/index.js';
@@ -85,8 +85,8 @@ export const domainUseCases = {
     useCase: listUserPayments,
     enable: true,
   },
-  listBookingPayments: {
-    useCase: listBookingPayments,
+  getBookingPayment: {
+    useCase: getBookingPayment,
     enable: true,
   },
   createPayment: {

@@ -1,3 +1,4 @@
+import { dataCleaner } from '../../utils/dataCleaner.js';
 import type { BookingDeps } from './createBooking.js';
 
 export interface BookingFilters {
@@ -8,8 +9,6 @@ export async function listBookings(
   { bookingService }: BookingDeps,
   filters: BookingFilters
 ) {
-  const activeFilters = Object.fromEntries(
-    Object.entries(filters).filter(([_, v]) => v !== undefined && v !== null)
-  );
+  const activeFilters = dataCleaner(filters);
   return bookingService.findByFilters(activeFilters);
 }

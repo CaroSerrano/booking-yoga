@@ -4,10 +4,10 @@ interface ListBookingPaymentsPayload {
   bookingId: string;
 }
 
-export async function listBookingPayments(
+export async function getBookingPayment(
   { paymentService }: ListPaymentsDeps,
   { bookingId }: ListBookingPaymentsPayload
 ) {
-  const payments = await paymentService.findByBookingId(bookingId);
-  return payments;
+  const payment = await paymentService.findByBookingId(bookingId);
+  return payment;
 }

@@ -1,7 +1,7 @@
 import { describe, test, expect } from 'vitest';
 import { MockedPaymentService } from '../../services/mocks/mock-payment-service.js';
 import { paymentMock } from '../../entities/mocks/payment-mock.js';
-import { listBookingPayments } from './listBookingPayments.js';
+import { getBookingPayment } from './getBookingPayment.js';
 
 describe('List Booking Payments', () => {
   test('should return payment with the specified bookingId', async () => {
@@ -9,7 +9,7 @@ describe('List Booking Payments', () => {
       paymentMock({ bookingId: '1' }),
     ]);
 
-    const result = await listBookingPayments(
+    const result = await getBookingPayment(
       { paymentService },
       { bookingId: '1' }
     );

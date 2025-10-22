@@ -1,9 +1,8 @@
 import {
+  dataCleaner,
   domainUseCases,
-  NotFoundError,
   ValidationError,
   type ClassDeps,
-  type UserService,
 } from 'booking-domain';
 import type { NextFunction, Request, Response } from 'express';
 import {
@@ -11,27 +10,18 @@ import {
   updateClassSchema,
 } from 'src/validations/class-validations.js';
 
-export interface ClassControllerDeps extends ClassDeps {
-  userService: UserService;
-}
-
-export const classController = (deps: ClassControllerDeps) => ({
+export const classController = (deps: ClassDeps) => ({
   createClass: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const data = createClassSchema.parse(req.body);
-      const teacherFound = await domainUseCases.getUserById.useCase(
-        { userService: deps.userService },
-        { id: data.teacherId }
-      );
-      if (!teacherFound) {
-        throw new NotFoundError('Teacher not found');
-      }
-      await domainUseCases.createClass.useCase(deps, data);
+      const cleanedData = dataCleaner(data);
+      await domainUseCases.createClass.useCase(deps, cleanedData);
       res.status(201).json('Class created');
     } catch (error) {
       next(error);
     }
   },
+  
   getClassDetails: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { id } = req.params;
@@ -44,6 +34,7 @@ export const classController = (deps: ClassControllerDeps) => ({
       next(error);
     }
   },
+
   updateClass: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { id } = req.params;
@@ -51,27 +42,12 @@ export const classController = (deps: ClassControllerDeps) => ({
         throw new ValidationError('id is required');
       }
       const data = updateClassSchema.parse(req.body);
-      const cleanedData = Object.fromEntries(
-        Object.entries(data).filter(([_, v]) => v !== undefined)
-      );
+      const cleanedData = dataCleaner(data)
       const result = await domainUseCases.updateClass.useCase(deps, {
         id,
         ...cleanedData,
       });
       res.status(200).json(result);
-    } catch (error) {
-      next(error);
-    }
-  },
-
-  deleteClass: async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const { id } = req.params;
-      if (!id) {
-        throw new ValidationError('id is required');
-      }
-      await domainUseCases.deleteClass.useCase(deps, { id });
-      res.status(204).end();
     } catch (error) {
       next(error);
     }
@@ -91,9 +67,7 @@ export const classController = (deps: ClassControllerDeps) => ({
         teacherId: teacherId ? String(teacherId) : undefined,
         startDate: startDate ? new Date(String(startDate)) : undefined,
       };
-      const cleanedFilters = Object.fromEntries(
-        Object.entries(filters).filter(([_, v]) => v !== undefined)
-      );
+      const cleanedFilters = dataCleaner(filters);
 
       const result = await domainUseCases.getClasses.useCase(
         deps,
@@ -105,6 +79,7 @@ export const classController = (deps: ClassControllerDeps) => ({
       next(error);
     }
   },
+
   listAvailableClasses: async (
     req: Request,
     res: Response,

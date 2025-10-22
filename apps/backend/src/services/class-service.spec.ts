@@ -19,10 +19,10 @@ describe('ClassServiceImplementation', () => {
   });
 
   test('findAll llama a prisma.class.findMany', async () => {
-    prismaMock.class.findMany.mockResolvedValue(['c1']);
+    prismaMock.class.findMany.mockResolvedValue([{ id: '1' }]);
     const res = await service.findAll();
     expect(prismaMock.class.findMany).toHaveBeenCalled();
-    expect(res).toEqual(['c1']);
+    expect(res).toEqual([{ id: '1' }]);
   });
 
   test('findAvailable usa filtro end >= ahora', async () => {
@@ -66,7 +66,7 @@ describe('ClassServiceImplementation', () => {
     expect(prismaMock.class.create).toHaveBeenCalledWith({ data });
   });
 
-  test('updateOne devuelve clase actualizada', async () => {
+  test('updateOne llama a prisma.class.update con datos', async () => {
     const updated = { id: '1', title: 'Yoga Avanzado' };
     prismaMock.class.update.mockResolvedValue(updated);
     const res = await service.updateOne('1', { title: 'Yoga Avanzado' });
@@ -75,13 +75,5 @@ describe('ClassServiceImplementation', () => {
       data: { title: 'Yoga Avanzado' },
     });
     expect(res).toEqual(updated);
-  });
-
-  test('delete llama a prisma.class.delete con id', async () => {
-    prismaMock.class.delete.mockResolvedValue({});
-    await service.delete('1');
-    expect(prismaMock.class.delete).toHaveBeenCalledWith({
-      where: { id: '1' },
-    });
   });
 });

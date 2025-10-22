@@ -20,10 +20,10 @@ describe('BookingServiceImplementation', () => {
   });
 
   test('findAll llama a prisma.booking.findMany', async () => {
-    prismaMock.booking.findMany.mockResolvedValue(['b1']);
+    prismaMock.booking.findMany.mockResolvedValue([{ id: '1' }]);
     const res = await service.findAll();
     expect(prismaMock.booking.findMany).toHaveBeenCalled();
-    expect(res).toEqual(['b1']);
+    expect(res).toEqual([{ id: '1' }]);
   });
 
   test('findById devuelve undefined si no encuentra', async () => {
@@ -40,9 +40,23 @@ describe('BookingServiceImplementation', () => {
   });
 
   test('save llama a prisma.booking.create con datos', async () => {
-    const data = { id: '1', classId: 'c1', userId: 'u1' } as any;
+    const now = new Date();
+    const data = {
+      id: '1',
+      classId: 'c1',
+      userId: 'u1',
+      createdAt: now,
+      updatedAt: now,
+    } as any;
+
     prismaMock.booking.create.mockResolvedValue(data);
+    prismaMock.booking.update.mockResolvedValue({
+      ...data,
+      expiresAt: new Date(now.getTime() + 15 * 60 * 1000),
+    });
+
     await service.save(data);
+
     expect(prismaMock.booking.create).toHaveBeenCalledWith({ data });
   });
 

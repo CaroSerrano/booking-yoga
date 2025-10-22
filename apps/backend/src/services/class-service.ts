@@ -1,6 +1,15 @@
 import type { Class, ClassService, Filters } from 'booking-domain';
 import { PrismaClient } from 'src/generated/prisma/index.js';
 
+function toDomainClass(prismaClass: any): Class {
+  return {
+    ...prismaClass,
+    description: prismaClass.description ?? undefined,
+    location: prismaClass.location ?? undefined,
+    address: prismaClass.address ?? undefined,
+  };
+}
+
 export class ClassServiceImplementation implements ClassService {
   prisma: PrismaClient;
 
@@ -9,29 +18,34 @@ export class ClassServiceImplementation implements ClassService {
   }
 
   async findAll() {
-    return this.prisma.class.findMany();
+    return (await this.prisma.class.findMany()).map(toDomainClass);
   }
 
   async findAvailable() {
-    return this.prisma.class.findMany({ where: { end: { gte: new Date() } } });
+    return (
+      await this.prisma.class.findMany({ where: { end: { gte: new Date() } } })
+    ).map(toDomainClass);
   }
 
   async findById(id: string) {
     const classFound = await this.prisma.class.findUnique({ where: { id } });
-    return classFound ?? undefined;
+    if (!classFound) return undefined;
+    return toDomainClass(classFound);
   }
 
   async findByFilters(filters: Filters) {
-    return this.prisma.class.findMany({
-      where: {
-        ...(filters.location && { location: filters.location }),
-        ...(filters.title && {
-          title: { contains: filters.title, mode: 'insensitive' },
-        }),
-        ...(filters.teacherId && { teacherId: filters.teacherId }),
-        ...(filters.startDate && { start: filters.startDate }),
-      },
-    });
+    return (
+      await this.prisma.class.findMany({
+        where: {
+          ...(filters.location && { location: filters.location }),
+          ...(filters.title && {
+            title: { contains: filters.title, mode: 'insensitive' },
+          }),
+          ...(filters.teacherId && { teacherId: filters.teacherId }),
+          ...(filters.startDate && { start: filters.startDate }),
+        },
+      })
+    ).map(toDomainClass);
   }
 
   async save(data: Class) {
@@ -43,10 +57,11 @@ export class ClassServiceImplementation implements ClassService {
       where: { id },
       data,
     });
-    return classUpdated ?? undefined;
+    if (!classUpdated) return undefined;
+    return toDomainClass(classUpdated);
   }
 
   async delete(id: string) {
-    this.prisma.class.delete({ where: { id } });
+    await this.prisma.class.delete({ where: { id } });
   }
 }

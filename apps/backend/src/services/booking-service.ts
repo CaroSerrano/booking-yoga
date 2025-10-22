@@ -1,6 +1,14 @@
 import { PrismaClient } from 'src/generated/prisma/index.js';
 import type { Booking, BookingFilters, BookingService } from 'booking-domain';
 
+function toDomainClass(prismaClass: any): Booking {
+  return {
+    ...prismaClass,
+    expiresAt: prismaClass.expiresAt ?? undefined,
+    createdAt: prismaClass.createdAt ?? undefined,
+    updatedAt: prismaClass.updatedAt ?? undefined,
+  };
+}
 export class BookingServiceImplementation implements BookingService {
   prisma: PrismaClient;
 
@@ -9,16 +17,23 @@ export class BookingServiceImplementation implements BookingService {
   }
 
   async findAll() {
-    return this.prisma.booking.findMany();
+    return (await this.prisma.booking.findMany()).map(toDomainClass);
   }
 
   async findById(id: string) {
-    const classFound = await this.prisma.booking.findUnique({ where: { id } });
-    return classFound ?? undefined;
+    const booking = await this.prisma.booking.findUnique({ where: { id } });
+    if (!booking) return undefined;
+    return toDomainClass(booking);
   }
 
   async save(data: Booking) {
-    await this.prisma.booking.create({ data });
+    const booking = await this.prisma.booking.create({ data });
+    const expiresAt = new Date(booking.createdAt.getTime() + 15 * 60 * 1000);
+
+    await this.prisma.booking.update({
+      where: { id: booking.id },
+      data: { expiresAt },
+    });
   }
 
   async updateOne(id: string, data: Partial<Booking>) {
@@ -26,7 +41,8 @@ export class BookingServiceImplementation implements BookingService {
       where: { id },
       data,
     });
-    return booking ?? undefined;
+    if (!booking) return undefined;
+    return toDomainClass(booking);
   }
 
   async delete(id: string) {
@@ -34,12 +50,14 @@ export class BookingServiceImplementation implements BookingService {
   }
 
   async findByFilters(filters: BookingFilters) {
-    return this.prisma.booking.findMany({
-      where: {
-        ...(filters.userId && { userId: filters.userId }),
-        ...(filters.classId && { classId: filters.classId }),
-      },
-    });
+    return (
+      await this.prisma.booking.findMany({
+        where: {
+          ...(filters.userId && { userId: filters.userId }),
+          ...(filters.classId && { classId: filters.classId }),
+        },
+      })
+    ).map(toDomainClass);
   }
 
   async findByUserAndClass(classId: string, userId: string) {
@@ -49,6 +67,7 @@ export class BookingServiceImplementation implements BookingService {
         userId,
       },
     });
-    return booking ?? undefined;
+    if (!booking) return undefined;
+    return toDomainClass(booking);
   }
 }

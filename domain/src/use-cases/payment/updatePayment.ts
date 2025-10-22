@@ -1,5 +1,9 @@
 import { BookingStatus, PaymentStatus } from '../../entities/index.js';
-import type { BookingService, ClassService, PaymentService } from '../../services/index.js';
+import type {
+  BookingService,
+  ClassService,
+  PaymentService,
+} from '../../services/index.js';
 import { NotFoundError } from '../../utils/customErrors.js';
 
 interface UpdatePayload {
@@ -23,7 +27,6 @@ export async function updatePayment(
   }
   const updatedPayment = await paymentService.updateOne(id, {
     status,
-    updatedAt: new Date(),
   });
 
   if (updatedPayment?.status === PaymentStatus.COMPLETED) {

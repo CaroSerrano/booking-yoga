@@ -28,7 +28,7 @@ describe('Update class', () => {
     const classService = new MockedClassService([]);
     await expect(() =>
       updateClass({ classService }, { id: '1', totalSlots: 11 })
-    ).rejects.toThrow('class not found');
+    ).rejects.toThrow('Class not found');
   });
   test('test if it is possible to cancel a class', async () => {
     const classService = new MockedClassService([

@@ -1,17 +1,21 @@
-import type { ClassDeps } from './createClass.js';
 import { NotFoundError } from '../../utils/customErrors.js';
+import type { ClassService } from '../../services/class-service.js';
 
 interface DeleteClassPayload {
   id: string;
 }
 
+export interface DeleteClassDeps {
+  classService: ClassService
+}
+
 export async function deleteClass(
-  { classService }: ClassDeps,
+  { classService }: DeleteClassDeps,
   { id }: DeleteClassPayload
 ) {
   const classFound = await classService.findById(id);
   if (!classFound) {
-    throw new NotFoundError('class not found');
+    throw new NotFoundError('Class not found');
   }
   await classService.delete(id);
 }

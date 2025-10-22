@@ -1,6 +1,10 @@
-import type { ClassDeps } from './createClass.js';
+import type { ClassService } from '../../services/class-service.js';
 
-export async function listAvailableClasses({ classService }: ClassDeps) {
+export interface GetClassesDeps {
+  classService: ClassService;
+}
+
+export async function listAvailableClasses({ classService }: GetClassesDeps) {
   const classes = await classService.findAvailable();
   return classes;
 }
@@ -11,13 +15,10 @@ export interface Filters {
   teacherId?: string;
   startDate?: Date;
 }
+
 export async function getClasses(
-  { classService }: ClassDeps,
+  { classService }: GetClassesDeps,
   filters: Filters
 ) {
-  const activeFilters = Object.fromEntries(
-    Object.entries(filters).filter(([_, v]) => v !== undefined && v !== null)
-  );
-
-  return classService.findByFilters(activeFilters);
+  return classService.findByFilters(filters);
 }

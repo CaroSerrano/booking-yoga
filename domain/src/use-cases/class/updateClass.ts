@@ -1,7 +1,6 @@
 import { ClassStatus } from '../../entities/class.js';
+import type { ClassService } from '../../services/class-service.js';
 import { NotFoundError } from '../../utils/customErrors.js';
-import type { ClassDeps } from './createClass.js';
-
 interface UpdatePayload {
   id: string;
   title?: string;
@@ -15,14 +14,18 @@ interface UpdatePayload {
   address?: string;
 }
 
+export interface UpdateClassDeps {
+  classService: ClassService;
+}
+
 export async function updateClass(
-  { classService }: ClassDeps,
+  { classService }: UpdateClassDeps,
   payload: UpdatePayload
 ) {
   const { id, end, start, ...data } = payload;
   const classFound = await classService.findById(id);
   if (!classFound) {
-    throw new NotFoundError('class not found');
+    throw new NotFoundError('Class not found');
   }
 
   const updatedClass = await classService.updateOne(id, {

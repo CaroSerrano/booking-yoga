@@ -9,4 +9,11 @@ describe('deleteClass', () => {
     await deleteClass({ classService }, { id: '1' });
     expect(classService.classes).toHaveLength(0);
   });
+
+  test('if class is not found, an error with an appropiate message is expected', async () => {
+    const classService = new MockedClassService([]);
+    await expect(() =>
+      deleteClass({ classService }, { id: '1' })
+    ).rejects.toThrow('Class not found');
+  });
 });

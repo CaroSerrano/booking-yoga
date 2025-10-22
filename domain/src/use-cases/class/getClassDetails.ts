@@ -1,11 +1,14 @@
+import type { ClassService } from '../../services/class-service.js';
 import { NotFoundError } from '../../utils/customErrors.js';
-import type { ClassDeps } from './createClass.js';
-
 interface GetClassDetailsPayload {
   id: string;
 }
+
+export interface GetClasDetailsDeps {
+  classService: ClassService;
+}
 export async function getClassDetails(
-  { classService }: ClassDeps,
+  { classService }: GetClasDetailsDeps,
   { id }: GetClassDetailsPayload
 ) {
   const classFound = await classService.findById(id);

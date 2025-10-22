@@ -9,6 +9,5 @@ router.get('/available', controller.listAvailableClasses);
 router.get('/:id', controller.getClassDetails);
 router.post('/', controller.createClass);
 router.patch('/:id', controller.updateClass);
-router.delete('/:id', controller.deleteClass);
 
 export default router

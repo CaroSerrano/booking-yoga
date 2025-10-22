@@ -1,7 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import type { Request, Response, NextFunction } from 'express';
-import { ClassStatus, getUserById, NotFoundError, ValidationError, type ClassDeps } from 'booking-domain';
-import type { ClassControllerDeps } from './class-controller.js';
+import { NotFoundError, ValidationError, type ClassDeps } from 'booking-domain';
 
 vi.mock('booking-domain', async () => {
   const mockCreateClass = vi.fn();
@@ -20,7 +19,6 @@ vi.mock('booking-domain', async () => {
       createClass: { useCase: mockCreateClass },
       getClassDetails: { useCase: mockGetClassDetails },
       updateClass: { useCase: mockUpdateClass },
-      deleteClass: { useCase: mockDeleteClass },
       getClasses: { useCase: mockGetClasses },
       listAvailableClasses: { useCase: mockListAvailableClasses },
       getUserById: {useCase: mockGetUserById}
@@ -28,7 +26,6 @@ vi.mock('booking-domain', async () => {
     ValidationError: class ValidationError extends Error {},
     __mocks__: {
       mockCreateClass,
-      mockDeleteClass,
       mockGetClassDetails,
       mockGetClasses,
       mockListAvailableClasses,
@@ -62,7 +59,7 @@ describe('classController', () => {
     const domainModule: any = await import('booking-domain');
     mocks = domainModule.__mocks__;
 
-    const deps: ClassControllerDeps = { classService: {} as any, userService: {} as any };
+    const deps: ClassDeps = { classService: {} as any, userService: {} as any };
     controller = classController(deps);
 
     mockRequest = { body: {}, params: {}, query: {} };
@@ -141,11 +138,6 @@ describe('classController', () => {
         teacherId: '1',
         start: String(new Date('2025-05-02')),
         end: String(new Date('2025-05-02')),
-        description: '',
-        location: '',
-        status: ClassStatus.SCHEDULE,
-        address: '',
-        bookingPrice: 80,
         totalSlots: 12,
       };
       mockRequest.body = createClassData;
@@ -220,29 +212,4 @@ describe('classController', () => {
     });
   });
 
-
-  describe('deleteClass', () => {
-    it('responde con 204', async () => {
-      mockRequest.params = { id: '1' };
-      await controller.deleteClass(
-        mockRequest as Request,
-        mockResponse as Response,
-        mockNext
-      );
-      expect(mockResponse.status).toHaveBeenCalledWith(204);
-      expect(mockResponse.end).toHaveBeenCalled();
-    });
-    it('llama a next en caso de error', async () => {
-      const error = new ValidationError('id is required');
-      mocks.mockDeleteClass.mockRejectedValue(error);
-
-      await controller.deleteClass(
-        mockRequest as Request,
-        mockResponse as Response,
-        mockNext
-      );
-
-      expect(mockNext).toHaveBeenCalledWith(error);
-    });
-  });
 });

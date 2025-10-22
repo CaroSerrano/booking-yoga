@@ -8,6 +8,7 @@ import {
   updateBookingSchema,
 } from 'src/validations/booking-validations.js';
 import type { Request, Response, NextFunction } from 'express';
+import { dataCleaner } from 'booking-domain';
 
 export const bookingController = (deps: BookingDeps) => ({
   createBooking: async (req: Request, res: Response, next: NextFunction) => {
@@ -26,9 +27,7 @@ export const bookingController = (deps: BookingDeps) => ({
         throw new ValidationError('id is required');
       }
       const data = updateBookingSchema.parse(req.body);
-      const cleanedData = Object.fromEntries(
-        Object.entries(data).filter(([_, v]) => v !== undefined)
-      );
+      const cleanedData = dataCleaner(data);
       const result = await domainUseCases.updateBooking.useCase(
         {
           bookingService: deps.bookingService,
@@ -56,9 +55,7 @@ export const bookingController = (deps: BookingDeps) => ({
         userId: userId ? String(userId) : undefined,
         classId: classId ? String(classId) : undefined,
       };
-      const cleanedFilters = Object.fromEntries(
-        Object.entries(filters).filter(([_, v]) => v !== undefined)
-      );
+      const cleanedFilters = dataCleaner(filters);
       const result = await domainUseCases.listBookings.useCase(
         deps,
         cleanedFilters

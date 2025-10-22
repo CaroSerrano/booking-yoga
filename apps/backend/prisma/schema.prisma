@@ -72,7 +72,7 @@ model Booking {
   id        String        @id @default(uuid())
   userId    String
   classId   String
-  expiresAt DateTime
+  expiresAt DateTime?
   status    BookingStatus @default(PENDING)
 
   createdAt DateTime @default(now())

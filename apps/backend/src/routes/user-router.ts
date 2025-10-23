@@ -9,6 +9,5 @@ router.get('/', controller.listAllUsers);
 router.get('/active', controller.listActiveUsers);
 router.get('/students', controller.listStudents);
 router.patch('/:id', controller.updateUser);
-router.delete('/:id', controller.deleteUser);
 
 export default router;

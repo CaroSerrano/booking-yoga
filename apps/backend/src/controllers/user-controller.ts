@@ -56,17 +56,4 @@ export const userController = (deps: UserDeps) => ({
       next(error);
     }
   },
-
-  deleteUser: async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const { id } = req.params;
-      if (!id) {
-        throw new ValidationError('id is required');
-      }
-      await domainUseCases.deleteUser.useCase(deps, { id });
-      res.status(204).end();
-    } catch (error) {
-      next(error);
-    }
-  },
 });

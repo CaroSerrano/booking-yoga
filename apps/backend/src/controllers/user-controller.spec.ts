@@ -197,31 +197,4 @@ describe('userController', () => {
       expect(mockNext).toHaveBeenCalledWith(error);
     });
   });
-
-  describe('deleteUser', () => {
-    it('debe eliminar un usuario y responder con codigo 204', async () => {
-      const params = { id: '1' };
-      mockRequest.params = params;
-      await controller.deleteUser(
-        mockRequest as Request,
-        mockResponse as Response,
-        mockNext
-      );
-      expect(mockResponse.status).toHaveBeenCalledWith(204);
-      expect(mockNext).not.toHaveBeenCalled();
-    });
-
-    it('llama a next en caso de error', async () => {
-      const error = new ValidationError('id is required');
-      mocks.mockDeleteUser.mockRejectedValue(error);
-
-      await controller.deleteUser(
-        mockRequest as Request,
-        mockResponse as Response,
-        mockNext
-      );
-
-      expect(mockNext).toHaveBeenCalledWith(error);
-    });
-  });
 });

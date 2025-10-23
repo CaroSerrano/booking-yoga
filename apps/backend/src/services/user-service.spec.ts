@@ -28,13 +28,17 @@ describe('UserServiceImplementation', () => {
   test('findActive usa filtro status ACTIVE', async () => {
     prismaMock.user.findMany.mockResolvedValue([]);
     await service.findActive();
-    expect(prismaMock.user.findMany).toHaveBeenCalledWith({ where: { status: 'ACTIVE' } });
+    expect(prismaMock.user.findMany).toHaveBeenCalledWith({
+      where: { status: 'ACTIVE' },
+    });
   });
 
   test('findStudents usa filtro role USER', async () => {
     prismaMock.user.findMany.mockResolvedValue([]);
     await service.findStudents();
-    expect(prismaMock.user.findMany).toHaveBeenCalledWith({ where: { role: 'USER' } });
+    expect(prismaMock.user.findMany).toHaveBeenCalledWith({
+      where: { role: 'USER' },
+    });
   });
 
   test('findById devuelve undefined si no encuentra', async () => {
@@ -74,13 +78,10 @@ describe('UserServiceImplementation', () => {
     const updated = { id: '1', name: 'Caro' };
     prismaMock.user.update.mockResolvedValue(updated);
     const res = await service.updateOne('1', { name: 'Caro' });
-    expect(prismaMock.user.update).toHaveBeenCalledWith({ where: { id: '1' }, data: { name: 'Caro' } });
+    expect(prismaMock.user.update).toHaveBeenCalledWith({
+      where: { id: '1' },
+      data: { name: 'Caro' },
+    });
     expect(res).toEqual(updated);
-  });
-
-  test('delete llama a prisma.user.delete con id', async () => {
-    prismaMock.user.delete.mockResolvedValue({});
-    await service.delete('1');
-    expect(prismaMock.user.delete).toHaveBeenCalledWith({ where: { id: '1' } });
   });
 });

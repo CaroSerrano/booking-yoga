@@ -17,6 +17,10 @@ const preview: Preview = {
       }
     }
   },
+    initialGlobals: {
+    // 👇 Set the initial background color
+    backgrounds: { value: 'dark' },
+  },
 };
 
 export default preview;

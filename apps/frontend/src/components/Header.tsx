@@ -19,8 +19,14 @@ export const Header = ({
 }: HeaderProps) => (
   <header className='w-full'>
     <div className='w-full flex justify-between items-center border-b border-white px-5 py-4'>
-      <div className='flex gap-1 items-center'>
-        <img src='/logo.webp' alt='Logo' width='90' height='90' />
+      <div className='flex gap-2 items-center'>
+        <img
+          src='/logo.png'
+          alt='Logo'
+          width='90'
+          height='90'
+          className='mx-auto rounded-full bg-white p-2 shadow-md backdrop-blur-sm justify-self-center'
+        />
         <h1>Yoga Studio</h1>
       </div>
       <div className='flex gap-2 items-center'>
@@ -34,7 +40,9 @@ export const Header = ({
         ) : (
           <>
             <Button onClick={onLogin}>Log in</Button>
-            <Button onClick={onCreateAccount} variant='primary'>Sign up</Button>
+            <Button onClick={onCreateAccount} variant='primary'>
+              Sign up
+            </Button>
           </>
         )}
       </div>

@@ -26,14 +26,16 @@ export function Input({
     <div className={`${layout} gap-2`}>
       <input
         id={id}
-        className='rounded-md text-sm border border-white py-1 px-2'
+        className='rounded-md text-sm border-2 border-white py-1 px-2'
         type={type}
         placeholder={placeholder}
         value={value}
         name={name}
         onChange={onChange}
       />
-      <label htmlFor={id}>{label}</label>
+      <label className='font-bold' htmlFor={id}>
+        {label}
+      </label>
     </div>
   );
 }

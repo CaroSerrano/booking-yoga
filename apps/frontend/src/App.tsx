@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { useNavigate, Routes, Route, Outlet } from 'react-router-dom';
 import { Login } from './pages/Login';
 import Home from './pages/Home';
+import { PrivacyPolicies } from './pages/PrivacyPolicies';
 
 interface LayoutProps {
   user: UserResponseDTO | undefined;
@@ -104,6 +105,7 @@ function App() {
             />
           }
         />
+        <Route path='/privacy-policies' element={<PrivacyPolicies />} />
       </Route>
     </Routes>
   );

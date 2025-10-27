@@ -14,4 +14,26 @@ export const createClassSchema = z.object({
   totalSlots: z.coerce.number('totalSlots is required').int().nonnegative(),
 });
 
+export type CreateClassSchema = z.infer<typeof createClassSchema>;
+
 export const updateClassSchema = createClassSchema.partial();
+
+export type UpdateClassSchema = z.infer<typeof updateClassSchema>;
+
+export const classResponseSchema = z.object({
+  id: z.string(),
+  title: z.string(),
+  teacherId: z.string(),
+  start: z.string(),
+  end: z.string(),
+  status: z.enum(ClassStatus),
+  totalSlots: z.string(),
+  description: z.string().optional().nullable(),
+  location: z.string().optional().nullable(),
+  bookingPrice: z.string().optional().nullable(),
+  address: z.string().optional().nullable(),
+  createdAt: z.string().optional().nullable(),
+  updatedAt: z.string().optional().nullable(),
+});
+
+export type ClassResponseSchema = z.infer<typeof classResponseSchema>;

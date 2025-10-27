@@ -3,7 +3,7 @@ import { errorHandler } from './middlewares/errorHandler.js';
 import apiRouter from './routes/index.js';
 import cors from 'cors';
 
-export * from './validations/auth-validations.js';
+export * from './validations/index.js';
 export * from './utils/auth.js';
 import cookieParser from 'cookie-parser';
 

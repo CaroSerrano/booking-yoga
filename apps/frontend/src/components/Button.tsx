@@ -2,13 +2,22 @@ import type { PropsWithChildren } from 'react';
 
 export type ButtonVariant = 'primary' | 'danger' | 'disabled' | 'loading';
 
+export type ButtonType = 'submit' | 'reset' | 'button';
+
 export type ButtonProps = PropsWithChildren<{
+  type?: ButtonType;
   variant?: ButtonVariant;
   onClick?: () => void;
   className?: string;
 }>;
 
-export function Button({ variant, children, onClick, className }: ButtonProps) {
+export function Button({
+  variant,
+  children,
+  onClick,
+  className,
+  type = 'button',
+}: ButtonProps) {
   let variantClasses = '';
   switch (variant) {
     case 'primary':
@@ -33,7 +42,7 @@ export function Button({ variant, children, onClick, className }: ButtonProps) {
   }
   return (
     <button
-      type='button'
+      type={type}
       onClick={onClick}
       className={`flex items-center justify-center text-center gap-2 rounded-xl px-5 py-1 ${className} ${variantClasses} transition-colors`}
     >

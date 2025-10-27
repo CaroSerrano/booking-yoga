@@ -11,6 +11,7 @@ const meta = {
   },
   args: {
     onClick: fn(),
+    type: 'button'
   },
   argTypes: {
     variant: {

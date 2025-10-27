@@ -34,7 +34,7 @@ export function LoginForm({
   return (
     <form
       onSubmit={handleSubmit}
-      className='relative flex flex-col w-full gap-5 max-w-lg  p-10 rounded-2xl bg-[url("/texture.webp")] bg-cover bg-center  text-white overflow-hidden shadow-sm'
+      className='relative flex flex-col items-center w-full gap-5 max-w-lg  p-10 rounded-2xl bg-[url("/texture.webp")] bg-cover bg-center  text-white overflow-hidden shadow-sm'
     >
       <div className='absolute inset-0 bg-black/30 z-0' />
       <div className='relative z-10'>
@@ -56,6 +56,8 @@ export function LoginForm({
             type='email'
             onChange={(e) => setEmail(e.target.value)}
             value={email}
+            disabled={loading}
+            required
           />
           <div className='relative flex items-center gap-2'>
             <Input
@@ -66,6 +68,8 @@ export function LoginForm({
               type={visible ? 'text' : 'password'}
               onChange={(e) => setPassword(e.target.value)}
               value={pass}
+              disabled={loading}
+              required
             />
             {visible ? (
               <FaEyeSlash

@@ -1,6 +1,7 @@
 import { domainUseCases, type AuthDeps } from 'booking-domain';
 import type { Request, Response, NextFunction } from 'express';
 import {
+  loginResponseSchema,
   loginSchema,
   registerSchema,
 } from 'src/validations/auth-validations.js';
@@ -25,7 +26,31 @@ export const authController = (deps: AuthDeps) => ({
 
       const user = await domainUseCases.login.useCase(deps, data);
       const token = jwt.sign({ email: user.email, role: user.role }, secret);
-      res.status(200).json({ token, user });
+      res.cookie('token', token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'none',
+        maxAge: 24 * 60 * 60 * 1000,
+      });
+      const userData = {
+        ...user,
+        createdAt: user.createdAt?.toISOString() ?? null,
+        updatedAt: user.updatedAt?.toISOString() ?? null,
+      };
+      const loginResponse = loginResponseSchema.parse(userData);
+      res.status(200).json(loginResponse);
+    } catch (error) {
+      next(error);
+    }
+  },
+  logout: (req: Request, res: Response, next: NextFunction) => {
+    try {
+      res.clearCookie('token', {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'none',
+      });
+      res.status(200).json({ message: 'Logged out' });
     } catch (error) {
       next(error);
     }

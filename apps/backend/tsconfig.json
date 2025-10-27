@@ -1,14 +1,17 @@
 {
-    "extends": "../../tsconfig.json",
-    "compilerOptions": {
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "booking-domain": ["../../domain/dist"]
+      "booking-domain": [
+        "../../domain/dist"
+      ]
     },
+    "declaration": true,
     "outDir": "dist",
     "rootDir": "src"
   },
-    "include": [
-        "src/**/*"
-    ]
+  "include": [
+    "src/**/*"
+  ]
 }

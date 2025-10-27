@@ -12,3 +12,13 @@ export class BcryptPasswordHasher implements PasswordHasher {
     return bcrypt.compare(password, hash);
   }
 }
+
+declare global {
+  namespace Express {
+    interface Request {
+      user?: any;
+    }
+  }
+}
+
+export {};

@@ -68,7 +68,7 @@ export const paymentController = (deps: PaymentDeps) => ({
       if (!bookingId) {
         throw new ValidationError('bookingId is required');
       }
-      const result = await domainUseCases.listBookingPayments.useCase(deps, {
+      const result = await domainUseCases.getBookingPayment.useCase(deps, {
         bookingId: String(bookingId),
       });
       if (!result) {

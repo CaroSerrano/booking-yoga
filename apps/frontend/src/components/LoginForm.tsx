@@ -1,11 +1,10 @@
-'use client';
 import { Button } from './Button';
 import { Input } from './Input';
 import { useState } from 'react';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
-interface LoginFormProps {
-  onSubmit: (data: { email: string; password: string }) => void;
+export interface LoginFormProps {
+  onSubmit: (data: { email: string; pass: string }) => void;
   loading?: boolean;
   error?: string;
   successMessage?: string;
@@ -22,12 +21,12 @@ export function LoginForm({
   showPassword = false,
 }: LoginFormProps) {
   const [email, setEmail] = useState(defaultValues.email);
-  const [password, setPassword] = useState(defaultValues.password);
+  const [pass, setPassword] = useState(defaultValues.password);
   const [visible, setVisible] = useState(showPassword);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit({ email, password });
+    onSubmit({ email, pass });
   };
 
   const buttonType = loading ? 'loading' : 'primary';
@@ -35,19 +34,19 @@ export function LoginForm({
   return (
     <form
       onSubmit={handleSubmit}
-      className=' relative flex flex-col gap-5 max-w-2xl border-2 border-b-indigo-100 p-10 rounded-2xl bg-[url("/texture.webp")] bg-cover bg-center  text-white overflow-hidden shadow-sm'
+      className='relative flex flex-col w-full gap-5 max-w-lg  p-10 rounded-2xl bg-[url("/texture.webp")] bg-cover bg-center  text-white overflow-hidden shadow-sm'
     >
       <div className='absolute inset-0 bg-black/30 z-0' />
       <div className='relative z-10'>
         <img
           src='/logo.png'
           alt='Logo'
-          width='240'
-          height='240'
+          width='200'
+          height='200'
           className='mx-auto rounded-full bg-white p-4 shadow-md backdrop-blur-sm justify-self-center'
         />
         <h1 className='text-center text-3xl font-bold my-5'>Log in</h1>
-        <div className='max-w-90'>
+        <div className='max-w-90 text-start'>
           <Input
             id='femail'
             label='Email'
@@ -58,7 +57,7 @@ export function LoginForm({
             onChange={(e) => setEmail(e.target.value)}
             value={email}
           />
-          <div className='relative flex items-end gap-2'>
+          <div className='relative flex items-center gap-2'>
             <Input
               id='fpassword'
               label='Password'
@@ -66,33 +65,40 @@ export function LoginForm({
               name='password'
               type={visible ? 'text' : 'password'}
               onChange={(e) => setPassword(e.target.value)}
-              value={password}
+              value={pass}
             />
             {visible ? (
               <FaEyeSlash
                 size={20}
                 onClick={() => setVisible(!visible)}
-                className='cursor-pointer'
+                className='cursor-pointer relative top-4'
                 title='Hide password'
               />
             ) : (
               <FaEye
                 size={20}
                 onClick={() => setVisible(!visible)}
-                className='cursor-pointer'
+                className='cursor-pointer relative top-4'
                 title='Show password'
               />
             )}
           </div>
 
-          {error && <p className='text-xs text-fuchsia-400'>{error}</p>}
+          {error && (
+            <p className=' bg-fuchsia-50/80 text-sm text-fuchsia-600  w-fit rounded-md px-3 py-1 mt-3'>
+              {error}
+            </p>
+          )}
           {successMessage && (
-            <p className='text-green-300 text-sm'>{successMessage}</p>
+            <p className='text-green-600 bg-green-50/80 w-fit rounded-md px-3 py-1 mt-3 text-sm'>
+              {successMessage}
+            </p>
           )}
         </div>
         <Button
           children={loading ? 'Loading...' : 'Log in'}
-          onClick={() => onSubmit}
+          type='submit'
+          onClick={() => {}}
           variant={buttonType}
           className='mt-7 w-30 shadow-2xs shadow-slate-400/80 justify-self-center'
         />

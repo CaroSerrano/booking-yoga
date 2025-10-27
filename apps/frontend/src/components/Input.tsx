@@ -8,6 +8,8 @@ interface InputProps {
   flexCol?: boolean;
   value?: string;
   name?: string;
+  disabled?: boolean;
+  required?:boolean;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
@@ -19,6 +21,8 @@ export function Input({
   flexCol = true,
   value,
   name,
+  disabled=false,
+  required=true,
   onChange,
 }: InputProps) {
   const layout = flexCol ? 'flex flex-col-reverse' : 'flex';
@@ -26,12 +30,14 @@ export function Input({
     <div className={`${layout} gap-2`}>
       <input
         id={id}
-        className='rounded-md text-sm border-2 border-white py-1 px-2'
+        className='rounded-md text-sm border-2 border-white py-1 px-2 disabled:bg-gray-400'
         type={type}
         placeholder={placeholder}
         value={value}
         name={name}
         onChange={onChange}
+        disabled={disabled}
+        required={required}
       />
       <label className='font-bold' htmlFor={id}>
         {label}

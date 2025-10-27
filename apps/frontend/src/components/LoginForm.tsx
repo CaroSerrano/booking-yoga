@@ -85,12 +85,12 @@ export function LoginForm({
           </div>
 
           {error && (
-            <p className=' bg-fuchsia-50/80 text-sm text-fuchsia-600  w-fit rounded-md px-3 py-1 mt-3'>
+            <p className=' bg-white/80 text-sm text-red-600  w-fit rounded-md px-3 py-1 mt-3'>
               {error}
             </p>
           )}
           {successMessage && (
-            <p className='text-green-600 bg-green-50/80 w-fit rounded-md px-3 py-1 mt-3 text-sm'>
+            <p className='text-green-600 bg-white/80 w-fit rounded-md px-3 py-1 mt-3 text-sm'>
               {successMessage}
             </p>
           )}

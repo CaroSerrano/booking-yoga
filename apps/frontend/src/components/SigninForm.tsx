@@ -4,6 +4,7 @@ import { Input } from './Input';
 import { FaEye, FaEyeSlash, FaExternalLinkAlt } from 'react-icons/fa';
 import { Button } from './Button';
 import { Link } from 'react-router-dom';
+import { Spinner } from './Spinner';
 
 export interface SigninFormProps {
   onSubmit: (data: RegisterSchema) => void;
@@ -145,7 +146,16 @@ export function SigninForm({
           </div>
         </div>
         <Button
-          children={loading ? 'Loading...' : 'Sign in'}
+          children={
+            loading ? (
+              <span className='flex items-center gap-2'>
+                <Spinner size={20} className='shrink-0' />
+                Loading...
+              </span>
+            ) : (
+              'Sign in'
+            )
+          }
           type='submit'
           onClick={() => {}}
           variant={buttonType}

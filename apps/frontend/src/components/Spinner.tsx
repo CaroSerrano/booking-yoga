@@ -1,28 +1,30 @@
-export function Spinner({ className = 'w-5 h-5 text-white' }) {
+export function Spinner({ size = 24, className = 'text-white' }) {
+  const radius = size / 2 - 2;
   return (
     <svg
       className={`animate-spin ${className}`}
       xmlns='http://www.w3.org/2000/svg'
       fill='none'
-      viewBox='0 0 24 24'
+      width={size}
+      height={size}
+      viewBox={`0 0 ${size} ${size}`}
     >
       <circle
         className='opacity-25'
-        cx='12'
-        cy='12'
-        r='10'
+        cx={size / 2}
+        cy={size / 2}
+        r={radius}
         stroke='currentColor'
-        strokeWidth='4'
+        strokeWidth={size / 12}
       />
       <circle
         className='opacity-75'
-        cx='12'
-        cy='12'
-        r='10'
+        cx={size / 2}
+        cy={size / 2}
+        r={radius}
         stroke='currentColor'
-        strokeWidth='4'
-        strokeDasharray='31.4'
-        strokeDashoffset='0'
+        strokeWidth={size / 12}
+        strokeDasharray={Math.PI * radius}
         strokeLinecap='round'
       />
     </svg>

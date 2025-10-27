@@ -13,8 +13,8 @@ type Story = StoryObj<typeof meta>;
 
 export const Base: Story = {};
 export const Large: Story = {
-  args: { className: 'w-10 h-10' },
+  args: { size: 40 },
 };
 export const Small: Story = {
-  args: { className: 'w-3 h-3' },
+  args: { size: 15 },
 };

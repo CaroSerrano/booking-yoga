@@ -2,6 +2,7 @@ import { Button } from './Button';
 import { Input } from './Input';
 import { useState } from 'react';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { Spinner } from './Spinner';
 
 export interface LoginFormProps {
   onSubmit: (data: { email: string; pass: string }) => void;
@@ -100,7 +101,16 @@ export function LoginForm({
           )}
         </div>
         <Button
-          children={loading ? 'Loading...' : 'Log in'}
+          children={
+            loading ? (
+              <span className='flex items-center gap-2'>
+                <Spinner size={20} className='shrink-0' />
+                Loading...
+              </span>
+            ) : (
+              'Log in'
+            )
+          }
           type='submit'
           onClick={() => {}}
           variant={buttonType}

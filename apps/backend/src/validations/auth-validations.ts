@@ -9,10 +9,13 @@ export const registerSchema = z.object({
   role: z.enum(Role).default(Role.USER),
 });
 
+export type RegisterSchema = z.infer<typeof registerSchema>;
+
 export const loginSchema = z.object({
   email: z.email('Invalid email'),
   pass: z.string(),
 });
+export type LoginSchema = z.infer<typeof loginSchema>;
 
 export const userResponseSchema = z.object({
   id: z.string(),

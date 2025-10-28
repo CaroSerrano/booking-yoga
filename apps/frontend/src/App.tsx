@@ -113,6 +113,25 @@ function App() {
     }
   };
 
+  const onCreateClass = async (data: CreateClassDTO) => {
+    setLoading(true);
+    try {
+      const res = await fetch('http://localhost:3000/api/class', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+        credentials: 'include',
+      });
+
+      if (!res.ok) {
+        const { message } = await res.json();
+        throw new Error(message || 'Error creating a class');
+      }
+      toast.success('Class created successfully');
+      navigate('/dashboard');
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error(error.message);
       }
     } finally {
       setLoading(false);
@@ -145,7 +164,7 @@ function App() {
           element={
             <DashboardPage
               user={user}
-              onSubmit={onSignin}
+              onSubmit={onCreateClass}
               loading={loading}
             />
           }

@@ -8,6 +8,7 @@ import {
 import jwt from 'jsonwebtoken';
 
 const secret = process.env.JWT_SECRET || 'test';
+const isProd = process.env.NODE_ENV === 'production';
 
 export const authController = (deps: AuthDeps) => ({
   register: async (req: Request, res: Response, next: NextFunction) => {
@@ -28,8 +29,8 @@ export const authController = (deps: AuthDeps) => ({
       const token = jwt.sign({ email: user.email, role: user.role }, secret);
       res.cookie('token', token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'none',
+        secure: isProd,
+        sameSite: isProd ? 'none' : 'lax',
         maxAge: 24 * 60 * 60 * 1000,
       });
       const userData = {

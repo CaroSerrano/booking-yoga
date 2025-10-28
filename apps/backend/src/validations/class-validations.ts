@@ -14,11 +14,11 @@ export const createClassSchema = z.object({
   totalSlots: z.coerce.number('totalSlots is required').int().nonnegative(),
 });
 
-export type CreateClassSchema = z.infer<typeof createClassSchema>;
+export type CreateClassDTO = z.infer<typeof createClassSchema>;
 
 export const updateClassSchema = createClassSchema.partial();
 
-export type UpdateClassSchema = z.infer<typeof updateClassSchema>;
+export type UpdateClassDTO = z.infer<typeof updateClassSchema>;
 
 export const classResponseSchema = z.object({
   id: z.string(),
@@ -36,4 +36,4 @@ export const classResponseSchema = z.object({
   updatedAt: z.string().optional().nullable(),
 });
 
-export type ClassResponseSchema = z.infer<typeof classResponseSchema>;
+export type ClassResponseDTO = z.infer<typeof classResponseSchema>;

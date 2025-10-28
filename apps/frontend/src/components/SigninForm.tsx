@@ -9,8 +9,6 @@ import { Spinner } from './Spinner';
 export interface SigninFormProps {
   onSubmit: (data: RegisterSchema) => void;
   loading?: boolean;
-  error?: string;
-  successMessage?: string;
   showPassword?: boolean;
 }
 
@@ -19,8 +17,6 @@ const adminEmails = ['caro@example.com', 'admin@example.com'];
 export function SigninForm({
   onSubmit,
   loading,
-  error,
-  successMessage,
   showPassword,
 }: SigninFormProps) {
   const [visible, setVisible] = useState(showPassword);
@@ -120,16 +116,6 @@ export function SigninForm({
             disabled={loading}
             required
           />
-          {error && (
-            <p className=' bg-white/80 text-sm text-red-600  w-full text-center rounded-md px-3 py-1 mt-3'>
-              {error}
-            </p>
-          )}
-          {successMessage && (
-            <p className='text-green-600 bg-white/80 w-full text-center rounded-md px-3 py-1 mt-3 text-sm'>
-              {successMessage}
-            </p>
-          )}
           <div className='flex gap-2 items-center'>
             <Input
               id='fterms'

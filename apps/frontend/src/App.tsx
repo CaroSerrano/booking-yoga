@@ -1,6 +1,7 @@
 import './App.css';
+import toast, { Toaster } from 'react-hot-toast';
 import { Header } from './components/Header';
-import type { UserResponseDTO } from 'booking-backend';
+import type { CreateClassDTO, UserResponseDTO } from 'booking-backend';
 import { useState } from 'react';
 import { useNavigate, Routes, Route, Outlet } from 'react-router-dom';
 import { Login } from './pages/Login';
@@ -8,6 +9,7 @@ import Home from './pages/Home';
 import { PrivacyPolicies } from './pages/PrivacyPolicies';
 import type { RegisterSchema, LoginSchema } from 'booking-backend';
 import { Signin } from './pages/Signin';
+import DashboardPage from './pages/DashboardPage';
 
 interface LayoutProps {
   user: UserResponseDTO | undefined;
@@ -26,6 +28,7 @@ function Layout({ user, onLogin, onLogout, onCreateAccount }: LayoutProps) {
         onCreateAccount={onCreateAccount}
       />
       <main className='mt-20'>
+        <Toaster />
         <Outlet />
       </main>
     </div>
@@ -34,9 +37,7 @@ function Layout({ user, onLogin, onLogout, onCreateAccount }: LayoutProps) {
 
 function App() {
   const [user, setUser] = useState<UserResponseDTO | undefined>(undefined);
-  const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const [successMessage, setSuccessMessage] = useState('');
 
   const navigate = useNavigate();
   const onLogin = () => navigate('/login');
@@ -44,7 +45,6 @@ function App() {
 
   const onLoginSubmit = async (data: LoginSchema) => {
     setLoading(true);
-    setError('');
 
     try {
       const res = await fetch('http://localhost:3000/api/auth/login', {
@@ -61,16 +61,10 @@ function App() {
 
       const responseData = await res.json();
       setUser(responseData);
-      setSuccessMessage('Successfully logged in');
-      setTimeout(() => {
-        setSuccessMessage('');
-      }, 4000);
+      navigate('/dashboard');
     } catch (err) {
       if (err instanceof Error) {
-        setError(err.message);
-        setTimeout(() => {
-          setError('');
-        }, 4000);
+        toast.error(err.message);
       }
     } finally {
       setLoading(false);
@@ -79,7 +73,6 @@ function App() {
 
   const onLogout = async () => {
     setLoading(true);
-    setError('');
     try {
       await fetch('http://localhost:3000/api/auth/logout', {
         method: 'POST',
@@ -88,10 +81,7 @@ function App() {
       setUser(undefined);
     } catch (err) {
       if (err instanceof Error) {
-        setError(err.message);
-        setTimeout(() => {
-          setError('');
-        }, 4000);
+        toast.error(err.message);
       }
     } finally {
       setLoading(false);
@@ -101,7 +91,6 @@ function App() {
   const onSignin = async (data: RegisterSchema) => {
     try {
       setLoading(true);
-      setError('');
       const res = await fetch('http://localhost:3000/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -113,17 +102,17 @@ function App() {
         const { message } = await res.json();
         throw new Error(message || 'Signin error');
       }
-      setSuccessMessage('Successfully registered');
-      setTimeout(() => {
-        setSuccessMessage('');
-      }, 4000);
+      toast.success('Successfully registered');
       navigate('/login');
     } catch (error) {
       if (error instanceof Error) {
-        setError(error.message);
-        setTimeout(() => {
-          setError('');
-        }, 4000);
+        toast.error(error.message);
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
       }
     } finally {
       setLoading(false);
@@ -145,23 +134,19 @@ function App() {
         <Route path='/' element={<Home />} />
         <Route
           path='/login'
-          element={
-            <Login
-              error={error}
-              onSubmit={onLoginSubmit}
-              loading={loading}
-              successMessage={successMessage}
-            />
-          }
+          element={<Login onSubmit={onLoginSubmit} loading={loading} />}
         />
         <Route
           path='/signin'
+          element={<Signin onSubmit={onSignin} loading={loading} />}
+        />
+        <Route
+          path='/dashboard'
           element={
-            <Signin
-              error={error}
+            <DashboardPage
+              user={user}
               onSubmit={onSignin}
               loading={loading}
-              successMessage={successMessage}
             />
           }
         />

@@ -7,8 +7,6 @@ import { Spinner } from './Spinner';
 export interface LoginFormProps {
   onSubmit: (data: { email: string; pass: string }) => void;
   loading?: boolean;
-  error?: string;
-  successMessage?: string;
   defaultValues?: { email: string; password: string };
   showPassword?: boolean;
 }
@@ -16,8 +14,6 @@ export interface LoginFormProps {
 export function LoginForm({
   onSubmit,
   loading = false,
-  error = '',
-  successMessage = '',
   defaultValues = { email: '', password: '' },
   showPassword = false,
 }: LoginFormProps) {
@@ -88,17 +84,6 @@ export function LoginForm({
               />
             )}
           </div>
-
-          {error && (
-            <p className=' bg-white/80 text-sm text-red-600  w-fit rounded-md px-3 py-1 mt-3'>
-              {error}
-            </p>
-          )}
-          {successMessage && (
-            <p className='text-green-600 bg-white/80 w-fit rounded-md px-3 py-1 mt-3 text-sm'>
-              {successMessage}
-            </p>
-          )}
         </div>
         <Button
           children={

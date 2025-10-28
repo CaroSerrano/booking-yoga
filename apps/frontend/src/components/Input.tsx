@@ -29,7 +29,7 @@ export function Input({
   value,
   name,
   disabled = false,
-  required = true,
+  required = false,
   step = '1',
   onChange,
 }: InputProps) {
@@ -48,7 +48,7 @@ export function Input({
         required={required}
         step={step}
       />
-      <label className='font-bold' htmlFor={id}>
+      <label className='font-semibold' htmlFor={id}>
         {label}
       </label>
     </div>

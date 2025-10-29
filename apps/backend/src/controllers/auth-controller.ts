@@ -26,7 +26,10 @@ export const authController = (deps: AuthDeps) => ({
       const data = loginSchema.parse(req.body);
 
       const user = await domainUseCases.login.useCase(deps, data);
-      const token = jwt.sign({ email: user.email, role: user.role }, secret);
+      const token = jwt.sign(
+        { email: user.email, role: user.role, name: user.name },
+        secret
+      );
       res.cookie('token', token, {
         httpOnly: true,
         secure: isProd,
@@ -52,6 +55,16 @@ export const authController = (deps: AuthDeps) => ({
         sameSite: 'none',
       });
       res.status(200).json({ message: 'Logged out' });
+    } catch (error) {
+      next(error);
+    }
+  },
+  getCurrentUser: (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const token = req.cookies.token;
+      if (!token) return res.status(401).json({ message: 'No token' });
+      const decoded = jwt.verify(token, secret);
+      res.json(decoded);
     } catch (error) {
       next(error);
     }

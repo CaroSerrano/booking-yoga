@@ -13,6 +13,10 @@
     "test-storybook": "@storybook/test-runner"
   },
   "dependencies": {
+    "@fullcalendar/core": "^6.1.19",
+    "@fullcalendar/daygrid": "^6.1.19",
+    "@fullcalendar/list": "^6.1.19",
+    "@fullcalendar/react": "^6.1.19",
     "@tailwindcss/vite": "^4.1.16",
     "booking-backend": "*",
     "react": "^19.1.1",

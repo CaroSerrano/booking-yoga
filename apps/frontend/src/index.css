@@ -1,11 +1,19 @@
 @import "tailwindcss";
 
 :root {
-  --color-lavender-500: oklch(0.448 0.1377 288.45);
+  --color-lavender-500: #564a89;
   --color-lavender-600: #43367c;
   --color-lavender-700: #2a224e;
   --color-lavender-900: #19142e;
   color: #f9f9f9;
+  --fc-button-bg-color: #43367c;
+  --fc-button-border-color: #43367c;
+  --fc-button-hover-bg-color: #2a224e;
+  --fc-button-active-bg-color: #19142e;
+  --fc-today-bg-color: #2d363a;
+  --fc-list-event-hover-bg-color: #38344a;
+  --fc-neutral-bg-color: #5e577b;
+  
 }
 
 @media (prefers-color-scheme: light) {
@@ -20,5 +28,62 @@
 
   button {
     background-color: #f9f9f9;
+  }
+}
+
+.fc .fc-scrollgrid {
+  border-radius: 1rem;
+  overflow: hidden;
+}
+.fc .fc-listWeek-view {
+  border-radius: 1rem;
+  overflow: hidden;
+}
+.fc-toolbar-title {
+  font-size: 1.5rem;
+}
+
+.fc-col-header {
+  background-color: #19142e;
+}
+
+.fc .fc-button {
+  font-size: 0.9rem;
+  padding: 0.4rem 0.6rem;
+}
+
+@media (max-width: 1024px) {
+  .fc-toolbar-title {
+    font-size: 1.2rem;
+  }
+
+  .fc .fc-button {
+    font-size: 0.8rem;
+    padding: 0.3rem 0.5rem;
+  }
+
+  .fc-list-day-cushion {
+    background-color: var(--color-lavender-600);
+    color: #fff;
+  }
+}
+
+@media (max-width: 768px) {
+  .fc .fc-button {
+    font-size: 0.7rem;
+    padding: 0.2rem 0.3rem;
+  }
+  .fc .fc-toolbar {
+    display: flex;
+    justify-items: center;
+  }
+
+  .fc .fc-toolbar-title {
+    font-size: 1rem;
+    margin: 0px;
+  }
+
+  .fc .fc-list-day {
+    font-size: small;
   }
 }

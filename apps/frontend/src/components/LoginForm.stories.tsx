@@ -11,7 +11,6 @@ const meta: Meta<typeof LoginForm> = {
   args: {
     onSubmit: fn(),
     loading: false,
-    error: '',
   },
 };
 
@@ -27,21 +26,9 @@ export const Filled: Story = {
   },
 };
 
-export const ValidationErrors: Story = {
-  args: {
-    error: 'Ivalid credentials',
-  },
-};
-
 export const Submitting: Story = {
   args: {
     loading: true,
-  },
-};
-
-export const Success: Story = {
-  args: {
-    successMessage: 'Successfully logged in',
   },
 };
 

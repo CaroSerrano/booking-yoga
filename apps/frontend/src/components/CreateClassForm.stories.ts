@@ -11,7 +11,7 @@ const meta = {
   args: {
     onSubmit: fn(),
     loading: false,
-    error: '',
+    setOpenModal: fn(),
     user: {
       id: '1',
       email: '',
@@ -28,12 +28,6 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
-
-export const ValidationErrors: Story = {
-  args: {
-    error: 'Title is required',
-  },
-};
 
 export const Submitting: Story = {
   args: {

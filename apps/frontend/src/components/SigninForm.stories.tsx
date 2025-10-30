@@ -19,7 +19,6 @@ const meta: Meta<typeof SigninForm> = {
   args: {
     onSubmit: fn(),
     loading: false,
-    error: '',
   },
 };
 
@@ -29,21 +28,9 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
 
-export const ValidationErrors: Story = {
-  args: {
-    error: 'Name is required',
-  },
-};
-
 export const Submitting: Story = {
   args: {
     loading: true,
-  },
-};
-
-export const Success: Story = {
-  args: {
-    successMessage: 'Successfully signed in',
   },
 };
 

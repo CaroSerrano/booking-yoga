@@ -24,6 +24,9 @@ export const LoggedIn: Story = {
   args: {
     user: {
       name: 'Jane Doe',
+      email: 'jane@email.com',
+      role: 'ADMIN',
+      status: 'ACTIVE',
     },
   },
 };

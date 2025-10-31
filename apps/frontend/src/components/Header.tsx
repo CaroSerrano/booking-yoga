@@ -1,7 +1,11 @@
+import type { Role, UserStatus } from 'booking-domain';
 import { Button } from './Button';
 
-type User = {
+export type User = {
   name: string;
+  email: string;
+  role: Role;
+  status: UserStatus;
 };
 
 export interface HeaderProps {

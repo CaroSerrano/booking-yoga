@@ -5,12 +5,16 @@ import {
   type ClassDeps,
 } from 'booking-domain';
 import type { NextFunction, Request, Response } from 'express';
+import type { ExtendedClassService } from 'src/services/class-service.js';
 import {
   createClassSchema,
   updateClassSchema,
 } from 'src/validations/class-validations.js';
+export interface ExtendedClassDeps extends Omit<ClassDeps, 'classService'> {
+  classService: ExtendedClassService;
+}
 
-export const classController = (deps: ClassDeps) => ({
+export const classController = (deps: ExtendedClassDeps) => ({
   createClass: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const data = createClassSchema.parse(req.body);
@@ -87,6 +91,19 @@ export const classController = (deps: ClassDeps) => ({
   ) => {
     try {
       const result = await domainUseCases.listAvailableClasses.useCase(deps);
+      res.status(200).json(result);
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  getAllWithBookings: async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    try {
+      const result = await deps.classService.findAllWithBookings();
       res.status(200).json(result);
     } catch (error) {
       next(error);

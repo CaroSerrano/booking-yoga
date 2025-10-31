@@ -1,4 +1,4 @@
-import type { Class, ClassService, Filters } from 'booking-domain';
+import type { Booking, Class, ClassService, Filters } from 'booking-domain';
 import { PrismaClient } from 'src/generated/prisma/index.js';
 
 function toDomainClass(prismaClass: any): Class {
@@ -10,7 +10,35 @@ function toDomainClass(prismaClass: any): Class {
   };
 }
 
-export class ClassServiceImplementation implements ClassService {
+export interface TeacherData {
+  name: string;
+  email: string;
+}
+export interface ReducedUser {
+  id: string;
+  name: string;
+  email: string;
+  phoneNumber: string | null;
+}
+export interface ExtendedBooking extends Omit<Booking, 'expiresAt'> {
+  expiresAt: Date | null;
+  user: ReducedUser;
+}
+export interface ExtendedClass
+  extends Omit<Class, 'description' | 'location' | 'address' | 'bookingPrice'> {
+  description: string | null;
+  location: string | null;
+  address: string | null;
+  bookingPrice: number | null;
+  bookings: ExtendedBooking[];
+  teacher: TeacherData;
+}
+
+export interface ExtendedClassService extends ClassService {
+  findAllWithBookings: () => Promise<ExtendedClass[]>;
+}
+
+export class ClassServiceImplementation implements ExtendedClassService {
   prisma: PrismaClient;
 
   constructor(prisma: PrismaClient) {
@@ -46,6 +74,23 @@ export class ClassServiceImplementation implements ClassService {
         },
       })
     ).map(toDomainClass);
+  }
+
+  async findAllWithBookings() {
+    return await this.prisma.class.findMany({
+      include: {
+        bookings: {
+          include: {
+            user: {
+              select: { id: true, email: true, name: true, phoneNumber: true },
+            },
+          },
+        },
+        teacher: {
+          select: { name: true, email: true },
+        },
+      },
+    });
   }
 
   async save(data: Class) {

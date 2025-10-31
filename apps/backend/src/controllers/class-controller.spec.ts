@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import type { Request, Response, NextFunction } from 'express';
-import { NotFoundError, ValidationError, type ClassDeps } from 'booking-domain';
+import { NotFoundError, ValidationError } from 'booking-domain';
+import type { ExtendedClassDeps } from './class-controller.js';
 
 vi.mock('booking-domain', async () => {
   const mockCreateClass = vi.fn();
@@ -59,7 +60,7 @@ describe('classController', () => {
     const domainModule: any = await import('booking-domain');
     mocks = domainModule.__mocks__;
 
-    const deps: ClassDeps = { classService: {} as any, userService: {} as any };
+    const deps: ExtendedClassDeps = { classService: {} as any, userService: {} as any };
     controller = classController(deps);
 
     mockRequest = { body: {}, params: {}, query: {} };

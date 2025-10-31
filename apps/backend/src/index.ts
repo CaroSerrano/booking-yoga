@@ -5,6 +5,7 @@ import cors from 'cors';
 
 export * from './validations/index.js';
 export * from './utils/auth.js';
+export * from './services/class-service.js'
 import cookieParser from 'cookie-parser';
 
 const PORT = process.env.PORT || 3000;

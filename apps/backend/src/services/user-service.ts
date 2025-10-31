@@ -20,6 +20,10 @@ export class UserServiceImplementation implements UserService {
     return this.prisma.user.findMany({ where: { role: 'USER' } });
   }
 
+  async findTeachers() {
+    return this.prisma.user.findMany({ where: { role: 'ADMIN' } });
+  }
+
   async findById(id: string) {
     const user = await this.prisma.user.findUnique({
       where: { id },

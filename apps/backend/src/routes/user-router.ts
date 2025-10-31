@@ -8,6 +8,7 @@ const router = express.Router();
 router.get('/', controller.listAllUsers);
 router.get('/active', controller.listActiveUsers);
 router.get('/students', controller.listStudents);
+router.get('/teachers', controller.listTeachers);
 router.patch('/:id', controller.updateUser);
 
 export default router;

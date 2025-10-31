@@ -1,5 +1,6 @@
 import { domainUseCases, ValidationError, type UserDeps } from 'booking-domain';
 import type { NextFunction, Request, Response } from 'express';
+import { userService } from 'src/services/index.js';
 import { updateUserSchema } from 'src/validations/user-validations.js';
 
 export const userController = (deps: UserDeps) => ({
@@ -23,6 +24,15 @@ export const userController = (deps: UserDeps) => ({
   listStudents: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const result = await domainUseCases.listStudents.useCase(deps);
+      res.status(200).json(result);
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  listTeachers: async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const result = await userService.findTeachers();
       res.status(200).json(result);
     } catch (error) {
       next(error);

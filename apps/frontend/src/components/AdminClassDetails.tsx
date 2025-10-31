@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { BookingStatus, ClassStatus } from 'booking-domain';
 import toast from 'react-hot-toast';
 import confirmToast from './confirmToast';
+import { setStatusColor } from '../../utils/setStatusColor';
 
 export interface ClassDetails extends EventDef {
   start: Date | undefined;
@@ -38,7 +39,7 @@ export function AdminClassDetails({
 
   if (!currentClass || !formData)
     return (
-      <div className='w-fit m-4 rounded-2xl py-3'>
+      <div className='w-fit m-4 rounded-2xl py-3 bg-zinc-900 px-5'>
         Error getting class details. Please try again
       </div>
     );
@@ -115,18 +116,7 @@ export function AdminClassDetails({
     }
   };
 
-  let classStatusColor = '';
-  switch (currentClass.extendedProps.status) {
-    case ClassStatus.SCHEDULE:
-      classStatusColor = 'bg-green-500/70';
-      break;
-    case ClassStatus.CANCELLED:
-      classStatusColor = 'bg-red-500/80';
-      break;
-    default:
-      classStatusColor = 'bg-gray-500/80';
-      break;
-  }
+  const classStatusColor = setStatusColor(currentClass.extendedProps.status);
 
   return (
     <div className='flex flex-col gap-2 bg-zinc-900 py-3 px-5 rounded-2xl m-4 max-w-xl'>

@@ -1,5 +1,5 @@
 import type { CreateClassDTO, LoginResponseDTO } from 'booking-backend';
-import { useState } from 'react';
+import { useState, type Dispatch, type SetStateAction } from 'react';
 import { Input } from './Input';
 import { Button } from './Button';
 import { Spinner } from './Spinner';
@@ -8,12 +8,14 @@ export interface CreateClassFormProps {
   onSubmit: (data: CreateClassDTO) => void;
   user: LoginResponseDTO;
   loading?: boolean;
+  setOpenModal: Dispatch<SetStateAction<boolean>>;
 }
 
 export function CreateClassForm({
   onSubmit,
   loading,
   user,
+  setOpenModal
 }: CreateClassFormProps) {
   const [title, setTitle] = useState('');
   const [start, setStart] = useState('');
@@ -40,6 +42,7 @@ export function CreateClassForm({
       location,
       bookingPrice,
     });
+    setOpenModal(false)
   };
 
   const buttonType = loading ? 'loading' : undefined;
@@ -47,7 +50,7 @@ export function CreateClassForm({
   return (
     <form
       onSubmit={handleSubmit}
-      className='bg-(--color-lavender-500)/90 relative flex flex-col items-center gap-5 max-w-2xl p-6 rounded-2xl  text-white overflow-hidden shadow-sm'
+      className='bg-zinc-900/90 relative flex flex-col items-center gap-5 max-w-2xl p-6 rounded-2xl  text-white overflow-hidden shadow-sm'
     >
       <div className='absolute inset-0 bg-black/30 z-0' />
       <div className='relative z-10'>
@@ -149,7 +152,7 @@ export function CreateClassForm({
           type='submit'
           onClick={() => {}}
           variant={buttonType}
-          className='mt-7 w-40 border border-white justify-self-center'
+          className='mt-7 w-40 justify-self-center'
         />
       </div>
     </form>

@@ -1,0 +1,33 @@
+import type { CreateClassDTO } from 'booking-backend';
+import type { EventInput } from '@fullcalendar/core';
+import { toEventObjects } from '../../utils/classEventMapper';
+
+const BASE_URL = 'http://localhost:3000/api/class';
+
+export const classApi = {
+  async fetchAll(): Promise<EventInput[]> {
+    const res = await fetch(`${BASE_URL}/extended`, {
+      credentials: 'include',
+    });
+    if (!res.ok) {
+      const { message } = await res.json();
+      throw new Error(message || 'Error fetching classes');
+    }
+    const data = await res.json();
+    return toEventObjects(data);
+  },
+
+  async create(data: CreateClassDTO): Promise<void> {
+    const res = await fetch(BASE_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+      credentials: 'include',
+    });
+
+    if (!res.ok) {
+      const { message } = await res.json();
+      throw new Error(message || 'Error creating class');
+    }
+  },
+};

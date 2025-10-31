@@ -38,7 +38,7 @@ export function Input({
     <div className={`${layout} w-full gap-2`}>
       <input
         id={id}
-        className='w-full rounded-md text-sm border-2 border-white py-1 px-2 disabled:bg-gray-400'
+        className=' rounded-md text-sm border-2 border-white py-1 px-2 disabled:bg-gray-400'
         type={type}
         placeholder={placeholder}
         value={value}

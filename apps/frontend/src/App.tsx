@@ -1,18 +1,20 @@
 import './App.css';
 import toast, { Toaster } from 'react-hot-toast';
-import { Header } from './components/Header';
+import { Header, type User } from './components/Header';
 import type { CreateClassDTO, UserResponseDTO } from 'booking-backend';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, Routes, Route, Outlet } from 'react-router-dom';
 import { Login } from './pages/Login';
 import Home from './pages/Home';
 import { PrivacyPolicies } from './pages/PrivacyPolicies';
 import type { RegisterSchema, LoginSchema } from 'booking-backend';
 import { Signin } from './pages/Signin';
-import DashboardPage from './pages/DashboardPage';
+import CalendarPage from './pages/CalendarPage';
+import { toEventObjects } from '../utils/classEventMapper';
+import type { EventInput } from '@fullcalendar/core/index.js';
 
 interface LayoutProps {
-  user: UserResponseDTO | undefined;
+  user: User | undefined;
   onLogin: () => void;
   onLogout: () => void;
   onCreateAccount: () => void;
@@ -38,6 +40,47 @@ function Layout({ user, onLogin, onLogout, onCreateAccount }: LayoutProps) {
 function App() {
   const [user, setUser] = useState<UserResponseDTO | undefined>(undefined);
   const [loading, setLoading] = useState(false);
+  const [classes, setClasses] = useState<EventInput[]>([]);
+
+  const fetchClasses = async () => {
+    try {
+      const res = await fetch('http://localhost:3000/api/class/extended', {
+        method: 'GET',
+        credentials: 'include',
+      });
+
+      if (!res.ok) {
+        const { message } = await res.json();
+        throw new Error(message || 'Error getting classes');
+      }
+
+      const data = await res.json();
+      setClasses(toEventObjects(data));
+    } catch (error) {
+      if (error instanceof Error) toast.error(error.message);
+    }
+  };
+  useEffect(() => {
+    const fetchCurrentUser = async () => {
+      try {
+        const res = await fetch('http://localhost:3000/api/auth/currentUser', {
+          credentials: 'include',
+        });
+        if (res.ok) {
+          const data = await res.json();
+          setUser(data);
+        }
+      } catch {
+        setUser(undefined);
+      }
+    };
+
+    fetchCurrentUser();
+  }, []);
+
+  useEffect(() => {
+    if (user) fetchClasses();
+  }, [user]);
 
   const navigate = useNavigate();
   const onLogin = () => navigate('/login');
@@ -128,7 +171,7 @@ function App() {
         throw new Error(message || 'Error creating a class');
       }
       toast.success('Class created successfully');
-      navigate('/dashboard');
+      await fetchClasses();
     } catch (error) {
       if (error instanceof Error) {
         toast.error(error.message);
@@ -150,7 +193,7 @@ function App() {
           />
         }
       >
-        <Route path='/' element={<Home />} />
+        <Route path='/' element={<Home user={user} />} />
         <Route
           path='/login'
           element={<Login onSubmit={onLoginSubmit} loading={loading} />}
@@ -160,12 +203,14 @@ function App() {
           element={<Signin onSubmit={onSignin} loading={loading} />}
         />
         <Route
-          path='/dashboard'
+          path='/calendar'
           element={
-            <DashboardPage
+            <CalendarPage
               user={user}
               onSubmit={onCreateClass}
               loading={loading}
+              classes={classes}
+              fetchClasses={fetchClasses}
             />
           }
         />

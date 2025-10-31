@@ -1,10 +1,18 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import Home from './Home';
+import { MemoryRouter } from 'react-router-dom';
 
 const meta: Meta<typeof Home> = {
   component: Home,
   title: 'Home',
   parameters: { layout: 'fullscreen' },
+  decorators: [
+    (Story) => (
+      <MemoryRouter>
+        <Story />
+      </MemoryRouter>
+    ),
+  ],
 };
 
 export default meta;
@@ -38,7 +46,7 @@ export const AdminView: Story = {
 };
 
 export const NoUser: Story = {
-    args: {
-        user: undefined
-    }
-}
+  args: {
+    user: undefined,
+  },
+};

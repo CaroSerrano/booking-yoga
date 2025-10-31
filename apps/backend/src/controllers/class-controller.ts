@@ -10,6 +10,9 @@ import {
   createClassSchema,
   updateClassSchema,
 } from 'src/validations/class-validations.js';
+import formidable from 'formidable';
+import { normalizeFields } from 'src/utils/normalizeFields.js';
+
 export interface ExtendedClassDeps extends Omit<ClassDeps, 'classService'> {
   classService: ExtendedClassService;
 }
@@ -25,7 +28,7 @@ export const classController = (deps: ExtendedClassDeps) => ({
       next(error);
     }
   },
-  
+
   getClassDetails: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { id } = req.params;
@@ -45,8 +48,11 @@ export const classController = (deps: ExtendedClassDeps) => ({
       if (!id) {
         throw new ValidationError('id is required');
       }
-      const data = updateClassSchema.parse(req.body);
-      const cleanedData = dataCleaner(data)
+      const form = formidable({});
+      const [fields, files] = await form.parse(req);
+      const normalized = normalizeFields(fields);
+      const data = updateClassSchema.parse(normalized);
+      const cleanedData = dataCleaner(data);
       const result = await domainUseCases.updateClass.useCase(deps, {
         id,
         ...cleanedData,

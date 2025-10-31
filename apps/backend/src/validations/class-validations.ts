@@ -28,6 +28,7 @@ export const classResponseSchema = z.object({
   end: z.string(),
   status: z.enum(ClassStatus),
   totalSlots: z.string(),
+  availableSlots: z.string(),
   description: z.string().optional().nullable(),
   location: z.string().optional().nullable(),
   bookingPrice: z.string().optional().nullable(),

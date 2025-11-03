@@ -35,7 +35,6 @@ export const classApi = {
     const res = await fetch(`${BASE_URL}/${id}`, {
       method: 'PATCH',
       body: data,
-      headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
     });
 

@@ -10,8 +10,13 @@ import { PrivacyPolicies } from './pages/PrivacyPolicies';
 import type { RegisterSchema, LoginSchema } from 'booking-backend';
 import { Signin } from './pages/Signin';
 import CalendarPage from './pages/CalendarPage';
-import { toEventObjects } from '../utils/classEventMapper';
 import type { EventInput } from '@fullcalendar/core/index.js';
+import { fetchClasses } from './useCases/fetchClasses';
+import { getCurrentUser } from './useCases/getCurrentUser';
+import { loginUser } from './useCases/loginUser';
+import { logoutUser } from './useCases/logoutUser';
+import { registerUser } from './useCases/registerUser';
+import { createClass } from './useCases/createClass';
 
 interface LayoutProps {
   user: User | undefined;
@@ -42,20 +47,10 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [classes, setClasses] = useState<EventInput[]>([]);
 
-  const fetchClasses = async () => {
+  const getClasses = async () => {
     try {
-      const res = await fetch('http://localhost:3000/api/class/extended', {
-        method: 'GET',
-        credentials: 'include',
-      });
-
-      if (!res.ok) {
-        const { message } = await res.json();
-        throw new Error(message || 'Error getting classes');
-      }
-
-      const data = await res.json();
-      setClasses(toEventObjects(data));
+      const result = await fetchClasses();
+      setClasses(result);
     } catch (error) {
       if (error instanceof Error) toast.error(error.message);
     }
@@ -63,13 +58,8 @@ function App() {
   useEffect(() => {
     const fetchCurrentUser = async () => {
       try {
-        const res = await fetch('http://localhost:3000/api/auth/currentUser', {
-          credentials: 'include',
-        });
-        if (res.ok) {
-          const data = await res.json();
-          setUser(data);
-        }
+        const result = await getCurrentUser();
+        setUser(result);
       } catch {
         setUser(undefined);
       }
@@ -79,7 +69,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if (user) fetchClasses();
+    if (user) getClasses();
   }, [user]);
 
   const navigate = useNavigate();
@@ -90,21 +80,9 @@ function App() {
     setLoading(true);
 
     try {
-      const res = await fetch('http://localhost:3000/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-        credentials: 'include',
-      });
-
-      if (!res.ok) {
-        const { message } = await res.json();
-        throw new Error(message || 'Login error');
-      }
-
-      const responseData = await res.json();
-      setUser(responseData);
-      navigate('/dashboard');
+      const result = await loginUser(data);
+      setUser(result);
+      navigate('/calendar');
     } catch (err) {
       if (err instanceof Error) {
         toast.error(err.message);
@@ -117,11 +95,9 @@ function App() {
   const onLogout = async () => {
     setLoading(true);
     try {
-      await fetch('http://localhost:3000/api/auth/logout', {
-        method: 'POST',
-        credentials: 'include',
-      });
+      await logoutUser();
       setUser(undefined);
+      navigate('/')
     } catch (err) {
       if (err instanceof Error) {
         toast.error(err.message);
@@ -134,17 +110,7 @@ function App() {
   const onSignin = async (data: RegisterSchema) => {
     try {
       setLoading(true);
-      const res = await fetch('http://localhost:3000/api/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-        credentials: 'include',
-      });
-
-      if (!res.ok) {
-        const { message } = await res.json();
-        throw new Error(message || 'Signin error');
-      }
+      await registerUser(data);
       toast.success('Successfully registered');
       navigate('/login');
     } catch (error) {
@@ -159,19 +125,9 @@ function App() {
   const onCreateClass = async (data: CreateClassDTO) => {
     setLoading(true);
     try {
-      const res = await fetch('http://localhost:3000/api/class', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-        credentials: 'include',
-      });
-
-      if (!res.ok) {
-        const { message } = await res.json();
-        throw new Error(message || 'Error creating a class');
-      }
+      await createClass(data);
       toast.success('Class created successfully');
-      await fetchClasses();
+      await getClasses();
     } catch (error) {
       if (error instanceof Error) {
         toast.error(error.message);
@@ -210,7 +166,7 @@ function App() {
               onSubmit={onCreateClass}
               loading={loading}
               classes={classes}
-              fetchClasses={fetchClasses}
+              fetchClasses={getClasses}
             />
           }
         />

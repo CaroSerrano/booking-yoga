@@ -6,6 +6,8 @@ import { BookingStatus, ClassStatus } from 'booking-domain';
 import toast from 'react-hot-toast';
 import confirmToast from './confirmToast';
 import { setStatusColor } from '../../utils/setStatusColor';
+import { updateBooking } from '../useCases/updateBooking';
+import { updateClass } from '../useCases/updateClass';
 
 export interface ClassDetails extends EventDef {
   start: Date | undefined;
@@ -53,17 +55,7 @@ export function AdminClassDetails({
 
   const handleRemoveParticipant = async (bookingId: string) => {
     try {
-      const res = await fetch(
-        `http://localhost:3000/api/booking/${bookingId}`,
-        {
-          method: 'PATCH',
-          credentials: 'include',
-          body: JSON.stringify({ status: BookingStatus.CANCELLED }),
-        }
-      );
-      if (!res.ok) {
-        throw new Error('Error updating booking status');
-      }
+      await updateBooking(bookingId, { status: BookingStatus.CANCELLED });
     } catch (error) {
       if (error instanceof Error) {
         toast.error(error.message);
@@ -95,19 +87,7 @@ export function AdminClassDetails({
         if (value !== undefined && value !== null)
           fd.append(key, String(value));
       }
-      const res = await fetch(
-        `http://localhost:3000/api/class/${currentClass.publicId}`,
-        {
-          method: 'PATCH',
-          credentials: 'include',
-          body: fd,
-        }
-      );
-      if (!res.ok) {
-        throw new Error('Error updating class');
-      }
-      const data = await res.json();
-      console.log(data);
+      await updateClass(currentClass.publicId, fd);
       await fetchClasses();
     } catch (error) {
       if (error instanceof Error) {

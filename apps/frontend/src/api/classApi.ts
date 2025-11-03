@@ -1,4 +1,4 @@
-import type { CreateClassDTO } from 'booking-backend';
+import type { ClassResponseDTO, CreateClassDTO } from 'booking-backend';
 import type { EventInput } from '@fullcalendar/core';
 import { toEventObjects } from '../../utils/classEventMapper';
 
@@ -29,5 +29,22 @@ export const classApi = {
       const { message } = await res.json();
       throw new Error(message || 'Error creating class');
     }
+  },
+
+  async update(id: string, data: FormData): Promise<ClassResponseDTO> {
+    const res = await fetch(`${BASE_URL}/${id}`, {
+      method: 'PATCH',
+      body: data,
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+    });
+
+    if (!res.ok) {
+      const { message } = await res.json();
+      throw new Error(message || 'Error updating class');
+    }
+
+    const classUpdated = await res.json();
+    return classUpdated;
   },
 };

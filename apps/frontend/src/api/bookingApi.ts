@@ -34,8 +34,12 @@ export const bookingApi = {
   },
 
   async listByFilters(filters: BookingFilters): Promise<Booking[]> {
-    const { classId, userId } = filters;
-    const res = await fetch(`${BASE_URL}?userId=${userId}&classId=${classId}`, {
+    const params = new URLSearchParams();
+
+    if (filters.userId) params.append('userId', filters.userId);
+    if (filters.classId) params.append('classId', filters.classId);
+
+    const res = await fetch(`${BASE_URL}?${params.toString()}`, {
       credentials: 'include',
     });
     if (!res.ok) {

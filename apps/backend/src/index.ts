@@ -8,6 +8,8 @@ export * from './utils/auth.js';
 export * from './services/class-service.js'
 import cookieParser from 'cookie-parser';
 
+import webhookRouter from './routes/webhook-router.js'
+
 const PORT = process.env.PORT || 3000;
 
 const app = express();
@@ -18,7 +20,7 @@ app.use(
     credentials: true,
   })
 );
-
+app.use('/api/stripe',webhookRouter);
 app.use(express.json());
 apiRouter(app);
 app.use(errorHandler);

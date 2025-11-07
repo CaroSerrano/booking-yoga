@@ -20,5 +20,6 @@ router.get('/', controller.listUserPayments);
 router.get('/bookingId', controller.findBookingPayment);
 router.post('/', controller.createPayment);
 router.patch('/:id', controller.updatePayment);
+router.post('/create-checkout-session', controller.createCheckoutSession);
 
 export default router;

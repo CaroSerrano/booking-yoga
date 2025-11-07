@@ -78,7 +78,9 @@ describe('payment controller', () => {
         userId: '1',
         bookingId: '1',
         amount: 50,
-        currency: 'USD',
+        currency: 'usd',
+        successUrl: 'http://localhost:3000/success',
+        cancelUrl: 'http://localhost:3000/cancel',
       };
       mockRequest.body = createPaymentData;
       const { createPaymentSchema } = await import(

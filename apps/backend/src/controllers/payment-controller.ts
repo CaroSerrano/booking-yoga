@@ -10,10 +10,49 @@ import {
   updatePaymentSchema,
 } from 'src/validations/payment-validations.js';
 import type { NextFunction, Request, Response } from 'express';
+import Stripe from 'stripe';
+
+export const stripe = new Stripe(process.env.STRIPE_SECRET!);
 
 export interface PaymentDeps extends CreatePaymentDeps, UpdatePaymentDeps {}
 
 export const paymentController = (deps: PaymentDeps) => ({
+  createCheckoutSession: async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    try {
+      const data = createPaymentSchema.parse(req.body);
+      const userEmail = req.user.email;
+      const session = await stripe.checkout.sessions.create({
+        client_reference_id: data.userId,
+        customer_email: userEmail,
+        line_items: [
+          {
+            price_data: {
+              product_data: {
+                name: 'Yoga class reservation at Yoga Studio',
+                unit_label: 'class',
+              },
+              currency: data.currency,
+              unit_amount_decimal: String(data.amount * 100),
+            },
+            quantity: 1,
+          },
+        ],
+        metadata: { bookingId: data.bookingId },
+        mode: 'payment',
+        success_url: data.successUrl,
+        cancel_url: data.cancelUrl,
+      });
+      await domainUseCases.createPayment.useCase(deps, data);
+      res.status(201).json(session);
+    } catch (error) {
+      next(error);
+    }
+  },
+
   createPayment: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const data = createPaymentSchema.parse(req.body);

@@ -27,7 +27,7 @@ export const authController = (deps: AuthDeps) => ({
 
       const user = await domainUseCases.login.useCase(deps, data);
       const token = jwt.sign(
-        { email: user.email, role: user.role, name: user.name },
+        { id: user.id, email: user.email, role: user.role, name: user.name },
         secret
       );
       res.cookie('token', token, {

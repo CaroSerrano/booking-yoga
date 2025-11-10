@@ -9,6 +9,9 @@ const meta = {
   parameters: {
     layout: 'centered',
   },
+  async beforeEach() {
+    mocked(listBookings).mockResolvedValue([]);
+  },
   args: {
     user: {
       id: '1',

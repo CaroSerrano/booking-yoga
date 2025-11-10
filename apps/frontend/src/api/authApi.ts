@@ -1,7 +1,7 @@
 import type { LoginSchema, RegisterSchema } from 'booking-backend';
 import type { UserResponseDTO } from 'booking-backend';
 
-const BASE_URL = 'http://localhost:3000/api/auth';
+const BASE_URL = `${process.env.API_URL}/auth`;
 
 export const authApi = {
   async login(data: LoginSchema): Promise<UserResponseDTO> {

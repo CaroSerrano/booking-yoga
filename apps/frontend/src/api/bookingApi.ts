@@ -1,7 +1,7 @@
 import type { CreateBookingDTO, UpdateBookingDTO } from 'booking-backend';
 import type { Booking, BookingFilters } from 'booking-domain';
 
-const BASE_URL = 'http://localhost:3000/api/booking';
+const BASE_URL = `${process.env.API_URL}/booking`;
 
 export const bookingApi = {
   async update(id: string, data: UpdateBookingDTO): Promise<Booking> {

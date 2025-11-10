@@ -2,7 +2,7 @@ import type { ClassResponseDTO, CreateClassDTO } from 'booking-backend';
 import type { EventInput } from '@fullcalendar/core';
 import { toEventObjects } from '../../utils/classEventMapper';
 
-const BASE_URL = 'http://localhost:3000/api/class';
+const BASE_URL = `${process.env.API_URL}/class`;
 
 export const classApi = {
   async fetchAll(): Promise<EventInput[]> {

@@ -1,4 +1,4 @@
-import type { CreateClassDTO, LoginResponseDTO } from 'booking-backend';
+import type { CreateClassDTO, UserResponseDTO } from 'booking-backend';
 import { useState, useEffect } from 'react';
 import { Button } from '../components/Button';
 import { Modal } from '../components/Modal';
@@ -8,7 +8,7 @@ import Calendar from '../components/Calendar';
 import { IoMdAdd } from "react-icons/io";
 
 export interface CalendarPageProps {
-  user?: LoginResponseDTO;
+  user?: UserResponseDTO;
   onSubmit: (data: CreateClassDTO) => void;
   loading?: boolean;
   classes: EventInput[];
@@ -25,7 +25,6 @@ export default function CalendarPage({
   const [isAdmin, setIsAdmin] = useState(false);
   const [welcomeMessage, setWelcomeMessage] = useState('Book a class!');
   const [openModal, setOpenModal] = useState(false);
-  console.log('classes: ', classes);
   useEffect(() => {
     if (user && user.role === 'ADMIN') {
       setIsAdmin(true);
@@ -50,6 +49,7 @@ export default function CalendarPage({
         events={classes}
         isAdmin={isAdmin}
         fetchClasses={fetchClasses}
+        user={user}
       />
       {openModal && (
         <Modal

@@ -1,6 +1,6 @@
 import './App.css';
 import toast, { Toaster } from 'react-hot-toast';
-import { Header, type User } from './components/Header';
+import { Header } from './components/Header';
 import type { CreateClassDTO, UserResponseDTO } from 'booking-backend';
 import { useEffect, useState } from 'react';
 import { useNavigate, Routes, Route, Outlet } from 'react-router-dom';
@@ -17,9 +17,10 @@ import { loginUser } from './useCases/loginUser';
 import { logoutUser } from './useCases/logoutUser';
 import { registerUser } from './useCases/registerUser';
 import { createClass } from './useCases/createClass';
+import PaymentSuccess from './pages/PaymentSuccess';
 
 interface LayoutProps {
-  user: User | undefined;
+  user?: UserResponseDTO;
   onLogin: () => void;
   onLogout: () => void;
   onCreateAccount: () => void;
@@ -97,7 +98,7 @@ function App() {
     try {
       await logoutUser();
       setUser(undefined);
-      navigate('/')
+      navigate('/');
     } catch (err) {
       if (err instanceof Error) {
         toast.error(err.message);
@@ -171,6 +172,7 @@ function App() {
           }
         />
         <Route path='/privacy-policies' element={<PrivacyPolicies />} />
+        <Route path='/success' element={<PaymentSuccess email={user?.email} />} />
       </Route>
     </Routes>
   );

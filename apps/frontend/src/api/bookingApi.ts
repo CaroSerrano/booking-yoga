@@ -1,7 +1,7 @@
 import type { CreateBookingDTO, UpdateBookingDTO } from 'booking-backend';
 import type { Booking, BookingFilters } from 'booking-domain';
 
-const BASE_URL = `${process.env.API_URL}/booking`;
+const BASE_URL = `${import.meta.env.VITE_API_URL}/booking`;
 
 export const bookingApi = {
   async update(id: string, data: UpdateBookingDTO): Promise<Booking> {

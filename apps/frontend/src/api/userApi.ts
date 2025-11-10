@@ -1,6 +1,6 @@
 import type { UserResponseDTO } from 'booking-backend';
 
-const BASE_URL = `${process.env.API_URL}/user`;
+const BASE_URL = `${import.meta.env.VITE_API_URL}/user`;
 
 export const userApi = {
   async listTeachers(): Promise<UserResponseDTO[]> {

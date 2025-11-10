@@ -5,7 +5,7 @@ import type {
 } from 'booking-backend';
 import type { Payment } from 'booking-domain';
 
-const BASE_URL = `${process.env.API_URL}/payment`;
+const BASE_URL = `${import.meta.env.VITE_API_URL}/payment`;
 
 export const paymentApi = {
   async createCheckoutSession(

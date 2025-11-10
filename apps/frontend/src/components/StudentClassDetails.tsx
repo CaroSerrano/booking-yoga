@@ -9,8 +9,10 @@ import { listBookings } from '../useCases/listBookings';
 import { createCheckoutSession } from '../useCases/createCheckoutSession';
 import { useCallback, useEffect, useState } from 'react';
 import { Spinner } from './Spinner';
+import confirmToast from './confirmToast';
+import { updateBooking } from '../useCases/updateBooking';
 
-const BASE_URL = process.env.FRONTEND_URL;
+const BASE_URL = import.meta.env.VITE_FRONTEND_URL;
 
 export interface StudentClassDetailsProps {
   currentClass: ClassDetails | null;
@@ -76,6 +78,31 @@ export default function StudentClassDetails({
       setLoading(false);
     }
   };
+
+  const handleCancelBooking = async () => {
+    const ok = await confirmToast(
+      'Are you sure you want to cancel your reservation for this class?'
+    );
+    if (ok) {
+      setLoading(true)
+      try {
+        const booking = userBookings.find(
+          (b) => b.classId === currentClass.publicId
+        );
+        if (booking) {
+          await updateBooking(booking.id, { status: 'CANCELLED' });
+        }
+      } catch (error) {
+        if (error instanceof Error) {
+          console.error(error.message);
+        }
+        toast.error('Error cancelling reservation. Please try again');
+      }
+      finally {
+        setLoading(false)
+      }
+    }
+  };
   const alreadyBooked = userBookings
     .map((b) => b.classId)
     .includes(currentClass.publicId);
@@ -135,6 +162,18 @@ export default function StudentClassDetails({
               </span>
             ) : (
               buttonText
+            )}
+          </Button>
+        )}
+        {alreadyBooked && (
+          <Button onClick={handleCancelBooking} variant='danger'>
+            {loading ? (
+              <span className='flex items-center gap-2'>
+                <Spinner size={20} className='shrink-0' />
+                Loading...
+              </span>
+            ) : (
+              'Cancel booking'
             )}
           </Button>
         )}

@@ -1,6 +1,8 @@
 import type { Preview } from '@storybook/react-vite';
 import '../src/index.css';
+import { sb } from 'storybook/test';
 
+sb.mock(import('../src/useCases/listBookings.ts'));
 
 const preview: Preview = {
   parameters: {

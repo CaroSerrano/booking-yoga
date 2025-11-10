@@ -20,6 +20,6 @@ describe('listBookings', () => {
     const result = await listBookings(filters);
 
     expect(result).toEqual(fakeBookings);
-    expect(BookingRepository.listByFilters).toHaveBeenCalled();
+    expect(BookingRepository.listByFilters).toHaveBeenCalledWith(filters);
   });
 });

@@ -2,6 +2,7 @@ import { domainUseCases, ValidationError, type UserDeps } from 'booking-domain';
 import type { NextFunction, Request, Response } from 'express';
 import { userService } from 'src/services/index.js';
 import { updateUserSchema } from 'src/validations/user-validations.js';
+import { userResponseSchema } from 'src/validations/auth-validations.js';
 
 export const userController = (deps: UserDeps) => ({
   listActiveUsers: async (req: Request, res: Response, next: NextFunction) => {
@@ -33,7 +34,8 @@ export const userController = (deps: UserDeps) => ({
   listTeachers: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const result = await userService.findTeachers();
-      res.status(200).json(result);
+      const parsedResult = userResponseSchema.parse(result);
+      res.status(200).json(parsedResult);
     } catch (error) {
       next(error);
     }

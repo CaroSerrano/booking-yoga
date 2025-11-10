@@ -7,14 +7,22 @@ import { Modal } from './Modal';
 import type { UserResponseDTO } from 'booking-backend';
 import { AdminClassDetails } from './AdminClassDetails';
 import type { ClassDetails } from './AdminClassDetails';
+import StudentClassDetails from './StudentClassDetails';
+import { listTeachers } from '../useCases/listTeachers';
 
 export interface CalendarProps {
   events: EventInput[];
   isAdmin?: boolean;
   fetchClasses: () => Promise<void>;
+  user: UserResponseDTO;
 }
 
-export default function Calendar({ events, isAdmin = false, fetchClasses }: CalendarProps) {
+export default function Calendar({
+  events,
+  isAdmin = false,
+  fetchClasses,
+  user,
+}: CalendarProps) {
   const [openAdminModal, setOpenAdminModal] = useState(false);
   const [openUserModal, setOpenUserModal] = useState(false);
   const [currentEvent, setCurrentEvent] = useState<ClassDetails | null>(null);
@@ -23,13 +31,8 @@ export default function Calendar({ events, isAdmin = false, fetchClasses }: Cale
   useEffect(() => {
     const fetchTeachers = async () => {
       try {
-        const res = await fetch('http://localhost:3000/api/user/teachers', {
-          credentials: 'include',
-        });
-        if (res.ok) {
-          const data = await res.json();
-          setTeachers(data);
-        }
+        const result = await listTeachers();
+        setTeachers(result);
       } catch {
         setTeachers([]);
       }
@@ -44,7 +47,7 @@ export default function Calendar({ events, isAdmin = false, fetchClasses }: Cale
     setOpenUserModal(true);
   };
   return (
-    <div className='w-[90%] h-fit p-5 m-5 bg-zinc-950/90 rounded-2xl'>
+    <div className='w-full h-fit p-5 md:m-10 bg-zinc-950/90 rounded-2xl'>
       <FullCalendar
         plugins={[dayGridPlugin, listPlugin]}
         initialView='dayGridMonth'
@@ -82,7 +85,11 @@ export default function Calendar({ events, isAdmin = false, fetchClasses }: Cale
           onClose={() => setOpenAdminModal(false)}
           title='Class details'
         >
-          <AdminClassDetails currentClass={currentEvent} teachers={teachers} fetchClasses={fetchClasses} />
+          <AdminClassDetails
+            currentClass={currentEvent}
+            teachers={teachers}
+            fetchClasses={fetchClasses}
+          />
         </Modal>
       )}
       {openUserModal && (
@@ -91,7 +98,7 @@ export default function Calendar({ events, isAdmin = false, fetchClasses }: Cale
           onClose={() => setOpenUserModal(false)}
           title='Class details'
         >
-          User modal content
+          <StudentClassDetails currentClass={currentEvent} user={user} />
         </Modal>
       )}
     </div>

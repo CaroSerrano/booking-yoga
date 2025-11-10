@@ -54,11 +54,17 @@ export function AdminClassDetails({
   };
 
   const handleRemoveParticipant = async (bookingId: string) => {
-    try {
-      await updateBooking(bookingId, { status: BookingStatus.CANCELLED });
-    } catch (error) {
-      if (error instanceof Error) {
-        toast.error(error.message);
+    const ok = await confirmToast(
+      'Are you sure you want to cancel this participant reservation?'
+    );
+    if (ok) {
+      try {
+        await updateBooking(bookingId, { status: BookingStatus.CANCELLED });
+      } catch (error) {
+        if (error instanceof Error) {
+          console.error(error.message);
+        }
+        toast.error('Error removing participant. Please try again');
       }
     }
   };
@@ -97,7 +103,9 @@ export function AdminClassDetails({
   };
 
   const classStatusColor = setStatusColor(currentClass.extendedProps.status);
-
+  const activeBookings = currentClass.extendedProps.bookings.filter(
+    (b: ExtendedBooking) => b.status === 'CONFIRMED' || b.status === 'PENDING'
+  );
   return (
     <div className='flex flex-col gap-2 bg-zinc-900 py-3 px-5 rounded-2xl m-4 max-w-xl'>
       <div className='flex justify-between items-center'>
@@ -222,7 +230,7 @@ export function AdminClassDetails({
       <div>
         <b>Registered participants:</b>
         <ul className='mt-1'>
-          {currentClass.extendedProps.bookings.map((b: ExtendedBooking) => (
+          {activeBookings.map((b: ExtendedBooking) => (
             <li key={b.id} className='flex items-center gap-2'>
               {b.user.name}
               {isEditing && (

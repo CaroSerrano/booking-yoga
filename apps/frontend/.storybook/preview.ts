@@ -3,6 +3,7 @@ import '../src/index.css';
 import { sb } from 'storybook/test';
 
 sb.mock(import('../src/useCases/listBookings.ts'));
+sb.mock(import('../src/useCases/createBooking.ts'));
 
 const preview: Preview = {
   parameters: {

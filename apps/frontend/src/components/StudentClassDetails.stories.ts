@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { mocked } from 'storybook/internal/test';
 import StudentClassDetails from './StudentClassDetails';
 import { listBookings } from '../useCases/listBookings';
-import { mocked } from 'storybook/internal/test';
+import { createBooking } from '../useCases/createBooking';
 
 const meta = {
   title: 'Student class details',
@@ -198,6 +199,51 @@ export const AlreadyBooked: Story = {
         address: 'Humboldtstr. 14b, Schwäbisch Gmünd, Brandenburg',
         teacher: { name: 'Florencia Colorado', email: 'flor@email.com' },
         bookings: [{ classId: '1', userId: '1' }],
+      },
+    },
+  },
+};
+
+export const Loading: Story = {
+  async beforeEach() {
+    mocked(createBooking).mockImplementation(() => new Promise(() => {}));
+  },
+  args: {
+    currentClass: {
+      publicId: '1',
+      title: 'Hatha yoga',
+      start: new Date(),
+      end: new Date(),
+      allDay: false,
+      groupId: '',
+      hasEnd: true,
+      defId: '191',
+      recurringDef: null,
+      url: '',
+      sourceId: '1',
+      ui: {
+        display: null,
+        constraints: [],
+        overlap: null,
+        allows: [],
+        backgroundColor: '',
+        borderColor: '',
+        textColor: '',
+        classNames: [],
+        startEditable: null,
+        durationEditable: null,
+      },
+      extendedProps: {
+        teacherId: '161a48fc-1f9a-4481-a03e-59325087e106',
+        status: 'SCHEDULE',
+        totalSlots: 10,
+        availableSlots: 5,
+        description: 'Multi-level group class',
+        location: 'Brandenburg',
+        bookingPrice: 10,
+        address: 'Humboldtstr. 14b, Schwäbisch Gmünd, Brandenburg',
+        bookings: [],
+        teacher: { name: 'Florencia Colorado', email: 'flor@email.com' },
       },
     },
   },

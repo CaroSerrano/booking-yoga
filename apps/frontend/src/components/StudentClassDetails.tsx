@@ -8,6 +8,7 @@ import { createBooking } from '../useCases/createBooking';
 import { listBookings } from '../useCases/listBookings';
 import { createCheckoutSession } from '../useCases/createCheckoutSession';
 import { useCallback, useEffect, useState } from 'react';
+import { Spinner } from './Spinner';
 
 const BASE_URL = process.env.FRONTEND_URL;
 
@@ -21,6 +22,7 @@ export default function StudentClassDetails({
   user,
 }: StudentClassDetailsProps) {
   const [userBookings, setUserBookings] = useState<Booking[]>([]);
+  const [loading, setLoading] = useState(false);
   const fetchBookings = useCallback(async () => {
     try {
       const result = await listBookings({ userId: user.id });
@@ -44,6 +46,7 @@ export default function StudentClassDetails({
   const classStatusColor = setStatusColor(currentClass.extendedProps.status);
 
   const handleBooking = async () => {
+    setLoading(true);
     try {
       await createBooking({ classId: currentClass.publicId, userId: user.id });
       const createdBooking = await listBookings({
@@ -69,6 +72,8 @@ export default function StudentClassDetails({
         console.error(error.message);
       }
       toast.error('Error creating booking. Please try again');
+    } finally {
+      setLoading(false);
     }
   };
   const alreadyBooked = userBookings
@@ -123,7 +128,14 @@ export default function StudentClassDetails({
       <div className='flex gap-3 self-center mt-3'>
         {currentClass.extendedProps.status !== ClassStatus.CANCELLED && (
           <Button variant={buttonVariant} onClick={handleBooking}>
-            {buttonText}
+            {loading ? (
+              <span className='flex items-center gap-2'>
+                <Spinner size={20} className='shrink-0' />
+                Loading...
+              </span>
+            ) : (
+              buttonText
+            )}
           </Button>
         )}
       </div>

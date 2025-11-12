@@ -27,6 +27,8 @@ export const LoggedIn: Story = {
       email: 'jane@email.com',
       role: 'ADMIN',
       status: 'ACTIVE',
+      id: '1',
+      phoneNumber: '55',
     },
   },
 };

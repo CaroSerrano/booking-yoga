@@ -1,4 +1,4 @@
-import type { SecureUser, User } from '../entities/index.js';
+import type { SecureUser } from '../entities/index.js';
 import type { LoginPayload, RegisterPayload } from '../use-cases/index.js';
 
 export interface AuthService {

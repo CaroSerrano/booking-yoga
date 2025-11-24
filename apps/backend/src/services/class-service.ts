@@ -1,5 +1,5 @@
 import type { Booking, Class, ClassService, Filters } from 'booking-domain';
-import { PrismaClient } from 'src/generated/prisma/index.js';
+import type { PrismaClient } from '../generated/prisma/index.js';
 
 function toDomainClass(prismaClass: any): Class {
   return {

@@ -35,7 +35,7 @@ vi.mock('booking-domain', async () => {
   };
 });
 
-vi.mock('src/validations/class-validations.js', () => ({
+vi.mock('../validations/class-validations.js', () => ({
   createClassSchema: {
     parse: vi.fn(),
   },
@@ -143,7 +143,7 @@ describe('classController', () => {
       };
       mockRequest.body = createClassData;
       const { createClassSchema } = await import(
-        'src/validations/class-validations.js'
+        '../validations/class-validations.js'
       );
       vi.mocked(createClassSchema.parse).mockReturnValue(createClassData);
       await controller.createClass(
@@ -175,7 +175,7 @@ describe('classController', () => {
       mockRequest.body = updateClassData;
       mockRequest.params = { id: '1' };
       const { updateClassSchema } = await import(
-        'src/validations/class-validations.js'
+        '../validations/class-validations.js'
       );
       vi.mocked(updateClassSchema.parse).mockReturnValue(updateClassData);
       await controller.updateClass(

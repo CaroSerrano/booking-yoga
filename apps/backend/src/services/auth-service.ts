@@ -5,7 +5,7 @@ import {
   type LoginPayload,
   type RegisterPayload,
 } from 'booking-domain';
-import type { PrismaClient } from 'src/generated/prisma/index.js';
+import type { PrismaClient } from '../generated/prisma/index.js';
 
 export class AuthServiceImplementation implements AuthService {
   prisma: PrismaClient;

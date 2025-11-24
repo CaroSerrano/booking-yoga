@@ -1,7 +1,7 @@
 import express from 'express';
-import { authController } from 'src/controllers/auth-controller.js';
-import { userService } from 'src/services/index.js';
-import { BcryptPasswordHasher } from 'src/utils/auth.js';
+import { authController } from '../controllers/auth-controller.js';
+import { userService } from '../services/index.js';
+import { BcryptPasswordHasher } from '../utils/auth.js';
 
 const hasher = new BcryptPasswordHasher();
 const controller = authController({ userService, hasher });

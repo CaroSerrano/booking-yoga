@@ -5,13 +5,13 @@ import {
   type ClassDeps,
 } from 'booking-domain';
 import type { NextFunction, Request, Response } from 'express';
-import type { ExtendedClassService } from 'src/services/class-service.js';
+import type { ExtendedClassService } from '../services/class-service.js';
 import {
   createClassSchema,
   updateClassSchema,
-} from 'src/validations/class-validations.js';
+} from '../validations/class-validations.js';
 import formidable from 'formidable';
-import { normalizeFields } from 'src/utils/normalizeFields.js';
+import { normalizeFields } from '../utils/normalizeFields.js';
 
 export interface ExtendedClassDeps extends Omit<ClassDeps, 'classService'> {
   classService: ExtendedClassService;

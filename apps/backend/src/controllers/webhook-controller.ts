@@ -2,7 +2,7 @@ import type { NextFunction, Request, Response } from 'express';
 import Stripe from 'stripe';
 import { stripe, type PaymentDeps } from './payment-controller.js';
 import { domainUseCases, PaymentStatus, ValidationError } from 'booking-domain';
-import type { CheckoutSession } from 'src/validations/payment-validations.js';
+import type { CheckoutSession } from '../validations/payment-validations.js';
 
 const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
 

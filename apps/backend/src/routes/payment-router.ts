@@ -1,11 +1,11 @@
 import express from 'express';
-import { paymentController } from 'src/controllers/payment-controller.js';
+import { paymentController } from '../controllers/payment-controller.js';
 import {
   paymentService,
   userService,
   bookingService,
   classService,
-} from 'src/services/index.js';
+} from '../services/index.js';
 
 const controller = paymentController({
   paymentService,

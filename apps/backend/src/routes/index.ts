@@ -5,7 +5,7 @@ import userRouter from './user-router.js';
 import classRouter from './class-router.js';
 import bookingRouter from './booking-router.js';
 import paymentRouter from './payment-router.js';
-import { authMiddleware } from 'src/middlewares/auth.middleware.js';
+import { authMiddleware } from '../middlewares/auth.middleware.js';
 
 const apiRouter = (app: Express) => {
   const router = express.Router();

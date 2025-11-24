@@ -6,7 +6,7 @@ import {
 import {
   createBookingSchema,
   updateBookingSchema,
-} from 'src/validations/booking-validations.js';
+} from '../validations/booking-validations.js';
 import type { Request, Response, NextFunction } from 'express';
 import { dataCleaner } from 'booking-domain';
 

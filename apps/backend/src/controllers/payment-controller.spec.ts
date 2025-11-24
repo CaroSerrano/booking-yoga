@@ -30,7 +30,7 @@ vi.mock('booking-domain', async () => {
   };
 });
 
-vi.mock('src/validations/payment-validations.js', () => ({
+vi.mock('../validations/payment-validations.js', () => ({
   createPaymentSchema: {
     parse: vi.fn(),
   },
@@ -84,7 +84,7 @@ describe('payment controller', () => {
       };
       mockRequest.body = createPaymentData;
       const { createPaymentSchema } = await import(
-        'src/validations/payment-validations.js'
+        '../validations/payment-validations.js'
       );
       vi.mocked(createPaymentSchema.parse).mockReturnValue(createPaymentData);
       await controller.createPayment(
@@ -115,7 +115,7 @@ describe('payment controller', () => {
       mockRequest.body = updatePaymentData;
       mockRequest.params = { id: '1' };
       const { updatePaymentSchema } = await import(
-        'src/validations/payment-validations.js'
+        '../validations/payment-validations.js'
       );
       vi.mocked(updatePaymentSchema.parse).mockReturnValue(updatePaymentData);
       await controller.updatePayment(

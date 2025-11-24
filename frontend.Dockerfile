@@ -6,10 +6,9 @@ COPY package.json package-lock.json ./
 COPY domain/package*.json ./domain/
 COPY apps/frontend/package*.json ./apps/frontend/
 
-RUN npm install --prefix ./domain
-RUN npm install --prefix ./apps/frontend
-
 COPY ./ ./
+
+RUN npm install
 
 RUN npx tsc --project ./domain/tsconfig.json
 RUN npx tsc --project ./apps/frontend/tsconfig.json

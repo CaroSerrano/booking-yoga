@@ -1,5 +1,5 @@
 import type { User, UserService } from 'booking-domain';
-import { PrismaClient } from 'src/generated/prisma/index.js';
+import { PrismaClient } from '../generated/prisma/index.js';
 
 export class UserServiceImplementation implements UserService {
   prisma: PrismaClient;

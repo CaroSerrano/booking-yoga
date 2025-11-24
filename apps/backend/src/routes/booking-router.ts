@@ -1,10 +1,10 @@
 import express from 'express';
-import { bookingController } from 'src/controllers/booking-controller.js';
+import { bookingController } from '../controllers/booking-controller.js';
 import {
   bookingService,
   classService,
   userService,
-} from 'src/services/index.js';
+} from '../services/index.js';
 
 const controller = bookingController({
   bookingService,

@@ -4,7 +4,7 @@ import {
   loginResponseSchema,
   loginSchema,
   registerSchema,
-} from 'src/validations/auth-validations.js';
+} from '../validations/auth-validations.js';
 import jwt from 'jsonwebtoken';
 
 const secret = process.env.JWT_SECRET || 'test';

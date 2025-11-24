@@ -1,4 +1,4 @@
-import { PrismaClient } from 'src/generated/prisma/index.js';
+import { PrismaClient } from '../generated/prisma/index.js';
 import type { PaymentService, Payment } from 'booking-domain';
 
 export class PaymentServiceImplementation implements PaymentService {

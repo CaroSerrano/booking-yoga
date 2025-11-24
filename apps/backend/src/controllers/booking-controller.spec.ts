@@ -33,7 +33,7 @@ vi.mock('booking-domain', async () => {
   };
 });
 
-vi.mock('src/validations/booking-validations.js', () => ({
+vi.mock('../validations/booking-validations.js', () => ({
   createBookingSchema: {
     parse: vi.fn(),
   },
@@ -82,7 +82,7 @@ describe('Booking controller', () => {
       };
       mockRequest.body = createBookingData;
       const { createBookingSchema } = await import(
-        'src/validations/booking-validations.js'
+        '../validations/booking-validations.js'
       );
       vi.mocked(createBookingSchema.parse).mockReturnValue(createBookingData);
       await controller.createBooking(
@@ -114,7 +114,7 @@ describe('Booking controller', () => {
       mockRequest.body = updateBookingData;
       mockRequest.params = { id: '1' };
       const { updateBookingSchema } = await import(
-        'src/validations/booking-validations.js'
+        '../validations/booking-validations.js'
       );
       vi.mocked(updateBookingSchema.parse).mockResolvedValue(updateBookingData);
       await controller.updateBooking(

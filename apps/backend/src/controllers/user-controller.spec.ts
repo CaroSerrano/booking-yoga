@@ -31,7 +31,7 @@ vi.mock('booking-domain', async () => {
   };
 });
 
-vi.mock('src/validations/user-validations.js', () => ({
+vi.mock('../validations/user-validations.js', () => ({
   updateUserSchema: {
     parse: vi.fn(),
   },

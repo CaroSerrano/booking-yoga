@@ -1,5 +1,5 @@
-import { userController } from 'src/controllers/user-controller.js';
-import { userService } from 'src/services/index.js';
+import { userController } from '../controllers/user-controller.js';
+import { userService } from '../services/index.js';
 import express from 'express';
 
 const controller = userController({ userService });

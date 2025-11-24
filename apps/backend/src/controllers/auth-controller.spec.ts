@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { Role, UserStatus, type AuthDeps, type UserDeps } from 'booking-domain';
 import type { Request, Response, NextFunction } from 'express';
-import { registerSchema } from 'src/validations/auth-validations.js';
+import { registerSchema } from '../validations/auth-validations.js';
 
 vi.mock('booking-domain', async () => {
   const mockRegister = vi.fn();
@@ -28,7 +28,7 @@ vi.mock('jsonwebtoken', () => ({
   },
 }));
 
-vi.mock('src/validations/auth-validations.js', () => ({
+vi.mock('../validations/auth-validations.js', () => ({
   loginSchema: {
     parse: vi.fn(),
   },

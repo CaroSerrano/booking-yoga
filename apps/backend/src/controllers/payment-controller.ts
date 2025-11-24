@@ -8,7 +8,7 @@ import {
 import {
   createPaymentSchema,
   updatePaymentSchema,
-} from 'src/validations/payment-validations.js';
+} from '../validations/payment-validations.js';
 import type { NextFunction, Request, Response } from 'express';
 import Stripe from 'stripe';
 
